@@ -1,0 +1,1 @@
+"ID" "flaeche_ID" "PlcIndex" "befundart" "epoche" "abschnitt" "kultur" "Quelle" "Easting" "Northing"
