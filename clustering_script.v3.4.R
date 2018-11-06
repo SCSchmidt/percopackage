@@ -17,7 +17,7 @@
 # Version 3.4: 7/11/17 - path of working directory amended for new PC
 
 library(igraph)
-setwd("D:/Iron_Age_Hillforts/Percolation")
+setwd("E:/MA_Erweiterung/percolatransect") # changed for me (SCS)
 # paths
 path_source <- paste(getwd(),"/source_data",sep="")
 path_results <- paste(getwd(),"/working_data",sep="")
@@ -43,7 +43,7 @@ print(paste("Radii used for cluster analysis, km: upper ",upper_radius,
 ptm <- proc.time()
 
 # The data table of nodes and internode distances is a Text file, with headers
-matrix_IDs_distance <- read.table(data_file,header=TRUE) 
+matrix_IDs_distance <- read.table(data_file,header=TRUE)
 # Columns are: node Id 1, node Id 2, distance between them. Note that this is generated
 #  with a limit to the maximum distance to reduce overall matrix size, and hence
 #  creates a partial matrix
@@ -74,7 +74,7 @@ for (i in radius_values)
 
 	#take subcomponents - description of how this works
 	#http://stackoverflow.com/questions/20725411/finding-strong-and-weak-clusters-and-their-membership-in-r
-	
+
 	# Identifies clusters in the graph; creates list of nodes and associated cluster id
 	# weak refers to the mechanism used to generate the clusters and relates to compuational efficiency
 	# Note that this does not include clusters of 1 node, so the counts are not really meaningful at the lower limit
