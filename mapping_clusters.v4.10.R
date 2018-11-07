@@ -92,26 +92,26 @@ radius_values <- seq(upper_radius,lower_radius,by=-step_value)
 
 # Define colours for clusters, top 15 and then gray for the rest
 top15_colours <- colors()[c(553,29,258,654,91,115,456,122,48,8,149,86,102,40,12)]
-top5_colours <- colors()[c(553,29,258,654,91)]
+top5_colours <- colors()[c(553,29,258,654,91)] # could be enough for me
 the_rest_colour <- "#AEAEAE"
 
 
-############################################## problem with plotting.
+
  #plot all sites as pdf
 # Maps plotted on multipage pdf
-file_map_pdf <- paste(path_maps,"/","percolation_plots_",map_name,".pdf",sep="")
-pdf(file=file_map_pdf, paper="a4", width=21/2.54, height=29.7/2.54)
+#file_map_pdf <- paste(path_maps,"/","percolation_plots_",map_name,".pdf",sep="")
+#pdf(file=file_map_pdf, paper="a4", width=21/2.54, height=29.7/2.54)
 
 # Plot as png, earlier issues with png now resolved
 
 file_map_png <- paste(path_maps,"/","percolation_plots_",map_name, "_all.png",sep="")
 png(file=file_map_png, units="cm", width=21, height=29.7, res=300)
+plot(map_outline, col="grey") # removed border=TRUE, 'cause of error message
 
-plot(map_outline, col="grey") # removed border=TRUE
 
 # get from original file xy_data coords and create table
 # Easting | Northing | ID | cluster | colour
-if((nrow(xy_data) < 1000)| (map_name == 'Domesday'))
+if((nrow(xy_data) < 1000)| (map_name == 'Ausgrabung B6n, Abschnitt PA 16')) # name changed for me (SCS)
 {point_dia <- 0.8
 } else {
 point_dia <- 0.4}
@@ -121,7 +121,7 @@ points(xy_data$Easting, xy_data$Northing, col='red', pch=20, cex=point_dia)
 number_of_sites <- paste("Number of sites: ",nrow(xy_data))
 mtext(number_of_sites)
 plot_title <- str_to_title(map_name,locale="")
-title(paste("Iron Age Hillforts in ", plot_title), sub=paste("Sources: ",source_file_name,"; ",shape_file_name))
+title(paste("Spätneolithische Befunde ", plot_title), sub=paste("Sources: ",source_file_name,"; ",shape_file_name)) #name changed for me (SCS)
 dev.off()
 
 # Generates maps for each of percolation radii in range of radius values
@@ -177,7 +177,7 @@ for(i in radius_values)
 	points(xy_data$Easting, xy_data$Northing, col='grey85', pch=4, cex=.3)
 	# plot
 	points(xy_at_d$Easting, xy_at_d$Northing, col=xy_at_d$col, pch=20, cex=point_dia)
-	if(plot_title=="Ireland" | plot_title=="Domesday" | plot_title=="Domesday Vills")
+	if(plot_title=="Spätneolithische Befunde" | plot_title=="Ausgrabung B6n, Abschnitt PA 16" | plot_title=="Ausgrabung B6n") #changed (SCS)
 	{	legend_loc <- "bottomright"
 		legend_size <- 0.6
 	} else {

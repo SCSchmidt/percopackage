@@ -1,2 +1,2 @@
 source_file,map_name,shape_file_name,DTM_file_name
-BefundesNL.csv,alle_Schnitt-Fundstellen.shp,BefundesNL.shp,x
+Siedlungsbefunde_sBZ_minimal.csv,Ausgrabung B6n,SiedlungsbefundesBZ.shp,

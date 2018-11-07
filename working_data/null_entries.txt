@@ -1,1 +1,1 @@
-"Easting" "Northing" "PlcIndex" "befundnumm" "flaeche_id" "befundart" "befundtyp" "befund_id" "kultur" "abschnitt" "epoche"
+"PlcIndex" "Easting" "Northing"
