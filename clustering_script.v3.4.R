@@ -53,7 +53,7 @@ print(paste('time to get matrix in mins',t/60))
 ptm2 <- proc.time()[3]
 
 # Define range of percolation radius and step value to progressively reduce it
-# Radius in km
+# Radius in km (m SCS)
 radius_values <- seq(upper_radius,lower_radius,by=-step_value)
 
 # Repeat for each radius value

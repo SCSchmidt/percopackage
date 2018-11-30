@@ -186,7 +186,7 @@ for(i in radius_values)
 	legend(legend_loc, inset= .01, title="Rank Cluster#",legend=ranked_clusters$cluster[1:number_colours], cex=legend_size,
 		fill=ranked_clusters$col[1:number_colours])
 
-	title(main=plot_title, sub=paste("Source File: ",source_file_name, "; percolation distance:",i,"km"))
+	title(main=plot_title, sub=paste("Source File: ",source_file_name, "; percolation distance:",i,"m")) # changed to meter (SCS)
 
 	# Create data for output in csv file
 	# create ranking index for cluster numbers

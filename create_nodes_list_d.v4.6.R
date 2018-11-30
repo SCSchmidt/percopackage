@@ -49,7 +49,7 @@ limit <- radius_values$limit
 ptm <- proc.time()
 # For computation time
 
-data <- read.csv(source_file, sep="\t", dec = ",") # tab added by me 'cause it's tabbed, decimal in German system
+data <- read.csv(source_file, sep="\t", dec = ",") # tab added by me 'cause it's tabbed, decimal in German system (SCS)
 # This file needs three columns: PlcIndex, Easting, Northing in this order.
 # Additional fields Lat Long not used for this program.
 # Note that the Easting and Northing need to be UK grid references with the Alphabetic
@@ -108,8 +108,8 @@ for (i in 1:ni)
 		#  for full grid references this is in units of 1m
 		d <- sqrt((abs(x_vec[i]-x_vec[j]))^2+(abs(y_vec[i]-y_vec[j]))^2)
 		# to give distance in km, rounded to 2 decimal places; this also reduces file size
-		d <- d/1000
-		d <- round(d,2)
+#		d <- d/1000
+#		d <- round(d,2) # commented out because I want distances in m (SCS)
 		# Include only if less than limit of distances to be included
 		if(d < limit)
 			{row <- row+1
