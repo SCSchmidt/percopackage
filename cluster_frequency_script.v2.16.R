@@ -3,7 +3,7 @@
 # Version 2.1: 2/10/15 - Tidied up, paths and added plot of radius vs # of clusters
 # Version 2.2: 31/1/16 -  Labels added to the second plot, requires the textxy function in calibrate package
 # Note odd plot of radius 1 if included, due to clustering idiosyncracy that does not include clusters of 1.
-# Version 2.3: 30/3/16 - Extended to include plots of average and median cluster sizes on the same plot 
+# Version 2.3: 30/3/16 - Extended to include plots of average and median cluster sizes on the same plot
 # 	(currently max size). Changed outputs to multi-page pdf files
 # Version 2.4: 20/4/16 - Plot to log log added for median. Defined range plot removed
 # Version 2.5: 23/4/16 -
@@ -11,7 +11,7 @@
 # 	Totals of nodes and number of clusters take account of single nodes as clusters of 1
 #	Table of max, mean and median exported
 # Version 2.6: 26/4/16 -
-# 	As per Elsa's paper, plot 'S_mean' cluster size, vs radius, 
+# 	As per Elsa's paper, plot 'S_mean' cluster size, vs radius,
 # 	Exclude clusters with less than a certain threshold of nodes (parameter)
 # 	Also exclude largest cluster from mean
 # 	Thresholds for upper and lower calculations of S_mean read in from radius_values text file
@@ -19,7 +19,7 @@
 #	As per Elsa's published paper, plot max cluster size vs. radius as well
 # 	Page format improved to generate pdf A4 format
 # 	Bug fixed when adding clusters of size 1 (if null value)
-# Version 2.8: 4/5/16 - 
+# Version 2.8: 4/5/16 -
 #	As per Elsa's published paper, max also plotted as normalized relative to total number of nodes
 # Version 2.9: 6/5/16 -
 #	Problem with S_mean if number of clusters becomes zero, resolved, and also corrected computation
@@ -31,7 +31,7 @@
 # 	Remove simple cluster rank plots, no longer useful
 # Version 2.13: 7/11/17	- amended working directory path for new pc
 # Version 2.14: 17/11/17 - amended to allow for multiple file versions based on additional 'k' factor
-#	used by dbScan. For each run there may be more than one value of k, so one file generated per value 
+#	used by dbScan. For each run there may be more than one value of k, so one file generated per value
 # 	value included in the file name. NOTE THIS WILL NEED AMENDING FOR PERCOLATION SCRIPTS TO UPDATE
 #	Some plots removed, legacy of earlier attempts at analysis
 # Version 2.15: 10/01/18 - if dbscan values are null, then treat as percolation and name files accordingly.
@@ -43,10 +43,10 @@
 
 # This script extracts cluster frequency data and plots it for a range of percolation radii
 # The data is in the working directory in text files;
-# 	each file is a list of Place indices, with the identity of each cluster  
+# 	each file is a list of Place indices, with the identity of each cluster
 # 	which it is a member of.
 
-setwd("D:/Iron_Age_Hillforts/Percolation")
+setwd("E:/MA_Erweiterung/percolatransect")
 # paths
 path_source <- paste(getwd(),"/source_data",sep="")
 path_working <- paste(getwd(),"/working_data",sep="")
@@ -85,7 +85,7 @@ lower_cluster_minimum <- radius_values$lower_cluster_minimum
 # assume percolation and not dbscan
 percolation <- FALSE
 if(is.null(upper_cluster_minimum)|is.null(lower_cluster_minimum))
-{	
+{
 	percolation <- TRUE
 	upper_cluster_minimum <- 1
 	lower_cluster_minimum <- 1
@@ -105,7 +105,7 @@ for(cluster_min in cluster_min_values)
 	{
 		file_name <- paste(path_working,"/","member_cluster_by_radius.csv",sep="")
 	} else {
-		file_name <- paste(path_working,"/","member_cluster_by_radius_k",cluster_min,".csv",sep="") 
+		file_name <- paste(path_working,"/","member_cluster_by_radius_k",cluster_min,".csv",sep="")
 	}
 	mem_clust_by_r <- read.csv(file_name, header = TRUE)
 
@@ -162,9 +162,9 @@ for(cluster_min in cluster_min_values)
 
 		analysis_by_radius[row,] <- cbind(radius,number_of_clusters,max_nodes,max_normalized,mean_nodes,median_nodes)
 		row <- row + 1
-	
+
 		}
-	
+
 	#dev.off()
 	analysis_by_radius <- as.data.frame(analysis_by_radius)
 	analysis_by_radius
@@ -186,14 +186,14 @@ for(cluster_min in cluster_min_values)
 		output_file <- paste(path_results,"/cluster_plots_k",cluster_min,"_%02d.png",sep="")
 		plot_suffix <- paste("; k=",cluster_min)
 	}
-	
+
 	png(file=output_file, units="cm", width=21, height=21, res=300)
 
 	# Plot radius vs max_clust_size
 	plot(analysis_by_radius$radius,analysis_by_radius$max_clust_size,
 		main=paste("Max cluster size vs radius ",plot_suffix),
 		sub=paste("Source File: ",source_file_name),
-		xlab=paste("radius ", unit_text), 
+		xlab=paste("radius ", unit_text),
 		ylab="max cluster size")
 	lines(analysis_by_radius$radius,analysis_by_radius$max_clust_size, type="b")
 	textxy(analysis_by_radius$radius,analysis_by_radius$max_clust_size,analysis_by_radius$radius, col="red", cex=.8)

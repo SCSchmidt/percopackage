@@ -1,2 +1,2 @@
 source_file,map_name,shape_file_name,DTM_file_name
-Befunde_sBZ_minimal.csv,Ausgrabung B6n,SiedlungsbefundesBZ.shp,
+BefundesNL_minimal.csv,late neolithic features,alle_Schnitt-Fundstellen.shp,

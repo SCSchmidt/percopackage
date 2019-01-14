@@ -1,2 +1,2 @@
-upper_radius,lower_radius,step_value,limit,upper_threshold,lower_threshold
-600,10,10,2000,1000,0
+upper_radius,lower_radius,step_value,limit,upper_threshold,lower_threshold,radius_unit
+1000,2,1,2000,0,0,1

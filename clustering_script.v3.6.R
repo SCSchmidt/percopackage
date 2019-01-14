@@ -22,7 +22,7 @@
 # 	NOTE: no modification necessary to work for fractional values of radius, e.g. step size of 0.1km???????????????
 
 library(igraph)
-setwd("D:/Iron_Age_Hillforts/Percolation")
+setwd("E:/MA_Erweiterung/percolatransect")
 # paths
 path_source <- paste(getwd(),"/source_data",sep="")
 path_results <- paste(getwd(),"/working_data",sep="")
@@ -31,7 +31,7 @@ data_file <- paste(path_results,"/","nodes_list_d.txt",sep="")
 # Read in list of site Indices; file created by create_nodes_list_d.R
 file_name <- paste(path_results,"/","PlcIndex.csv",sep="")
 # This is used as the basis for the output file
-mem_clust_by_r <- read.csv(file_name,header=TRUE)
+mem_clust_by_r <- read.csv(file_name,header=TRUE, sep = "\t") #seperator is tab
 
 # Read in distance thresholds - this ensures same values used in all scripts
 # Edit the  file radius_values.txt to change these.
@@ -56,7 +56,7 @@ print(paste("Radii used for cluster analysis, ",unit_text,": upper ",upper_radiu
 ptm <- proc.time()
 
 # The data table of nodes and internode distances is a Text file, with headers
-matrix_IDs_distance <- read.table(data_file,header=TRUE) 
+matrix_IDs_distance <- read.table(data_file,header=TRUE)
 # Columns are: node Id 1, node Id 2, distance between them. Note that this is generated
 #  with a limit to the maximum distance to reduce overall matrix size, and hence
 #  creates a partial matrix
@@ -93,7 +93,7 @@ for (i in loop_count)
 
 	#take subcomponents - description of how this works
 	#http://stackoverflow.com/questions/20725411/finding-strong-and-weak-clusters-and-their-membership-in-r
-	
+
 	# Identifies clusters in the graph; creates list of nodes and associated cluster id
 	# weak refers to the mechanism used to generate the clusters and relates to compuational efficiency
 	# Note that this does not include clusters of 1 node, so the counts are not really meaningful at the lower limit

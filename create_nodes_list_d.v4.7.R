@@ -2,31 +2,31 @@
 # Original code from Elsa Arcaute, CASA, UCL 28.2.15; extensively modified by Simon Maddison.
 # Cite as:	arXiv:1504.08318 [physics.soc-ph]
 # This is now version 3, incorporating corrections, performance and style improvements 10/5/15
-# This code creates the file nodes_list_d.txt containing the list for all the distances between pairs, 
+# This code creates the file nodes_list_d.txt containing the list for all the distances between pairs,
 # that is to say a partial matrix of distances between nodes.
 # Distances are computed for each node with each successive node, working through the list.
 # For ca. 3500 nodes this is no longer practicable, as computation become too long and files too big.
-# This uses an approach that creates file with only distances below a limit, e.g. 100km. 
-# This will then not be a fully interconnected network; 
+# This uses an approach that creates file with only distances below a limit, e.g. 100km.
+# This will then not be a fully interconnected network;
 # 	need to ensure that this does not adversely affect clustering computation.
 # Note original used the bigmemory library but this is not available for windows, so all refs removed.
 # Version 3.1: 29/3/16 - add check for null values, display and strip out, also update on duplicate coordinates.
 # 	This data written out to text files.
 # Version 4.1: 4/4/2016 -
-# NOTE: problems with a matrix with #REF entries in .csv - 
+# NOTE: problems with a matrix with #REF entries in .csv -
 #	No check for this, and caused problems with matrix manipulation
 # Removed conversions to and from matrix data format for data, from original source. Not necessary
-# Version 4.2: 10/4/16 - Minor error in duplicate computation corrected. Old ref to matrix_xy; note also 
+# Version 4.2: 10/4/16 - Minor error in duplicate computation corrected. Old ref to matrix_xy; note also
 #     that input data now has additional Lat Long fields added, which are not used here
 # Version 4.3: 6/5/16 - Change index name in source file to bring within character limit in ArcGIS -> PlcIndex
 # Version 4.4: 8/5/16 - Change of source text file format to include map data
-# Version 4.5: 18/5/16 - Change to include output PlcIndex as csv, cleaned up list with only those processed 
+# Version 4.5: 18/5/16 - Change to include output PlcIndex as csv, cleaned up list with only those processed
 # Version 4.6: 07/11/17 - Change working directory for updated machine
 # Version 4.7: 03/12/18 - add in unit parameter to select km or m, in "radius_values.txt"
 #	NOTE: values are assumed to be in metres, unit will factor this in calculations and charts by the unit value
-#	so that a unit value of 1 shows through as metres, and a value of 1000 as km. Other values accomodated 
+#	so that a unit value of 1 shows through as metres, and a value of 1000 as km. Other values accomodated
 
-setwd("D:/Iron_Age_Hillforts/Percolation")
+setwd("E:/MA_Erweiterung/percolatransect")
 # paths
 path_source <- paste(getwd(),"/source_data",sep="")
 path_results <- paste(getwd(),"/working_data",sep="")
@@ -53,10 +53,10 @@ radius_unit <- radius_values$radius_unit
 ptm <- proc.time()
 # For computation time
 
-data <- read.csv(source_file)
+data <- read.csv(source_file, sep = "\t") # added tab-seperated
 # This file needs three columns: PlcIndex, Easting, Northing in this order.
 # Additional fields Lat Long not used for this program.
-# Note that the Easting and Northing need to be UK grid references with the Alphabetic 
+# Note that the Easting and Northing need to be UK grid references with the Alphabetic
 #  grid square converted to a numeric prefix for each
 # List any entries with null values and write to file
 data_NA <- data[rowSums(is.na(data)) > 0,]
@@ -67,7 +67,7 @@ write.table(data_NA, file_name, row.names=FALSE)
 # Remove rows with null values from data
 data <- na.omit(data)
 
-# Remove points that are superimposed and keep only the first ID 
+# Remove points that are superimposed and keep only the first ID
 # - This removes one of two sites that are very close to each other
 # Determined on basis of x y coordinates
 # Write list to file
