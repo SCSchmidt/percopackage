@@ -1,0 +1,2 @@
+source_file,map_name,shape_file_name,DTM_file_name
+BefundesNL_minimal.csv,alle Schnitt Fundstellen,alle_Schnitt-Fundstellen.shp,
