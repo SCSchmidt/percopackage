@@ -33,15 +33,169 @@ knitr::opts_chunk$set(
 library(percolatransect) # Or use devtools::load_all('.', quiet = T) if your code is in script files, rather than as functions in the `/R` diretory
 ```
 
-## here I document what I did and tried with the perlocation analysis by Simon Maddison
+## different cluster analysis visualisation
 
-Frage: upper_ - and lower_threashold in radius_values.txt?
-
+Einladen der Daten und verbindung:
 ```{r}
+sNL1 <- read_csv("analysis_results/sNL/1m_sNL/analysis_by_radius_sNL1.csv")
+sBZ1  <- read_csv("analysis_results/sBZ/sBZ_1m/analysis_by_radius.csv")
 
+sNL1$period  <- "Spätneolihitikum"
+sBZ1$period  <-  "Spätbronzezeit"
+
+radius1 <- rbind(sNL1,sBZ1)
+
+```
+
+## try new things
+
+```{r anzahl cluster}
+library(ggplot2)
+ggplot( data = radius1)+
+  geom_line(aes(x = radius, y = num_clust, col = period))
+```
+
+```{r max größe cluster}
+ggplot( data = radius1)+
+  geom_line(aes(x = radius, y = max_clust_size, col = period))
+```
+
+```{r mean cluster size}
+ggplot( data = radius1)+
+  geom_line(aes(x = radius, y = mean_clust_size, col = period))
+```
+
+```{r anzahl cluster}
+ggplot( data = radius1)+
+  geom_line(aes(x = radius, y = max_normalized, col = period))
+```
+# next point: Vergleich mit meinen density daten?
+
+
+# Idee: Daten einladen, teilen, etc, run source, 
+
+copied from old:
+```{r message=FALSE, include=FALSE, cache=FALSE}
+
+#load data
+BefSchnitt <- read.csv2('../data/Schnittbefunde4.csv')
+
+# order dating
+BefSchnitt$epoche <- ordered(BefSchnitt$epoche, levels = c("Neolithikum", "Bronzezeit", "Eisenzeit", "undat."))
+BefSchnitt$abschnitt <- ordered(BefSchnitt$abschnitt, levels =c('aelter', 'frueh','mittel', 'spaet'))
+BefSchnitt$kultur <- ordered(BefSchnitt$kultur, levels=c("Baalberge", "Bernburg", "Kugelamphorenkultur", "Trichterbecher", "Salzmuende", "Schnurkeramik", "Glockenbecher", "Aunjetitz", "Saalemuendungsgruppe", "sBZ/aeEZ", "Hausurnenkultur"))
+
+library(maptools)
+library(spatstat)
+library(rgdal)
+library(ggplot2)
+library(pastecs)
+
+# subset settlement features
+
+siedlung_BefSchnitt <- subset(BefSchnitt, BefSchnitt$befundart=='Siedlung')
+
+#Subset for cultures
+siedlung_SnK_Bef <-subset(siedlung_BefSchnitt, siedlung_BefSchnitt$kultur=='Schnurkeramik')
+siedlung_fBZ_Bef <-subset(siedlung_BefSchnitt, siedlung_BefSchnitt$epoche=='Bronzezeit' & siedlung_BefSchnitt$abschnitt=='frueh')
+siedlung_sBZ_Bef <-subset(siedlung_BefSchnitt, siedlung_BefSchnitt$epoche=='Bronzezeit' & siedlung_BefSchnitt$abschnitt=='spaet')
+siedlung_aeEZ_Bef <- subset(siedlung_BefSchnitt, siedlung_BefSchnitt$epoche=='Eisenzeit' & siedlung_BefSchnitt$abschnitt=='aelter')
+siedlung_sBZaeEZ_Bef <-subset(siedlung_BefSchnitt, siedlung_BefSchnitt$kultur=='sBZ/aeEZ')
+
+siedlung_sBZ_aeEZ <- rbind(siedlung_sBZaeEZ_Bef, siedlung_aeEZ_Bef)
+
+###2. create spatstat-Objects (> ppp(x.coordinates, y.coordinates, x.range, y.range bzw window))
+
+window <- readOGR(dsn='../data', layer='win_Schnitt')
+win <- as(window, "SpatialPolygons")
+W <-as(win, "owin")
+
+siedlung_SnK_Bef_pp <- ppp(siedlung_SnK_Bef$X, 
+ siedlung_SnK_Bef$Y, 
+ W)
+siedlung_fBZ_Bef_pp <- ppp(siedlung_fBZ_Bef$X, 
+ siedlung_fBZ_Bef$Y, 
+ W)
+siedlung_sBZ_Bef_pp <- ppp(siedlung_sBZ_Bef$X, 
+ siedlung_sBZ_Bef$Y, 
+ W)
+siedlung_aeEZ_Bef_pp <- ppp(siedlung_aeEZ_Bef$X, 
+  siedlung_aeEZ_Bef$Y, 
+  W)
+siedlung_sBZ_aeEZ_pp <-ppp(siedlung_sBZ_aeEZ$X,
+ siedlung_sBZ_aeEZ$Y,
+ W)
+
+# Warnung: dublicated points in sBZ und aeEZ.
+siedlung_sBZ_Bef_pp <- unique(siedlung_sBZ_Bef_pp) # dopplungen raus
+siedlung_aeEZ_Bef_pp <- unique(siedlung_aeEZ_Bef_pp) # dopplungen raus
+siedlung_sBZ_aeEZ_pp <- unique(siedlung_sBZ_aeEZ_pp) # dopplungen raus
+
+
+# calculate distance matrix and create vector and dataframe
+siedlSnK_dist_v <- sort(as.vector(pairdist.ppp(siedlung_SnK_Bef_pp)))# Entfernung aller SnK-Punkte zueinander
+siedlSnK_dist_v <-subset(siedlSnK_dist_v, siedlSnK_dist_v > 0) # 0-Werte raus
+siedlSnK_dist_df <- as.data.frame(siedlSnK_dist_v)
+
+siedlfBZ_dist_v <- sort(as.vector(pairdist.ppp(siedlung_fBZ_Bef_pp)))# Entfernung aller fBZ-Punkte zueinander
+siedlfBZ_dist_v <-subset(siedlfBZ_dist_v, siedlfBZ_dist_v > 0) # 0-Werte raus
+siedlfBZ_dist_df <- as.data.frame(siedlfBZ_dist_v)
+
+siedlsBZ_dist_v <- sort(as.vector(pairdist.ppp(siedlung_sBZ_Bef_pp)))# Entfernung aller sBZ-Punkte zueinander
+siedlsBZ_dist_v <-subset(siedlsBZ_dist_v, siedlsBZ_dist_v > 0) # 0-Werte raus
+siedlsBZ_dist_df <- as.data.frame(siedlsBZ_dist_v)
+
+siedlaeEZ_dist_v <-sort(as.vector(pairdist.ppp(siedlung_aeEZ_Bef_pp)))# Entfernung aller aeEZ-Punkte zueinander
+siedlaeEZ_dist_v <-subset(siedlaeEZ_dist_v, siedlaeEZ_dist_v > 0) # 0-Werte raus
+siedlaeEZ_dist_df <- as.data.frame(siedlaeEZ_dist_v)
+
+siedlsBZ_aeEZ_dist_v <- sort(as.vector(pairdist.ppp(siedlung_sBZ_aeEZ_pp )))# Entfernung aller sBZ/aeEZ-Punkte zueinander
+siedlsBZ_aeEZ_dist_v <-subset(siedlsBZ_aeEZ_dist_v, siedlsBZ_aeEZ_dist_v > 0) # 0-Werte raus
+siedlsBZ_aeEZ_dist_df <- as.data.frame(siedlsBZ_aeEZ_dist_v)
+
+# subset to only 1000m
+
+siedlSnK_dist_df_1000 <-subset(siedlSnK_dist_df, siedlSnK_dist_df > 0 & siedlSnK_dist_df < 1000 )
+
+siedlfBZ_dist_df_1000 <-subset(siedlfBZ_dist_df, siedlfBZ_dist_df > 0 & siedlfBZ_dist_df < 1000 )
+
+siedlsBZ_dist_df_1000 <-subset(siedlsBZ_dist_df, siedlsBZ_dist_df > 0 & siedlsBZ_dist_df < 1000 )
+
+siedlsBZ_aeEZ_dist_df_1000 <-subset(siedlsBZ_aeEZ_dist_df, siedlsBZ_aeEZ_dist_df > 0 & siedlsBZ_aeEZ_dist_df < 1000 )
+
+
+siedlsBZ_aeEZ_dist_df_1000 <-subset(siedlsBZ_aeEZ_dist_df, siedlsBZ_aeEZ_dist_df > 0 & siedlsBZ_aeEZ_dist_df < 1000 )
+
+# create cumulative sums and percentage of those
+
+siedlSnK_dist_df_1000$n <-c(1:nrow(siedlSnK_dist_df_1000)) # sagt, wie viele so oder kleiner (weil vorher nach Größe sortiert)
+siedlSnK_dist_df_1000$prozent <-c(siedlSnK_dist_df_1000$n/nrow(siedlSnK_dist_df_1000)) # macht aus der Anzahl eine Prozentanzahl zur Vergleichbarkeit
+
+siedlfBZ_dist_df_1000$n <-c(1:nrow(siedlfBZ_dist_df_1000))
+siedlfBZ_dist_df_1000$prozent <-c(siedlfBZ_dist_df_1000$n/nrow(siedlfBZ_dist_df_1000))
+
+siedlsBZ_dist_df_1000$n <-c(1:nrow(siedlsBZ_dist_df_1000))
+siedlsBZ_dist_df_1000$prozent <-c(siedlsBZ_dist_df_1000$n/nrow(siedlsBZ_dist_df_1000))
+
+siedlsBZ_aeEZ_dist_df_1000$n <-c(1:nrow(siedlsBZ_aeEZ_dist_df_1000))
+siedlsBZ_aeEZ_dist_df_1000$prozent <-c(siedlsBZ_aeEZ_dist_df_1000$n/nrow(siedlsBZ_aeEZ_dist_df_1000))
+
+siedlsBZ_aeEZ_dist_df_1000$n <-c(1:nrow(siedlsBZ_aeEZ_dist_df_1000))
+siedlsBZ_aeEZ_dist_df_1000$prozent <-c(siedlsBZ_aeEZ_dist_df_1000$n/nrow(siedlsBZ_aeEZ_dist_df_1000))
 
 
 ```
+
+
+
+new:
+
+```{r anzahl cluster}
+ggplot( data = radius1)+
+  geom_line(aes(x = radius, y = max_normalized, col = period))+
+  geom_density()
+```
+
 
 # Conclusion
 

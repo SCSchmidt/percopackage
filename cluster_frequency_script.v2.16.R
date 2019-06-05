@@ -46,7 +46,7 @@
 # 	each file is a list of Place indices, with the identity of each cluster
 # 	which it is a member of.
 
-setwd("E:/MA_Erweiterung/percolatransect")
+setwd("/home/sophie/Dokumente/Konferenzen/percolatransect/") #path on laptop
 # paths
 path_source <- paste(getwd(),"/source_data",sep="")
 path_working <- paste(getwd(),"/working_data",sep="")
@@ -209,3 +209,4 @@ for(cluster_min in cluster_min_values)
 
 	dev.off()
 }
+

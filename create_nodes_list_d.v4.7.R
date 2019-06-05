@@ -26,8 +26,7 @@
 #	NOTE: values are assumed to be in metres, unit will factor this in calculations and charts by the unit value
 #	so that a unit value of 1 shows through as metres, and a value of 1000 as km. Other values accomodated
 
-setwd("E:/MA_Erweiterung/percolatransect")
-# paths
+setwd("/home/sophie/Dokumente/Konferenzen/percolatransect/") #path on laptop
 path_source <- paste(getwd(),"/source_data",sep="")
 path_results <- paste(getwd(),"/working_data",sep="")
 
@@ -53,7 +52,7 @@ radius_unit <- radius_values$radius_unit
 ptm <- proc.time()
 # For computation time
 
-data <- read.csv(source_file, sep = "\t") # added tab-seperated
+data <- read.csv(source_file, sep = ",") # crazy mistakes happen if this is wrong...
 # This file needs three columns: PlcIndex, Easting, Northing in this order.
 # Additional fields Lat Long not used for this program.
 # Note that the Easting and Northing need to be UK grid references with the Alphabetic
