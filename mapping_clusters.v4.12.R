@@ -44,7 +44,7 @@ library(maptools)
 library(rgdal)
 library(stringr)
 
-setwd("/home/sophie/Dokumente/Konferenzen/percolatransect/") #path on laptop
+#setwd("/home/sophie/Dokumente/Konferenzen/percolatransect/") #path on laptop
 # paths for results and output maps
 path_source <- paste(getwd(),"/source_data",sep="")
 path_results <- paste(getwd(),"/working_data",sep="")

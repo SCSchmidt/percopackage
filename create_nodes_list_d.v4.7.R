@@ -26,7 +26,7 @@
 #	NOTE: values are assumed to be in metres, unit will factor this in calculations and charts by the unit value
 #	so that a unit value of 1 shows through as metres, and a value of 1000 as km. Other values accomodated
 
-setwd("/home/sophie/Dokumente/Konferenzen/percolatransect/") #path on laptop
+#setwd("/home/sophie/Dokumente/Konferenzen/percolatransect/") #path on laptop
 path_source <- paste(getwd(),"/source_data",sep="")
 path_results <- paste(getwd(),"/working_data",sep="")
 

@@ -22,7 +22,7 @@
 # 	NOTE: no modification necessary to work for fractional values of radius, e.g. step size of 0.1km???????????????
 
 library(igraph)
-setwd("/home/sophie/Dokumente/Konferenzen/percolatransect/") #path on laptop
+#setwd("/home/sophie/Dokumente/Konferenzen/percolatransect/") #path on laptop
 # paths
 path_source <- paste(getwd(),"/source_data",sep="")
 path_results <- paste(getwd(),"/working_data",sep="")
