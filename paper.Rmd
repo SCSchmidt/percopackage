@@ -17,8 +17,6 @@ highlights: |
   These are the highlights. 
 ---
 
-
-
 ```{r, setup, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -33,12 +31,12 @@ knitr::opts_chunk$set(
 #library(percolatransect) # Or use devtools::load_all('.', quiet = T) if your code is in script files, rather than as functions in the `/R` diretory
 ```
 
-## 
 
+### Strip excavation in Germany
+The second case study is located in Saxony-Anhalt, middle Germany. During the early 2000s the street “Bundesstraße 6” was built near the town of Köthen. The area of the street, approach roads, exits and retention reservoirs were machine test trenched by the Heritage Management to find archaeological sites. Along the ca. 13 km long and mostly 40 m broad part of the street over 6000 features were uncovered (Fahr in prep.), but I will focus on features from four different time periods: The late Neolithic (represented by Corded Ware Culture), early Bronze Age (Unetice culture), later Bronze Age (group “Saalemündungsgruppe”) and early Iron Age (group “Hausurnenkultur”). For these periods the aim is to find the clusters which delineate a site with the help of percolation analysis. The radius will estimate the distance between features that belong together into one site.
 
-## different cluster analysis visualisation
+#### Data set 
 
-Einladen der Daten und verbindung:
 ```{r}
 #Data cleaning and prep for Sophie
 
@@ -71,11 +69,37 @@ write.csv(siedlung_sBZ_Bef, "source_data/BefundesBZ-minimal.csv")
 
 
 siedlung_sBZ_aeEZ_Bef <- subset(siedlung_BefSchnitt, siedlung_BefSchnitt$epoche=='Eisenzeit' & siedlung_BefSchnitt$abschnitt=='aelter')
-siedlung_sBZ_Bef <-siedlung_sBZ_aeEZ_Bef[c('PlcIndex', 'Easting', 'Northing')]
-write.csv(siedlung_sBZ_Bef, "source_data/BefundesBZ_aeEZ-minimal.csv")
+siedlung_sBZ_aeEZ_Bef <- siedlung_sBZ_aeEZ_Bef[c('PlcIndex', 'Easting', 'Northing')]
+write.csv(siedlung_sBZ_aeEZ_Bef, "source_data/BefundesBZ_aeEZ-minimal.csv")
 
 ```
 
+There are 1595 features cataloged as belonging to these periods (specific number of features belonging to the periods cf table x). 
+
+Epoch               |	Culture                              |	n settlement  features
+Neolithic	          |Schnurkeramik (Corded Ware Culture)             |	34
+Bronze Age          |	Aunjetitz (Unetice Culture)	                    | 25
+Bronze Age          |	Saalemündungsgruppe (River Saale Outfall Group) |	1005
+Bronze Age/Iron Age |	Late Bronze Age / early Iron Age                |	389
+Iron Age            |	Hausurnenkultur (House Urn Culture)	            | 129
+Iron Age            |	NA                                              |	13
+sum	                |                                                 |	1595
+
+
+Because of the test trenching it is assumed, that all features and sites along the transect have been found, even though there are gaps between the actual excavation areas and many features remain undated. Machine trenching has been shown to be the most effective way to find sites [@hey_2006]. Admittedly even then not all sites are discovered, especially Neolithic ones have the least probability to be found, which may be one reason for the small number of Neolithic features in the transect.
+The late Bronze age and the early iron age are not easily seperable in the settlements, because the ceramics are very similar. Researchers agree [@wagner_2004, 8 ; @heske_2005, 95] that there seems to be a settlement continuation between the two phases, while the burial practices change. Consequently many features have been dated in both periods. I deal with this by adding the uncertainly dated features to the late bronze age analysis as well as to the early iron age analysis.
+
+#### Theoretical Issues
+The term “site” has been at the center of a lively debate in survey archaeology over the last 40 years. Until the 70’s it has mostly been defined as a place [@dunnell_1992, 23-24] - a find spot, which is similar to German archaeology, where the term used, “Fundplatz”, means exactly that. In the German archaeological inventories, though, a site may contain several culturally distinct loci “Fundstellen” [@dauber_1950, 96], which are usually cataloged as a settlement, a burial ground, a hoard or as a single find spot of a period [@eggert_2005, 56]. 
+Two questions arise, when deciding how to classify a site as a settlement: Qualitatively, what kind of finds or features define a settlement [@linke_1976, 8], and quantitatively, of how far apart two “find spots” are supposed to be. If two sherds of the same time period are found 50 m apart - are these two sites or belong they to one site? In every larger settlement or landscape archaeological study this topic is being discussed and in the end a decision felled, which the authors agree, is kind of arbitrary and should actually rely on empiric studies [@malmer_1962; @mischka_2007]. 
+Since the middle of the 1970s there has been the discussion of a non- or off-site approach to anglophone archaeology. The terms were introduced by Thomas [-@thomas_1975] and Foley [-@foley_1981] and describe the analysis of finds "between sites". This approach understands the archaeological record  as a continual distribution in space, with spots of higher densities, the so-called “sites”, and areas of lower density [@wobst_1983, 39].
+At this point the continuously excavated data set of the street and the clustering analysis percolation can be fruitfully connected: As percolation works with radii around points it may assist in quantitatively assessing which distances between features are common. 
+Assuming a connection between underground features and surface finds enables us to transfer the distances of the features to those of finds and may inform landscape archaeological surveys on the decision on attributing single finds to an already known site or registering a new site. Of course, settlement features only comprise the “build space” of a settlement. Though features in-between sites may exist, like traps or temporary storage facilities, places like working areas or fields which may be detected by off-site surface find distributions, won’t be included.
+
+### Percolation
+
+
+```{r eval=FALSE, include=FALSE}
 
 ## run analysis and save results of every run.
 
@@ -100,7 +124,7 @@ upper_radius,lower_radius,step_value,limit,upper_threshold,lower_threshold,radiu
 Außer bei der fBZ: da muss der minimale Radius 4 sein.
 ## run code (each time new after changing source_file.txt and saving results somewhere)
 
-```{r}
+
 source("create_nodes_list_d.v4.7.R")
 source("clustering_script.v3.6.R")
 #source("mapping_clusters.v4.12.R")# Fehler in ogrInfo(dsn = dsn, layer = layer, encoding = encoding, use_iconv = use_iconv, : Cannot open data source... weeiiiiird... nochmal auf anderer Maschine testen.
@@ -109,11 +133,13 @@ source("cluster_frequency_script.v2.16.R")
 
 ```
 
-Jeweils die Daten in die vorgesehenen Ordnern verschieben.
+
+
+```{r combine all tables}
+#Jeweils die Daten in die vorgesehenen Ordnern verschieben.
 
 ## für vergleichende plots:
 
-```{r combine all tables}
 library(utils)
 
 sNL1 <- read.csv("analysis_results/sNL/1m_sNL/analysis_by_radius.csv")
@@ -121,7 +147,7 @@ fBZ1  <- read.csv("analysis_results/fBZ/analysis_by_radius.csv")
 sBZ1  <- read.csv("analysis_results/sBZ/sBZ_1m/analysis_by_radius.csv")
 aeEZ1  <- read.csv("analysis_results/aeEZ/analysis_by_radius.csv")
 
-sNL1$period  <- "Spätneolihitikum"
+sNL1$period  <- "Spätneolithikum"
 fBZ1$period  <- "Frühbronzezeit"
 sBZ1$period  <-  "Spätbronzezeit"
 aeEZ1$period <- "ältere Eisenzeit"
@@ -130,16 +156,18 @@ radius1 <- rbind(sNL1,sBZ1, fBZ1, aeEZ1)
 
 ```
 
+As this analysis is concerned with a very fine level of detail, the starting point and the step size of the percolation algorithm was chosen to be 1m. Only in case of the Unetice Culture a larger starting radius of 4m was chosen, because the smallest distance of features to each other in this time period is 4 m. 
+The size of a prehistoric village in middle Germany can’t be assumed to be larger than a kilometer in diameter, therefore the largest radius used was 500m. 
+For the four different time periods different patterns of cluster development could be detected, which conforms to an assumption of differing settlement strategies through the times. They are visualised together in figure xyz
 
-
-## try new things
-
-```{r mean cluster size}
+```{r mean cluster size, eval=FALSE, include=FALSE}
 library(ggplot2)
-
+# not included because the mean cluster size ist too different because of hugely different sample sizes
 ggplot( data = radius1)+
   geom_line(aes(x = radius, y = mean_clust_size, col = period))
 ```
+
+
 
 ```{r anzahl cluster}
 library(ggplot2)
@@ -147,12 +175,31 @@ ggplot( data = radius1)+
   geom_line(aes(x = radius, y = max_normalized, col = period))+
   theme_light()+
   labs(x ="percolation radius", y = "normalized maximum cluster size",
-       title = "Comparison of different time periods")
+       title = "Comparison of different time periods")+
+  scale_color_discrete(breaks = c("Spätneolithikum", "Frühbronzezeit", "Spätbronzezeit", "ältere Eisenzeit"),
+                       labels = c("late Neolithic", "early Bronze Age", "late Bronze Age", "early Iron Age"))
+
 
 ggsave("normalized_max_clusters.png", height = 10, width =  20, units = "cm", dpi = 300  )
 
 ```
-# auslesen der "knackpunkte"?
+
+To the naked eye it is visible that there are different turning points at which the distribution flattens. This is a sign of different levels of clustering inside the sites. The final flattening might be interpreted as the algorithm running out of features to add to the clusters. We thereby find the edges of settlements and can define their size.
+
+to do: maps!!
+
+
+```{r}
+# Idee: wenn n+1 - n > 10 oder so --> großer step 
+
+trial_points_sNL <-  c(1,1+which(diff(sNL1$max_normalized) > 0.1))
+trial_points_fBZ <-  c(1,1+which(diff(fBZ1$max_normalized) > 0.1))
+trial_points_sBZ <-  c(1,1+which(diff(sBZ1$max_normalized) > 0.1))
+trial_points_aeEZ<-  c(1,1+which(diff(aeEZ1$max_normalized) > 0.1))
+  
+```
+
+
 
 ```{r }
 ## not happy with results here. esp. for EZ.
@@ -164,10 +211,14 @@ ggsave("normalized_max_clusters.png", height = 10, width =  20, units = "cm", dp
 
 points <-  c(1,1+which(diff(sNL1$max_normalized)!=0))
 
+## Idee: points aufsteigend sortieren... also die Abstände zwischen zwei aufeinanderfolgenden max_normalized sotieren. die größten Abstände raussuchen, die als Knackpunkte definieren?
+points <- order(points)
+
+
+
 sNL1points<- as.data.frame(cbind(sNL1$radius[points], sNL1$max_normalized[points]))
 
 pointssBZ <-  c(1,1+which(diff(sBZ1$max_normalized)!=0))
-
 sBZ1points<- as.data.frame(cbind(sBZ1$radius[pointssBZ], sBZ1$max_normalized[pointssBZ]))
 
 
