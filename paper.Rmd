@@ -184,7 +184,17 @@ ggsave("normalized_max_clusters.png", height = 10, width =  20, units = "cm", dp
 
 ```
 
-To the naked eye it is visible that there are different turning points at which the distribution flattens. This is a sign of different levels of clustering inside the sites. The final flattening might be interpreted as the algorithm running out of features to add to the clusters. We thereby find the edges of settlements and can define their size.
+To the naked eye it is visible that there are different turning points at which the distribution flattens. This is a sign of different settlement strategies. Also we can find several levels of clustering. Especially features of the late Bronze Age and early Iron Age create a steep curve in the beginning, which shows a close clustering at low percolation radii. Longer stretches of flattening might be interpreted as the algorithm running out of features to add to the clusters. We thereby find the edges of settlements and can define their size. The step-wise rises at higher percolation radii needs explanation as well. To provide these, the results will be compared to large scale excavations of settlements in middle Germany. For interpretation I will now discuss the time slices seperately:
+
+#### Late Neolithic
+
+
+#### Early Bronze Age
+
+
+#### Late Bronze Age
+
+#### Early Iron Age
 
 to do: maps!!
 
