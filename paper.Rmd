@@ -33,7 +33,7 @@ knitr::opts_chunk$set(
 
 
 ### Strip excavation in Germany
-The second case study is located in Saxony-Anhalt, middle Germany. During the early 2000s the street “Bundesstraße 6” was built near the town of Köthen. The area of the street, approach roads, exits and retention reservoirs were machine test trenched by the Heritage Management to find archaeological sites. Along the ca. 13 km long and mostly 40 m broad part of the street over 6000 features were uncovered (Fahr in prep.), but I will focus on features from four different time periods: The late Neolithic (represented by Corded Ware Culture), early Bronze Age (Unetice culture), later Bronze Age (group “Saalemündungsgruppe”) and early Iron Age (group “Hausurnenkultur”). For these periods the aim is to find the clusters which delineate a site with the help of percolation analysis. The radius will estimate the distance between features that belong together into one site.
+The second case study is located in Saxony-Anhalt, middle Germany. During the early 2000s the street “Bundesstraße 6” was built near the town of Köthen. The area of the street, approach roads, exits and retention reservoirs were machine test trenched by the Heritage Management to find archaeological sites. Along the ca. 13 km long and mostly 40 m broad part of the street over 6000 features were uncovered (Fahr in prep.), but I will focus on features from the later Bronze Age (group “Saalemündungsgruppe”). For this periods the aim is to find the clusters which delineate a site with the help of percolation analysis. The radius will estimate the distance between features that belong together into one site.
 
 #### Data set 
 
@@ -52,42 +52,18 @@ BefSchnitt$kultur <- ordered(BefSchnitt$kultur, levels=c("Baalberge", "Bernburg"
 siedlung_BefSchnitt <- subset(BefSchnitt, BefSchnitt$befundart=='Siedlung')
 
 #Subset the settlement features for relevant cultures
-# there are 389 features dated as late bronze age and early iron age, that are being analysed in both epochs
-siedlung_SnK_Bef <- subset(siedlung_BefSchnitt, siedlung_BefSchnitt$kultur=='Schnurkeramik')
-siedlung_SnK_Bef <-siedlung_SnK_Bef[c('PlcIndex', 'Easting', 'Northing')]
-write.csv(siedlung_SnK_Bef, "source_data/BefundesNL-minimal.csv", row.names = FALSE)
-
-siedlung_fBZ_Bef <- subset(siedlung_BefSchnitt,
-                           siedlung_BefSchnitt$epoche=='Bronzezeit' &
-                             siedlung_BefSchnitt$abschnitt=='frueh')
-siedlung_fBZ_Bef <- siedlung_fBZ_Bef[c('PlcIndex', 'Easting', 'Northing')]
-write.csv(siedlung_fBZ_Bef, "source_data/BefundefBZ-minimal.csv", row.names = FALSE)
-
+# there are 389 features dated as late bronze age and early iron age, that are being analysed in sBZ as well
 siedlung_sBZ_Bef <-subset(siedlung_BefSchnitt, siedlung_BefSchnitt$epoche=='Bronzezeit' & siedlung_BefSchnitt$abschnitt=='spaet')
 siedlung_sBZ_Bef <-siedlung_sBZ_Bef[c('PlcIndex', 'Easting', 'Northing')]
 write.csv(siedlung_sBZ_Bef, "source_data/BefundesBZ-minimal.csv")
 
-
-siedlung_sBZ_aeEZ_Bef <- subset(siedlung_BefSchnitt, siedlung_BefSchnitt$epoche=='Eisenzeit' & siedlung_BefSchnitt$abschnitt=='aelter')
-siedlung_sBZ_aeEZ_Bef <- siedlung_sBZ_aeEZ_Bef[c('PlcIndex', 'Easting', 'Northing')]
-write.csv(siedlung_sBZ_aeEZ_Bef, "source_data/BefundesBZ_aeEZ-minimal.csv")
-
 ```
 
-There are 1595 features cataloged as belonging to these periods (specific number of features belonging to the periods cf table x). 
-
-Epoch               |	Culture                              |	n settlement  features
-Neolithic	          |Schnurkeramik (Corded Ware Culture)             |	34
-Bronze Age          |	Aunjetitz (Unetice Culture)	                    | 25
-Bronze Age          |	Saalemündungsgruppe (River Saale Outfall Group) |	1005
-Bronze Age/Iron Age |	Late Bronze Age / early Iron Age                |	389
-Iron Age            |	Hausurnenkultur (House Urn Culture)	            | 129
-Iron Age            |	NA                                              |	13
-sum	                |                                                 |	1595
+There are 1005 settlement features cataloged as belonging to this period.
 
 
 Because of the test trenching it is assumed, that all features and sites along the transect have been found, even though there are gaps between the actual excavation areas and many features remain undated. Machine trenching has been shown to be the most effective way to find sites [@hey_2006]. Admittedly even then not all sites are discovered, especially Neolithic ones have the least probability to be found, which may be one reason for the small number of Neolithic features in the transect.
-The late Bronze age and the early iron age are not easily seperable in the settlements, because the ceramics are very similar. Researchers agree [@wagner_2004, 8 ; @heske_2005, 95] that there seems to be a settlement continuation between the two phases, while the burial practices change. Consequently many features have been dated in both periods. I deal with this by adding the uncertainly dated features to the late bronze age analysis as well as to the early iron age analysis.
+The late Bronze age and the early iron age are not easily seperable in the settlements, because the ceramics are very similar. Researchers agree [@wagner_2004, 8 ; @heske_2005, 95] that there seems to be a settlement continuation between the two phases, while the burial practices change. Consequently many features have been dated in both periods. I deal with this by adding the uncertainly dated features to the late bronze age analysis as well.
 
 #### Theoretical Issues
 The term “site” has been at the center of a lively debate in survey archaeology over the last 40 years. Until the 70’s it has mostly been defined as a place [@dunnell_1992, 23-24] - a find spot, which is similar to German archaeology, where the term used, “Fundplatz”, means exactly that. In the German archaeological inventories, though, a site may contain several culturally distinct loci “Fundstellen” [@dauber_1950, 96], which are usually cataloged as a settlement, a burial ground, a hoard or as a single find spot of a period [@eggert_2005, 56]. 
@@ -104,30 +80,19 @@ Assuming a connection between underground features and surface finds enables us 
 ## run analysis and save results of every run.
 
 ### input in source _file.txt
-source_file,map_name,shape_file_name,DTM_file_name
-BefundesNL-minimal.csv, late neolithic features, alle_Schnitt-Fundstellen.shp,
-
-source_file,map_name,shape_file_name,DTM_file_name
-BefundefBZ-minimal.csv, early bronze age features, alle_Schnitt-Fundstellen.shp,
 
 source_file,map_name,shape_file_name,DTM_file_name
 BefundesBZ-minimal.csv, late bronze age features, alle_Schnitt-Fundstellen.shp,
 
-source_file,map_name,shape_file_name,DTM_file_name
-BefundesBZ_aeEZ-minimal.csv, late bronze age to early iron age features, alle_Schnitt-Fundstellen.shp,
 
 ### input in radius_values.txt (stays)
 
 upper_radius,lower_radius,step_value,limit,upper_threshold,lower_threshold,radius_unit
 500,2,1, 1000,0,0,1
 
-Außer bei der fBZ: da muss der minimale Radius 4 sein.
-## run code (each time new after changing source_file.txt and saving results somewhere)
-
-
 source("create_nodes_list_d.v4.7.R")
 source("clustering_script.v3.6.R")
-#source("mapping_clusters.v4.12.R")# Fehler in ogrInfo(dsn = dsn, layer = layer, encoding = encoding, use_iconv = use_iconv, : Cannot open data source... weeiiiiird... nochmal auf anderer Maschine testen.
+source("mapping_clusters.v4.12.R")# Fehler in ogrInfo(dsn = dsn, layer = layer, encoding = encoding, use_iconv = use_iconv, : Cannot open data source... weeiiiiird... nochmal auf anderer Maschine testen.
 
 source("cluster_frequency_script.v2.16.R")
 
@@ -135,30 +100,8 @@ source("cluster_frequency_script.v2.16.R")
 
 
 
-```{r combine all tables}
-#Jeweils die Daten in die vorgesehenen Ordnern verschieben.
-
-## für vergleichende plots:
-
-library(utils)
-
-sNL1 <- read.csv("analysis_results/sNL/1m_sNL/analysis_by_radius.csv")
-fBZ1  <- read.csv("analysis_results/fBZ/analysis_by_radius.csv")
-sBZ1  <- read.csv("analysis_results/sBZ/sBZ_1m/analysis_by_radius.csv")
-aeEZ1  <- read.csv("analysis_results/aeEZ/analysis_by_radius.csv")
-
-sNL1$period  <- "Spätneolithikum"
-fBZ1$period  <- "Frühbronzezeit"
-sBZ1$period  <-  "Spätbronzezeit"
-aeEZ1$period <- "ältere Eisenzeit"
-
-radius1 <- rbind(sNL1,sBZ1, fBZ1, aeEZ1)
-
-```
-
 As this analysis is concerned with a very fine level of detail, the starting point and the step size of the percolation algorithm was chosen to be 1m. Only in case of the Unetice Culture a larger starting radius of 4m was chosen, because the smallest distance of features to each other in this time period is 4 m. 
-The size of a prehistoric village in middle Germany can’t be assumed to be larger than a kilometer in diameter, therefore the largest radius used was 500m. 
-For the four different time periods different patterns of cluster development could be detected, which conforms to an assumption of differing settlement strategies through the times. They are visualised together in figure xyz
+The size of a prehistoric village in middle Germany can’t be assumed to be larger than a kilometer in diameter, therefore the largest radius used was 500m.
 
 ```{r mean cluster size, eval=FALSE, include=FALSE}
 library(ggplot2)
@@ -175,38 +118,21 @@ ggplot( data = radius1)+
   geom_line(aes(x = radius, y = max_normalized, col = period))+
   theme_light()+
   labs(x ="percolation radius", y = "normalized maximum cluster size",
-       title = "Comparison of different time periods")+
-  scale_color_discrete(breaks = c("Spätneolithikum", "Frühbronzezeit", "Spätbronzezeit", "ältere Eisenzeit"),
-                       labels = c("late Neolithic", "early Bronze Age", "late Bronze Age", "early Iron Age"))
+       title = "Cluster sizes in respect to percolation radius")
 
 
-ggsave("normalized_max_clusters.png", height = 10, width =  20, units = "cm", dpi = 300  )
+ggsave("normalized_max_clusters_sBZ.png", height = 10, width =  20, units = "cm", dpi = 300  )
 
 ```
 
-To the naked eye it is visible that there are different turning points at which the distribution flattens. This is a sign of different settlement strategies. Also we can find several levels of clustering. Especially features of the late Bronze Age and early Iron Age create a steep curve in the beginning, which shows a close clustering at low percolation radii. Longer stretches of flattening might be interpreted as the algorithm running out of features to add to the clusters. We thereby find the edges of settlements and can define their size. The step-wise rises at higher percolation radii needs explanation as well. To provide these, the results will be compared to large scale excavations of settlements in middle Germany. For interpretation I will now discuss the time slices seperately:
-
-#### Late Neolithic
-
-
-#### Early Bronze Age
-
-
-#### Late Bronze Age
-
-#### Early Iron Age
-
-to do: maps!!
+There are several levels of clustering. Features of the late Bronze Age create a steep curve in the beginning, which shows a close clustering at low percolation radii. Longer stretches of flattening might be interpreted as the algorithm running out of features to add to the clusters. We thereby find the edges of settlements and can define their size. The step-wise rises at higher percolation radii needs explanation as well. To provide these, the results will be compared to large scale excavations of settlements in middle Germany.
 
 
 ```{r}
 # Idee: wenn n+1 - n > 10 oder so --> großer step 
 
-trial_points_sNL <-  c(1,1+which(diff(sNL1$max_normalized) > 0.1))
-trial_points_fBZ <-  c(1,1+which(diff(fBZ1$max_normalized) > 0.1))
 trial_points_sBZ <-  c(1,1+which(diff(sBZ1$max_normalized) > 0.1))
-trial_points_aeEZ<-  c(1,1+which(diff(aeEZ1$max_normalized) > 0.1))
-  
+
 ```
 
 
@@ -224,27 +150,14 @@ points <-  c(1,1+which(diff(sNL1$max_normalized)!=0))
 ## Idee: points aufsteigend sortieren... also die Abstände zwischen zwei aufeinanderfolgenden max_normalized sotieren. die größten Abstände raussuchen, die als Knackpunkte definieren?
 points <- order(points)
 
-
-
-sNL1points<- as.data.frame(cbind(sNL1$radius[points], sNL1$max_normalized[points]))
-
-pointssBZ <-  c(1,1+which(diff(sBZ1$max_normalized)!=0))
-sBZ1points<- as.data.frame(cbind(sBZ1$radius[pointssBZ], sBZ1$max_normalized[pointssBZ]))
-
-
 pointssBZ <-  c(1,1+which(diff(sBZ1$max_normalized)!=0))
 
 sBZ1points<- as.data.frame(cbind(sBZ1$radius[pointssBZ], sBZ1$max_normalized[pointssBZ]))
 
-pointsaeEZ <-c(1,1+which(diff(aeEZ1$max_normalized)!=0))
-aeEZpoints <-as.data.frame(cbind(aeEZ1$radius[pointsaeEZ],
-aeEZ1$max_normalized[pointsaeEZ]))
 
 
 ggplot()+
   geom_line(data = radius1, aes(x = radius, y = max_normalized, col = period))+
-  geom_point(data = sNL1points, aes(x = sNL1points$V1,  y =sNL1points$V2), alpha = 0.5)+
-  geom_point(data = sBZ1points, aes(x=sBZ1points$V1, y=sBZ1points$V2), alpha = 0.5)+
   geom_point(data = aeEZpoints, aes(x=aeEZpoints$V1, y=aeEZpoints$V2))
 
 ```
@@ -260,149 +173,23 @@ Welcher Knickpunkt ist wichtig? Wendepunkte berechnen:
 #install.packages("ecp")
 library("ecp")
 
-turn_sNL <- e.divisive(as.matrix(diff(sNL1$max_normalized)), k = 1, min.size = nrow(sNL1)/10) #looks for change points, needs matrix, k number of changepoints estimated, min.size = minimum number of observations between change points -> decided to be a tenth of the number of observations so it's not every small change that's documented
-
-sNL_turn_r <-sNL1$radius[turn_sNL$estimates]
-
-
 # same late bronze age
 turn_sBZ <- e.divisive(as.matrix(diff(sBZ1$max_normalized)), k = 1, min.size = nrow(sBZ1)/10) 
 
 sBZ_turn_r <-sBZ1$radius[turn_sBZ$estimates]
 
-# same early iron age
-aeEZ_turn  <- e.divisive(as.matrix(diff(aeEZ1$max_normalized)), k = 1, min.size = nrow(aeEZ1)/10)
-
-aeEZ_turn_r <- aeEZ1$radius[aeEZ_turn$estimates]
 
 ```
 
 ##Tabelle anschauen
 
 ```{r}
-sNL_turn_r[2]
 sBZ_turn_r[2]
-aeEZ_turn_r[2]
 ```
 
 
 
-# next point: Vergleich mit meinen density daten?
 
-
-# Idee: Daten einladen, teilen, etc, run source, 
-
-copied from old:
-```{r eval=FALSE, message=FALSE, cache=FALSE, include=FALSE}
-
-#load data
-BefSchnitt <- read.csv2('../data/Schnittbefunde4.csv')
-
-# order dating
-BefSchnitt$epoche <- ordered(BefSchnitt$epoche, levels = c("Neolithikum", "Bronzezeit", "Eisenzeit", "undat."))
-BefSchnitt$abschnitt <- ordered(BefSchnitt$abschnitt, levels =c('aelter', 'frueh','mittel', 'spaet'))
-BefSchnitt$kultur <- ordered(BefSchnitt$kultur, levels=c("Baalberge", "Bernburg", "Kugelamphorenkultur", "Trichterbecher", "Salzmuende", "Schnurkeramik", "Glockenbecher", "Aunjetitz", "Saalemuendungsgruppe", "sBZ/aeEZ", "Hausurnenkultur"))
-
-library(maptools)
-library(spatstat)
-library(rgdal)
-library(ggplot2)
-library(pastecs)
-
-# subset settlement features
-
-siedlung_BefSchnitt <- subset(BefSchnitt, BefSchnitt$befundart=='Siedlung')
-
-#Subset for cultures
-siedlung_SnK_Bef <-subset(siedlung_BefSchnitt, siedlung_BefSchnitt$kultur=='Schnurkeramik')
-siedlung_fBZ_Bef <-subset(siedlung_BefSchnitt, siedlung_BefSchnitt$epoche=='Bronzezeit' & siedlung_BefSchnitt$abschnitt=='frueh')
-siedlung_sBZ_Bef <-subset(siedlung_BefSchnitt, siedlung_BefSchnitt$epoche=='Bronzezeit' & siedlung_BefSchnitt$abschnitt=='spaet')
-siedlung_aeEZ_Bef <- subset(siedlung_BefSchnitt, siedlung_BefSchnitt$epoche=='Eisenzeit' & siedlung_BefSchnitt$abschnitt=='aelter')
-siedlung_sBZaeEZ_Bef <-subset(siedlung_BefSchnitt, siedlung_BefSchnitt$kultur=='sBZ/aeEZ')
-
-siedlung_sBZ_aeEZ <- rbind(siedlung_sBZaeEZ_Bef, siedlung_aeEZ_Bef)
-
-###2. create spatstat-Objects (> ppp(x.coordinates, y.coordinates, x.range, y.range bzw window))
-
-window <- readOGR(dsn='../data', layer='win_Schnitt')
-win <- as(window, "SpatialPolygons")
-W <-as(win, "owin")
-
-siedlung_SnK_Bef_pp <- ppp(siedlung_SnK_Bef$X, 
- siedlung_SnK_Bef$Y, 
- W)
-siedlung_fBZ_Bef_pp <- ppp(siedlung_fBZ_Bef$X, 
- siedlung_fBZ_Bef$Y, 
- W)
-siedlung_sBZ_Bef_pp <- ppp(siedlung_sBZ_Bef$X, 
- siedlung_sBZ_Bef$Y, 
- W)
-siedlung_aeEZ_Bef_pp <- ppp(siedlung_aeEZ_Bef$X, 
-  siedlung_aeEZ_Bef$Y, 
-  W)
-siedlung_sBZ_aeEZ_pp <-ppp(siedlung_sBZ_aeEZ$X,
- siedlung_sBZ_aeEZ$Y,
- W)
-
-# Warnung: dublicated points in sBZ und aeEZ.
-siedlung_sBZ_Bef_pp <- unique(siedlung_sBZ_Bef_pp) # dopplungen raus
-siedlung_aeEZ_Bef_pp <- unique(siedlung_aeEZ_Bef_pp) # dopplungen raus
-siedlung_sBZ_aeEZ_pp <- unique(siedlung_sBZ_aeEZ_pp) # dopplungen raus
-
-
-# calculate distance matrix and create vector and dataframe
-siedlSnK_dist_v <- sort(as.vector(pairdist.ppp(siedlung_SnK_Bef_pp)))# Entfernung aller SnK-Punkte zueinander
-siedlSnK_dist_v <-subset(siedlSnK_dist_v, siedlSnK_dist_v > 0) # 0-Werte raus
-siedlSnK_dist_df <- as.data.frame(siedlSnK_dist_v)
-
-siedlfBZ_dist_v <- sort(as.vector(pairdist.ppp(siedlung_fBZ_Bef_pp)))# Entfernung aller fBZ-Punkte zueinander
-siedlfBZ_dist_v <-subset(siedlfBZ_dist_v, siedlfBZ_dist_v > 0) # 0-Werte raus
-siedlfBZ_dist_df <- as.data.frame(siedlfBZ_dist_v)
-
-siedlsBZ_dist_v <- sort(as.vector(pairdist.ppp(siedlung_sBZ_Bef_pp)))# Entfernung aller sBZ-Punkte zueinander
-siedlsBZ_dist_v <-subset(siedlsBZ_dist_v, siedlsBZ_dist_v > 0) # 0-Werte raus
-siedlsBZ_dist_df <- as.data.frame(siedlsBZ_dist_v)
-
-siedlaeEZ_dist_v <-sort(as.vector(pairdist.ppp(siedlung_aeEZ_Bef_pp)))# Entfernung aller aeEZ-Punkte zueinander
-siedlaeEZ_dist_v <-subset(siedlaeEZ_dist_v, siedlaeEZ_dist_v > 0) # 0-Werte raus
-siedlaeEZ_dist_df <- as.data.frame(siedlaeEZ_dist_v)
-
-siedlsBZ_aeEZ_dist_v <- sort(as.vector(pairdist.ppp(siedlung_sBZ_aeEZ_pp )))# Entfernung aller sBZ/aeEZ-Punkte zueinander
-siedlsBZ_aeEZ_dist_v <-subset(siedlsBZ_aeEZ_dist_v, siedlsBZ_aeEZ_dist_v > 0) # 0-Werte raus
-siedlsBZ_aeEZ_dist_df <- as.data.frame(siedlsBZ_aeEZ_dist_v)
-
-# subset to only 1000m
-
-siedlSnK_dist_df_1000 <-subset(siedlSnK_dist_df, siedlSnK_dist_df > 0 & siedlSnK_dist_df < 1000 )
-
-siedlfBZ_dist_df_1000 <-subset(siedlfBZ_dist_df, siedlfBZ_dist_df > 0 & siedlfBZ_dist_df < 1000 )
-
-siedlsBZ_dist_df_1000 <-subset(siedlsBZ_dist_df, siedlsBZ_dist_df > 0 & siedlsBZ_dist_df < 1000 )
-
-siedlsBZ_aeEZ_dist_df_1000 <-subset(siedlsBZ_aeEZ_dist_df, siedlsBZ_aeEZ_dist_df > 0 & siedlsBZ_aeEZ_dist_df < 1000 )
-
-
-siedlsBZ_aeEZ_dist_df_1000 <-subset(siedlsBZ_aeEZ_dist_df, siedlsBZ_aeEZ_dist_df > 0 & siedlsBZ_aeEZ_dist_df < 1000 )
-
-# create cumulative sums and percentage of those
-
-siedlSnK_dist_df_1000$n <-c(1:nrow(siedlSnK_dist_df_1000)) # sagt, wie viele so oder kleiner (weil vorher nach Größe sortiert)
-siedlSnK_dist_df_1000$prozent <-c(siedlSnK_dist_df_1000$n/nrow(siedlSnK_dist_df_1000)) # macht aus der Anzahl eine Prozentanzahl zur Vergleichbarkeit
-
-siedlfBZ_dist_df_1000$n <-c(1:nrow(siedlfBZ_dist_df_1000))
-siedlfBZ_dist_df_1000$prozent <-c(siedlfBZ_dist_df_1000$n/nrow(siedlfBZ_dist_df_1000))
-
-siedlsBZ_dist_df_1000$n <-c(1:nrow(siedlsBZ_dist_df_1000))
-siedlsBZ_dist_df_1000$prozent <-c(siedlsBZ_dist_df_1000$n/nrow(siedlsBZ_dist_df_1000))
-
-siedlsBZ_aeEZ_dist_df_1000$n <-c(1:nrow(siedlsBZ_aeEZ_dist_df_1000))
-siedlsBZ_aeEZ_dist_df_1000$prozent <-c(siedlsBZ_aeEZ_dist_df_1000$n/nrow(siedlsBZ_aeEZ_dist_df_1000))
-
-siedlsBZ_aeEZ_dist_df_1000$n <-c(1:nrow(siedlsBZ_aeEZ_dist_df_1000))
-siedlsBZ_aeEZ_dist_df_1000$prozent <-c(siedlsBZ_aeEZ_dist_df_1000$n/nrow(siedlsBZ_aeEZ_dist_df_1000))
-
-
-```
 
 
 
