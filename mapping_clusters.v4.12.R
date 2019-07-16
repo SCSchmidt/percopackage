@@ -69,7 +69,7 @@ print(map_name)
 map_outline <- readOGR(dsn=file_name,layer=layer_name)
 
 # Read in nodes and grid coordinates
-xy_data <- read.csv(source_file, as.is = FALSE, sep = "\t") #added tab-seperation
+xy_data <- read.csv(source_file, as.is = FALSE, sep = ",") #added tab-seperation
 # as.is is redundant as far as I can see as just confirms default behaviour of read.csv
 # fields of interest:
 # PlcIndex Easting Northing
@@ -140,7 +140,7 @@ points(xy_data$Easting, xy_data$Northing, col='red', pch=20, cex=point_dia)
 number_of_sites <- paste("Number of sites: ",nrow(xy_data))
 mtext(number_of_sites)
 plot_title <- str_to_title(map_name,locale="")
-title(paste("Iron Age Hillforts in ", plot_title), sub=paste("Sources: ",source_file_name,"; ",shape_file_name))
+title(paste("Clusters of ", plot_title), sub=paste("Sources: ",source_file_name,"; ",shape_file_name))
 dev.off()
 
 # Generates maps for each of percolation radii in range of radius values

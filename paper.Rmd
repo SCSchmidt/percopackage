@@ -23,6 +23,7 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
   echo = FALSE,
+  cache = TRUE,
   comment = "#>",
   fig.path = "../figures/"
 )
@@ -61,7 +62,6 @@ write.csv(siedlung_sBZ_Bef, "source_data/BefundesBZ-minimal.csv")
 
 There are 1005 settlement features cataloged as belonging to this period.
 
-
 Because of the test trenching it is assumed, that all features and sites along the transect have been found, even though there are gaps between the actual excavation areas and many features remain undated. Machine trenching has been shown to be the most effective way to find sites [@hey_2006]. Admittedly even then not all sites are discovered, especially Neolithic ones have the least probability to be found, which may be one reason for the small number of Neolithic features in the transect.
 The late Bronze age and the early iron age are not easily seperable in the settlements, because the ceramics are very similar. Researchers agree [@wagner_2004, 8 ; @heske_2005, 95] that there seems to be a settlement continuation between the two phases, while the burial practices change. Consequently many features have been dated in both periods. I deal with this by adding the uncertainly dated features to the late bronze age analysis as well.
 
@@ -82,7 +82,7 @@ Assuming a connection between underground features and surface finds enables us 
 ### input in source _file.txt
 
 source_file,map_name,shape_file_name,DTM_file_name
-BefundesBZ-minimal.csv, late bronze age features, alle_Schnitt-Fundstellen.shp,
+BefundesBZ-minimal.csv, late bronze age features,alle_Schnitt-Fundstellen.shp,
 
 
 ### input in radius_values.txt (stays)
@@ -94,48 +94,55 @@ source("create_nodes_list_d.v4.7.R")
 source("clustering_script.v3.6.R")
 source("mapping_clusters.v4.12.R")# Fehler in ogrInfo(dsn = dsn, layer = layer, encoding = encoding, use_iconv = use_iconv, : Cannot open data source... weeiiiiird... nochmal auf anderer Maschine testen.
 
-source("cluster_frequency_script.v2.16.R")
+source("cluster_frequency_script.v2.17.R")
 
 ```
 
 
 
-As this analysis is concerned with a very fine level of detail, the starting point and the step size of the percolation algorithm was chosen to be 1m. Only in case of the Unetice Culture a larger starting radius of 4m was chosen, because the smallest distance of features to each other in this time period is 4 m. 
-The size of a prehistoric village in middle Germany can’t be assumed to be larger than a kilometer in diameter, therefore the largest radius used was 500m.
+As this analysis is concerned with a very fine level of detail, the starting point and the step size of the percolation algorithm was chosen to be 1m. The size of a prehistoric village in middle Germany can’t be assumed to be larger than a kilometer in diameter, therefore the largest radius used was 500m.
 
 ```{r mean cluster size, eval=FALSE, include=FALSE}
 library(ggplot2)
+library(ggrepel)
 # not included because the mean cluster size ist too different because of hugely different sample sizes
-ggplot( data = radius1)+
-  geom_line(aes(x = radius, y = mean_clust_size, col = period))
-```
+
+mean_steps <- c(1,1+which(diff(analysis_by_radius$mean_clust_size)!=0))
+
+sBZ_meansteps <- as.data.frame(cbind(analysis_by_radius$radius[mean_steps], analysis_by_radius$mean_clust_size[mean_steps]))
+
+sBZ_meansteps <- subset(sBZ_meansteps, sBZ_meansteps$V1 == 46 | sBZ_meansteps$V1 == 68 | sBZ_meansteps$V1 == 88 |  sBZ_meansteps$V1 == 140 | sBZ_meansteps$V1 == 175 | sBZ_meansteps$V1 == 221 | sBZ_meansteps$V1 == 297 |sBZ_meansteps$V1 == 374)
+
+ggplot()+
+  geom_line(data = analysis_by_radius, aes(x = radius, y = mean_clust_size))+
+  geom_point(data = sBZ_meansteps, aes(x = sBZ_meansteps$V1, y = sBZ_meansteps$V2))+
+  geom_label_repel(aes(x = sBZ_meansteps$V1, y = sBZ_meansteps$V2, label = sBZ_meansteps$V1),
+                     box.padding   = 0.35, 
+                   point.padding = 0.5,
+                   nudge_y = 50,
+                  segment.color = "grey50",
+                  color = "grey50")+
+  labs(title = "Sizes of clusters increasing with percolation radius",
+         x = "Percolation radius",
+       y = "Mean Cluster size")
+
+ggsave("mean_clusters_sBZ.png", height = 10, width =  20, units = "cm", dpi = 300  )
+
+# calculate turning points of distance measure vectors
 
 
+#install.packages("ecp")
+library("ecp")
 
-```{r anzahl cluster}
-library(ggplot2)
-ggplot( data = radius1)+
-  geom_line(aes(x = radius, y = max_normalized, col = period))+
-  theme_light()+
-  labs(x ="percolation radius", y = "normalized maximum cluster size",
-       title = "Cluster sizes in respect to percolation radius")
+# same late bronze age
+turn_sBZ_mean <- e.divisive(as.matrix(diff(analysis_by_radius$mean_clust_size)), k = 1, min.size = nrow(analysis_by_radius)/10) 
 
+sBZ_turn_rmean <-analysis_by_radius$radius[turn_sBZ_mean$estimates]
 
-ggsave("normalized_max_clusters_sBZ.png", height = 10, width =  20, units = "cm", dpi = 300  )
-
+sBZ_turn_rmean[2]
 ```
 
 There are several levels of clustering. Features of the late Bronze Age create a steep curve in the beginning, which shows a close clustering at low percolation radii. Longer stretches of flattening might be interpreted as the algorithm running out of features to add to the clusters. We thereby find the edges of settlements and can define their size. The step-wise rises at higher percolation radii needs explanation as well. To provide these, the results will be compared to large scale excavations of settlements in middle Germany.
-
-
-```{r}
-# Idee: wenn n+1 - n > 10 oder so --> großer step 
-
-trial_points_sBZ <-  c(1,1+which(diff(sBZ1$max_normalized) > 0.1))
-
-```
-
-
 
 ```{r }
 ## not happy with results here. esp. for EZ.
@@ -145,61 +152,71 @@ trial_points_sBZ <-  c(1,1+which(diff(sBZ1$max_normalized) > 0.1))
 #https://www.rdocumentation.org/packages/SamSPECTRAL/versions/1.26.0/topics/kneepointDetection
 
 
-points <-  c(1,1+which(diff(sNL1$max_normalized)!=0))
+points <-  c(1,1+which(diff(analysis_by_radius$max_normalized)!=0))
 
 ## Idee: points aufsteigend sortieren... also die Abstände zwischen zwei aufeinanderfolgenden max_normalized sotieren. die größten Abstände raussuchen, die als Knackpunkte definieren?
 points <- order(points)
 
-pointssBZ <-  c(1,1+which(diff(sBZ1$max_normalized)!=0))
+sBZ1points<- as.data.frame(cbind(analysis_by_radius$radius[points], analysis_by_radius$max_normalized[points]))
 
-sBZ1points<- as.data.frame(cbind(sBZ1$radius[pointssBZ], sBZ1$max_normalized[pointssBZ]))
-
-
+sBZ_labels <- subset(sBZ1points, sBZ1points$V1 == 16 | sBZ1points$V1 == 65 | sBZ1points$V1 == 88 | sBZ1points$V1 == 144 | sBZ1points$V1 == 374) 
 
 ggplot()+
-  geom_line(data = radius1, aes(x = radius, y = max_normalized, col = period))+
-  geom_point(data = aeEZpoints, aes(x=aeEZpoints$V1, y=aeEZpoints$V2))
+  geom_line(data = analysis_by_radius, aes(x = radius, y = max_normalized))+
+  geom_point(data = sBZ1points, aes(x=sBZ1points$V1, y=sBZ1points$V2))+
+   geom_label_repel(aes(x=sBZ_labels$V1, y=sBZ_labels$V2, label = sBZ_labels$V1),
+                  box.padding   = 0.35, 
+                  point.padding = 0.5,
+                  segment.color = "grey50",
+                  color = "grey50")+
+    theme_light()+
+  labs(x ="percolation radius", y = "normalized maximum cluster size",
+       title = "Cluster sizes in respect to percolation radius")
+  
+ggsave("normalized_max_clusters_sBZ.png", height = 10, width =  20, units = "cm", dpi = 300  )
+
 
 ```
-Die Points sind bereits wichtige Radii-Angaben, weil der URsprungsdatensatz ja auch einfach bei 1 = 1m anfängt.
-
-Welcher Knickpunkt ist wichtig? Wendepunkte berechnen:
+I highlighted those points that mark the most distinctive steps in the distribution. We can see the radii after which the algorithm doesn't change the cluster size for some time, showing that here stretches of space between features exist.
+If the dataset is forced to split into two groups the step at 88m radius turns out to be the turning point if the maximum normalized cluster size is used, and 86m if the mean cluster size is calculated.
 
 ```{r}
 
 # calculate turning points of distance measure vectors
 
-
-#install.packages("ecp")
-library("ecp")
-
 # same late bronze age
-turn_sBZ <- e.divisive(as.matrix(diff(sBZ1$max_normalized)), k = 1, min.size = nrow(sBZ1)/10) 
+turn_sBZ <- e.divisive(as.matrix(diff(analysis_by_radius$max_normalized)), k = 1, min.size = nrow(analysis_by_radius)/10) 
 
-sBZ_turn_r <-sBZ1$radius[turn_sBZ$estimates]
+sBZ_turn_r <-analysis_by_radius$radius[turn_sBZ$estimates]
 
-
-```
-
-##Tabelle anschauen
-
-```{r}
 sBZ_turn_r[2]
 ```
 
+## interpretation
+
+The late bronze age features are mostly concentrated in the western half and on the eastern-most part of the transsect. As can be seen by the rapidly rising graphs describing the maximum cluster size as well as the mean cluster size in relation to the percolation radius, the features cluster closely by each other. First steps in the distribution can be seen at 
 
 
+The largest excavation site of the late bronze age in middle Germany is to be found in Zwenkau(-Eythra), which was excavated in advance of coal extraction proceses. The excavation area in Zwenkau is at the largest dimensions 1100 x 825 m [@huth_1998, 194].
 
 
+Da die Saalemündungsgruppe größtenteils im Flachland vertreten ist, ist bisher nur eine Höhensiedlung bekannt^[Die Hünenburg (@heske_2010).] Nach K. Wagner unterscheidet sich die Saalemündungsgruppe von den südlicher gelegenen Gruppen unter anderem durch die Anlage von Siedlungen in Auen und an Hängen.  Die zehn untersuchten Siedlungen ihrer Arbeit lagen zwischen 55 und 130 m üNN und die Höhe über den Auen bei 1 bis 25 m^[@wagner_1983, 38.]. Berthold Schmidt geht von landwirtschaftlich günstigen Lagen der Siedlungen neben Gewässern und in offenem Gelände aus^[@schmidt_1978, 127.]. Rosemarie Müller spricht davon, dass sich die Siedlungen an den ackerbaulich besseren Böden in der Kontaktzone zwischen Schwarzerde und Kiesuntergrund orientieren^[@muller_1992, 259.].
 
+Die Werte der spätbronze-/ältereisenzeitlich datierten Befunde unterscheiden sich merklich: Sie zeigen in der Dichteverteilung ein Maximum bei 92 m. Das Minimum befindet sich bei 346 m und ist damit der kleinste Wert im Vergleich aller Perioden. Die Kurve ist teilweise recht unruhig, was für ein lokal differenziertes Bild spricht^[Ein Grund hierfür könnte sein, dass sich unter den spätbronzezeitlich bestimmten Funden noch einige ältereisenzeitliche befinden.]. Der Anstieg der kumulativen Werte verändert sich bei 285 m.
 
-new:
+Als großflächig ergrabenen Vergleich kann die Siedlung der jüngeren Bronzezeit und älteren Eisenzeit in Zwenkau^[Bei Döhlert-Albani Zwenkau-Eythra genannt (@dohlert-albani_2016).] in Sachsen herangezogen werden, wo mehrere Einzelhöfe über ein Areal 1100 x 825 m verstreut liegen. Diese Einzelhöfe haben unterschiedliche Ausmaße, die etwa 50 bis 85 m an der längsten Seite betragen (2000 - 2500 m²^[@huth_1998, 213.]). Sie überlagern sich nicht^[@huth_1998, 214.]. Die Abstände zwischen den Höfen sind auch sehr unterschiedlich und können nur grob abgeschätzt werden. Jedoch scheint ein Abstand von ca. 65 - 75 m recht häufig^[Vgl. @huth_1998, 211, Abb. 6.]. Damit liegen sie recht nahe beieinander, was, würde hier eine ähnliche Untersuchung durchgeführt werden wie in der vorliegenden Arbeit, zu schlechten Abgrenzungsmöglichkeiten von Siedlungsstätten führen könnte. Auf dem zitierten Plan sind jedoch nur Hausgrundrisse und Zaungräbchen eingezeichnet, was eine Vergleichbarkeit erschwert. Zudem gehen die Bearbeiter davon aus, dass die einzelnen Gehöfte nicht zeitgleich waren, sondern eine Wechselsiedlung bestand, in der stets mehrere Gehöfte in Streulage zueinander standen^[@huth_1998, 214.].
 
-```{r anzahl cluster2, eval=FALSE, include=FALSE}
-ggplot( data = radius1)+
-  geom_line(aes(x = radius, y = max_normalized, col = period))+
-  geom_density()
-```
+Im Arbeitsgebiet entlang der B6n ist innerhalb der Spätbronzezeit ebenfalls mit einer zeitlichen Tiefe der Befunde zu rechnen^[Belegt durch Befundüberschneidungen z. B. zwischen einem Pfostenbau (Befundnummer 11333) und einer Grube (Befundnummer 11028)]. Im Westen der Trasse (zw. Fpl. 4 und 11) sind zudem vier Gräben aufgedeckt worden. Gräben werden häufig als Siedlungsgrenzen interpretiert. Die Abstände zueinander (720 m, 370 m, 440 m) sowie die Ausrichtungen des westlichsten und östlichsten der Gräben, die beide gegen Osten abzugrenzen scheinen, lassen jedoch vermuten, dass sie nicht gleichzeitig bestanden, sondern ein Zeichen kleinräumiger Verlagerungen darstellen. Die hohe Dichte der Befunde der Spätbronzezeit ist damit sicherlich zum Teil Ergebnis einer ortskonstanten Siedlungsweise^[Wie z.B. der Wechselsiedlung, wie sie für Zwenkau vorgeschlagen wurde (@huth_1998, 208).]. Nichtsdestotrotz zeichnen sich Befundcluster mit einem Radius von 33 m ab, deren Dopplung, 66 m, innerhalb des Bereichs der Größe der Einzelhöfe in Zwenkau liegt. Zwischen Fpl. 4 und 11 liegen neben sehr dichten Clustern sowohl fundleere Bereiche als auch Stellen mit geringerer Befundkonzentration. 
+
+Das Maximum der spätbronze-/ältereisenzeitlichen Befunde von 92 m scheint zu groß zu sein, um den Zwenkauer Hofplätzen zu entsprechen. Der Dichtewerte am Minimum von 346 m ist wie bei der Spätbronzezeit ein relativ hoher Wert, was wiederum für eine nicht so klare Trennung unterschiedlicher Siedlungsstellen spricht. Dass das Minimum über einhundert Meter "eher" auftritt als bei der Spätbronzezeit ist ein Hinweis auf enger zusammenliegende Cluster von Befunden, was dem Zwenkauer Beispiel etwas näher kommt. Der "Wendepunkt" der kumulativen Kurve bei 285 m macht dabei ebenfalls größere Räume für zusammengehörige Befunde auf als bei den spätbronzezeitlich datierten.
+
+Nach diesen Ergebnissen liegen spätbronzezeitliche Befunde in kleineren Radien (in Analogie zu Zwenkau in Einzelhöfen) eng beieinander, während in der älteren Eisenzeit in größeren Abständen und größeren Zusammenhängen gebaut wurde. In beiden Fällen ist jedoch mit zeitlicher Tiefe zu rechnen und einer schlechten Abgrenzbarkeit von Siedlungsstätten zueinander.  
+
+Es ist jedoch auch vorher schon festgestellt worden „Man hat es [..] in der Jungbronze- und Früheisenzeit mit vielfältigen Besiedlungsformen
+zu tun“^[@huth_1998, 216.]. Erschwerend kommt hinzu, dass durch die ungenauen Datierungsmöglichkeiten hier eine sehr tiefe Zeitspanne vorliegt, bei der in jeder Analyse eventuelle chronologische Unterschiede verwischt werden. 
+
+Interessant bleibt es festzuhalten, dass sich durchaus Unterschiede zwischen der Spätbronzezeit und den auch ältereisenzeitlich datierten Befunden fassen lassen. Ob dies ein zufälliger Effekt oder ein Hinweis für Veränderungen im Siedlungsverhalten ist, können nur weitere Untersuchungen klären.
+
 
 
 # Conclusion

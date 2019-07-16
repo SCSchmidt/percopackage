@@ -1,2 +1,2 @@
 source_file,map_name,shape_file_name,DTM_file_name
-BefundefBZ-minimal.csv, early bronze age features, alle_Schnitt-Fundstellen.shp,
+BefundesBZ-minimal.csv,late bronze age features,alle_Schnitt-Fundstellen.shp,
