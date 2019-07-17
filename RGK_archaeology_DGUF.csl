@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<style xmlns="http://purl.org/net/xbiblio/csl" xml:lang="en" class="in-text" default-locale="de-DE">
+
+<!-- info section -->
+<!-- 	The style is called imperfect because the option "et-al-min" in the bibliography section affects both, the author-short list resembling the citation and the author list, that should show up all participating authors. Until this can't be solved by a diffenciated style, the user has to refine the bibliography manualy.
+	 -->
+<!-- 	 Please take care to check the following option: "Preferences" - "styles" - "citationoption: URLs ..." to include URLs for all articles, regardless pages are indicated.  -->
+<!-- This style has been created for the Deutsche Gesellschaft fuer Ur- und Fruehgeschichte/German Association for Pre- and Protohistory. For more information, please visit the website http://www.dguf.de -->
+<info>
+	<title>RGK archaeology DGUF</title>
+	<id>http://www.zotero.org/styles/RGK_archaeology_DGUF</id>
+	<link href="http://www.zotero.org/styles/RGK_archaeology_DGUF"/>
+	<author>
+		<name>Christoph Rinne</name>
+		<email>crinne@ufg.uni-kiel.de</email>
+	</author>
+	<category term="author-date"/>
+	<category term="history"/>
+	<category term="humanities"/>
+	<updated>2012-07-04T10:06:30+00:00</updated>
+	<summary>Richtlinien der Redaktion fuer die Autoren der Berichte RGK</summary>
+	<link href="http://www.dainst.org"/>
+	<rights>This work is licensed under a Creative Commons Attribution-Share Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0</rights>
+</info>
+
+<!-- terms section -->
+<terms>
+  <locale xml:lang="de">
+	<term name="in">In</term>
+  </locale>
+</terms>
+
+<!-- macro section -->
+<macro name="editor">
+	<names variable="editor" >
+		<name initialize-with="." delimiter-precedes-last="always" delimiter="/"/>
+		<label form="short" prefix=" (" suffix=".)"/>
+	</names>
+</macro>
+
+<macro name="author">
+	<names variable="author" >
+		<name initialize-with="." delimiter-precedes-last="always" delimiter="/"/>
+		<label form="short" prefix=" (" suffix=".)"/>
+		<substitute>
+			<names variable="editor"/>
+			<text variable="title" />
+		</substitute>
+	</names>
+</macro>
+
+<macro name="author-sort">
+	<names variable="author" >
+		<name name-as-sort-order="all" sort-separator=", " initialize-with="." delimiter-precedes-last="always" delimiter="/"/>
+		<substitute>
+			<names variable="editor"/>
+			<text variable="title" />
+		</substitute>
+	</names>
+</macro>
+
+<macro name="author-short">
+	<names variable="author">
+		<name form="short" delimiter="/" delimiter-precedes-last="always" />
+		<substitute>
+			<names variable="editor"/>
+		 </substitute>
+	</names>
+</macro>
+
+<macro name="access">
+	<text variable="URL" prefix="&lt;" suffix="&gt;"/>
+	<group prefix="(" delimiter=" " suffix=")">
+		<date variable="accessed">
+			<date-part name="day" form="numeric-leading-zeros" suffix="."/>
+			<date-part name="month" form="numeric-leading-zeros" suffix="."/>
+			<date-part name="year" form="long"/>
+		</date>
+	</group>
+</macro>
+
+<macro name="year-date">
+	<choose>
+		<if variable="issued">
+			<date variable="issued">
+				<date-part name="year"/>
+			</date>
+		</if>
+		<else>
+			<text term="no date"/>
+		</else>
+	</choose>
+</macro>
+
+<macro name="collection">
+	<text variable="collection-title"/>
+	<text variable="collection-number" prefix=" (" suffix= ") "/>
+	<text variable="volume" prefix=" "/>
+</macro>
+
+<macro name="published">
+	<text variable="edition" vertical-align="sup"/>
+	<group prefix="(" suffix=")" delimiter=" ">
+		<text variable="publisher-place"/>
+		<text macro="year-date"/>
+	</group>
+</macro>
+
+<macro name="pages">
+	<group>
+		<text variable="page"/>
+	</group>
+</macro>
+
+<!-- citation section -->
+<citation>
+	<option name="et-al-min" value="3"/>
+	<option name="et-al-use-first" value="1"/>
+	<option name="et-al-subsequent-min" value="3"/>
+	<option name="et-al-subsequent-use-first" value="1"/>
+	<option name="disambiguate-add-year-suffix" value="true"/>
+	<option name="disambiguate-add-names" value="true"/>
+	<option name="disambiguate-add-givenname" value="true"/>
+	<layout prefix="(" suffix=")" delimiter="; ">
+		<group delimiter=", ">
+			<group delimiter=" ">
+				<text macro="author-short"/>
+				<text macro="year-date"/>
+			</group>
+			<group>
+				<text variable="locator"/>
+			</group>
+		</group>
+	</layout>
+</citation>
+
+<!-- bibliography section -->
+<bibliography>
+	<option name="hanging-indent" value="true"/>
+	<option name="entry-spacing" value="0"/>
+	<option name="et-al-min" value="99"/>
+	<option name="et-al-use-first" value="1"/>
+	<!--<option name="second-field-align" value="true"/> -->
+	<sort>
+			<key macro="author-sort"/>
+			<key variable="issued"/>
+			<key variable="title"/>
+	</sort>
+	<layout suffix=".">
+		<group suffix=": "> <!--Hier muesste noch ein Zeilenumbruch rein-->
+			<text macro="author-short" suffix=" "/>
+			<date variable="issued">
+				<date-part name="year"/>
+			</date>
+		</group>
+		<text macro="author" suffix=","/>
+		<choose>
+			<if type="book">
+				<group prefix=" " delimiter=" " suffix="">
+					<group prefix="" delimiter=". " suffix="">
+						<text variable="title" />
+						<text macro="collection" />
+					</group>
+					<text macro="published" prefix=" "/>
+		 		</group>			
+			</if>
+			<else-if type="chapter">
+				<group prefix=" " delimiter=" " suffix="">
+					<text variable="title" suffix=". "/>
+					<group class="container" prefix="" delimiter=" ">
+						<text term="in" suffix=":"/>
+						<text macro="editor"/> 
+						<group suffix="" delimiter=". ">
+							<text variable="container-title"/>
+							<text macro="collection"/>
+						</group>
+						<text macro="published"/>
+						<text macro="pages"/>
+					</group>
+				</group>
+			</else-if>
+			<else-if type="article">
+				<group prefix=" " delimiter=" " suffix="">
+					<text variable="title" suffix="."/>
+					<group class="container" prefix=" " delimiter=", " suffix ="">
+						<group prefix="" delimiter=" " suffix ="">
+							<text variable="container-title" form="short"/>
+							<group prefix="" delimiter="/" suffix =""><!--oder Heft mit ", " trennen-->
+								<text variable="volume"/>
+								<text variable="issue"/>
+							</group>
+						</group>
+						<date variable="issued">
+							<date-part name="year"/>
+						</date>
+						<text macro="pages"/>
+					</group>
+				</group>
+			</else-if>
+			<else>
+				<group delimiter=" " suffix="">
+					<text variable="title" suffix=","/>
+					<text macro="editor" prefix="in: "/>
+					<group suffix="" delimiter=", ">
+						<text variable="container-title"/>
+						<text macro="collection"/>
+						<text macro="published"/>
+					</group>
+					<group prefix=" ">
+						<text variable="container-title" />
+						<text variable="volume" />
+						<text variable="issue" prefix="(" suffix=")"/>
+					</group>
+					<text macro="pages"/>
+				</group>
+			</else>
+		</choose>
+		<text macro="access" prefix=" " suffix=""/>
+	</layout>
+</bibliography>
+</style>

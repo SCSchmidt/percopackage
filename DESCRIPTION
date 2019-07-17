@@ -1,11 +1,11 @@
-Package: percolatransect
+Package: percolation
 Title: Percolation Analysis with transect data
 Version: 0.0.0.9000
-Authors@R: person("Sophie C.", "Schmidt", email = "s.c.schmidt@uni-koeln.de", role = c("aut", "cre")),
-person("Simon", "Maddison", email ="smaddison@iee.org",  role = "aut")
+Authors@R: c(person("Sophie C.", "Schmidt", email = "s.c.schmidt@uni-koeln.de", role = c("aut", "cre")), person("Simon", "Maddison", email ="smaddison@iee.org",  role = "aut"))
 Description: What the package does (one paragraph).
 Depends: R (>= 3.4.3)
 License: Code belongs to Simon Maddison
 Encoding: UTF-8
 LazyData: true
-Imports: bookdown
+Imports: bookdown, igraph, maptools, rgdal, stringr, calibrate, Hmisc, ggplot2, knitr, roxygen2
+RoxygenNote: 6.1.1
