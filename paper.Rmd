@@ -1,5 +1,5 @@
 ---
-title: "Percolation analysis"
+title: "Percolation Analysis – Archaeological applications at widely different spatial scales"
 author:
   -Maddison, Simon
   
@@ -12,9 +12,9 @@ output:
 csl: RGK_archaeology_DGUF.csl
 bibliography: sitedefinition.bib
 abstract: |
-  Percolation Analysis has been recently applied in Archaeology for identifying clusters and groupings at a national scale, for example investigating the distribution of Hillforts in Britain and Ireland, and Domesday sites in England. The technique, originally developed in physics and more recently adopted in Geography, is a way of identifying groupings or clusters, purely based on spatial separation using Euclidian distance. The investigations for British Hillforts and Domesday sites have shown this to be a fruitful starting point for investigating possible socio-political entities, and patterns of deep history. The technique has now also been applied to features at a sub-regional level, in Saxony-Anhalt, middle Germany, with the different objective of identifying settlement sites along a 13km strip excavation. Aim here was to arrive at estimates of settlement sizes, which in turn can inform landscape archaeological surveys on the decision on attributing single finds to an already known site or registering a new site. This paper provides a summary of the Percolation Analysis method, and then provides two detailed case studies where the technique is applied at significantly different geographical scales. This will demonstrate not only the potential for the technique within archaeology, but also how it can be applied at different spatial scales with different objectives appropriate to the specific problem in question.
+  This paper provides a summary of the Percolation Analysis method, and then provides two detailed case studies where the technique is applied at significantly different geographical scales. This will demonstrate not only the potential for the technique within archaeology, but also how it can be applied at different spatial scales with different objectives appropriate to the specific problem in question. The technique, originally developed in physics and more recently adopted in Geography, is a way of identifying groupings or clusters, purely based on spatial separation using Euclidian distance. In this paper, percolation Analysis is being applied for investigating the distribution of Hillforts in Britain and Ireland, and Domesday sites in England, identifying clusters and groupings at a national scale. The investigations for British Hillforts and Domesday sites have shown this to be a fruitful starting point for investigating possible socio-political entities, and patterns of deep history. The technique has now also been applied to features at a sub-regional level, in Saxony-Anhalt, middle Germany, with the different objective of identifying settlement sites along a 13km strip excavation. Aim here was to arrive at estimates of settlement sizes, which in turn can inform landscape archaeological surveys on the decision on attributing single finds to an already known site or registering a new site.
 keywords: |
-  spatial analysis; percolation; settlement archaeology
+  spatial analysis; percolation; settlement archaeology; clustering algorithm
 ---
 
 ```{r, setup, echo = FALSE}
@@ -34,8 +34,6 @@ library(percolation) # Or use devtools::load_all('.', quiet = T) if your code is
 
 ### Background
 This proposal outline covers a paper for submission to the Journal of the CAA, and a presentation at the German Chapter of the CAA to be held in Wilhelmshaven in September 2019.
-
-#Percolation Analysis – Archaeological applications at widely different spatial scales
 
 ##Introduction
 Percolation Analysis has been recently applied in Archaeology for identifying clusters and groupings at a national scale, for example investigating the distribution of Hillforts in Britain and Ireland, and Domesday sites in England (references to papers at CAA 2018/2019, book chapter, paper in Atlas Conference etc.). The technique, originally developed in physics and more recently adopted in Geography (references), is a way of identifying groupings or clusters, purely based on spatial separation using Euclidian distance. The above investigations for British Hillforts and Domesday sites have shown this to be a fruitful starting point for investigating possible socio-political entities, and patterns of deep history. 
@@ -78,9 +76,7 @@ At 34km (Figure xxx) the predominantly Scottish cluster includes sites in Englan
 An important point is that there is nothing necessarily special about particular values of the percolation radius, so that transitions will not necessarily occur for the same values in different regions or countries. There are various possible explanations for this, such as the variability in regional and local topography. In areas of high density such as south-west Wales and south-east Scotland, then a finer grained analysis with radius increments of 0.1km reveals more localised cluster patterns in the range 3-7km radius values. Further study is required to establish what significance these might have. (add figure??)
 
 ### Strip excavation in Germany
-The second case study is located in Saxony-Anhalt, middle Germany. During the early 2000s the street “Bundesstraße 6” was built near the town of Köthen. The area of the street, approach roads, exits and retention reservoirs were machine test trenched by the Heritage Management to find archaeological sites. Along the ca. 13 km long and mostly 40 m broad part of the street over 6000 features were uncovered (Fahr in prep.), but I will focus on features from the later Bronze Age (group “Saalemündungsgruppe”). For this periods the aim is to find the clusters which delineate a site with the help of percolation analysis. The radius will estimate the distance between features that belong together into one site.
-
-#### Data set 
+The second case study is located in Saxony-Anhalt, middle Germany. During the early 2000s the street “Bundesstraße 6” was built near the town of Köthen. The area of the street, approach roads, exits and retention reservoirs were machine test trenched by the Heritage Management to find archaeological sites. Along the ca. 13 km long and mostly 40 m broad part of the street over 6000 features were uncovered (Fahr in prep.), but this paper will focus on features from the later Bronze Age (group “Saalemündungsgruppe”). For this periods the aim is to find the clusters which delineate a site with the help of percolation analysis. The radius will estimate the distance between features that belong together into one site.
 
 ```{r}
 #Data cleaning and prep for Sophie
@@ -106,14 +102,14 @@ write.csv(siedlung_sBZ_Bef, "source_data/BefundesBZ-minimal.csv")
 
 There are 1006 settlement features cataloged as belonging to this period.
 
-Because of the test trenching it is assumed, that all features and sites along the transect have been found, even though there are gaps between the actual excavation areas and many features remain undated. Machine trenching has been shown to be the most effective way to find sites [@hey_2006]. The late Bronze age and the early iron age are not easily seperable in the settlements, because the ceramics are very similar. Researchers agree [@wagner_2004, 8 ; @heske_2005, 95] that there seems to be a settlement continuation between the two phases, while the burial practices change. Consequently many features have been dated in both periods. I deal with this by adding the uncertainly dated features to the late bronze age analysis as well.
+Because of the test trenching it is assumed, that all features and sites along the transect have been found, even though there are gaps between the actual excavation areas and many features remain undated. Machine trenching has been shown to be the most effective way to find sites [@hey_2006]. 
 
-#### Theoretical Issues
-The term “site” has been at the center of a lively debate in survey archaeology over the last 40 years. Until the 70’s it has mostly been defined as a place [@dunnell_1992, 23-24] - a find spot, which is similar to German archaeology, where the term used, “Fundplatz”, means exactly that. In the German archaeological inventories, though, a site may contain several culturally distinct loci “Fundstellen” [@dauber_1950, 96], which are usually cataloged as a settlement, a burial ground, a hoard or as a single find spot of a period [@eggert_2005, 56]. 
-Two questions arise, when deciding how to classify a site as a settlement: Qualitatively, what kind of finds or features define a settlement [@linke_1976, 8], and quantitatively, of how far apart two “find spots” are supposed to be. If two sherds of the same time period are found 50 m apart - are these two sites or belong they to one site? In every larger settlement or landscape archaeological study this topic is being discussed and in the end a decision felled, which the authors agree, is kind of arbitrary and should actually rely on empiric studies [@malmer_1962; @mischka_2007]. 
+The term “site” has been at the center of a lively debate in survey archaeology over the last 40 years. Until the 70’s it has mostly been defined as a place [@dunnell_1992, 23-24] - a find spot, which is similar to German archaeology, where the term used, “Fundplatz”, means exactly that. In the German archaeological inventories, though, a site may contain several culturally distinct loci, “Fundstellen” [@dauber_1950, 96], which are usually cataloged as a settlement, a burial ground, a hoard or as a single find spot of a period [@eggert_2005, 56]. 
+Two questions arise, when deciding how to classify a site as a settlement: Qualitatively, what kind of finds or features define a settlement [@linke_1976, 8], and quantitatively, of how far apart two “find spots” are supposed to be. If two sherds of the same time period are found 50 m apart - are these two sites or belong they to one site? In every larger settlement or landscape archaeological study this topic is being discussed and in the end a decision felled, which the authors agree, is kind of arbitrary and should actually rely on empiric studies [@malmer_1962, 258; @mischka_2007, 49-50]. 
 Since the middle of the 1970s there has been the discussion of a non- or off-site approach to anglophone archaeology. The terms were introduced by Thomas [-@thomas_1975] and Foley [-@foley_1981] and describe the analysis of finds "between sites". This approach understands the archaeological record  as a continual distribution in space, with spots of higher densities, the so-called “sites”, and areas of lower density [@wobst_1983, 39].
 
-At this point the continuously excavated data set of the street and the clustering analysis percolation can be fruitfully connected: As percolation works with radii around points it may assist in quantitatively assessing which distances between features are common. 
+At this point the continuously excavated data set of the street and the clustering analysis percolation can be fruitfully connected: As percolation works with radii around points it may assist in quantitatively assessing which distances between features are common and what distance features don't seem to belong to each other anymore. This question needs to be answered for each archaeological culture seperately as we cannot assume similar settlement distributions through time[@schirren_1997, 30].
+
 Assuming a connection between underground features and surface finds enables us to transfer the distances of the features to those of finds and may inform landscape archaeological surveys on the decision on attributing single finds to an already known site or registering a new site. Of course, settlement features only comprise the “build space” of a settlement. Though features in-between sites may exist, like traps or temporary storage facilities, places like working areas or fields which may be detected by off-site surface find distributions, won’t be included.
 
 ### Percolation
@@ -217,19 +213,31 @@ The turning point of the mean cluster sizes is at the radius of `r sBZ_turn_rmea
 
 ### Interpretation
 
-The late bronze age features are mostly concentrated in the western half and on the eastern-most part of the transsect. As can be seen by the rapidly rising graph describing the mean cluster size in relation to the percolation radius, the features cluster closely to each other. First steps in the distribution can be seen at 46 m, 68 m and 88 m. These are the distances, at which the clusters "stabilise" and don't grow with growing percolation radii. 
+The late bronze age features are mostly concentrated in the western half and on the eastern-most part of the transsect. As can be seen by the rapidly rising graph describing the mean cluster size in relation to the percolation radius, the features cluster closely to each other. First steps in the distribution can be seen at 46 m, 68 m and 88 m. These are the distances, at which the clusters "stabilise" and don't grow with growing percolation radii. As mentioned above, the mean width of the excavated strip was 40m. Therefore it is assumed, that the first "stabilisation" is due to the lack of features beyond the edges of the excavation area. 
 
+The largest excavation site of the late bronze age in middle Germany is to be found in Zwenkau(-Eythra) in Saxony, which was excavated in advance of coal mining. At Zwenkau several single farmsteads delimited by houses and fences spread over the whole excavation area, which measures at its greatest dimensions 1100 x 825 m [@huth_1998, 194.213]. The farmsteads in Zwenkau don't overlap [@huth_1998, 214] and the distances to each other are quite diverse. Nonetheless a number of them seem to scatter at at intervalls of ca. 65-75 m. [cf.  @huth_1998, 211, fig. 6]. The farmsteads themselves are not all the same size, but the longest sides show to be about 50 - 85m long (cumulating to sizes of 2000 - 2500 m²) [@huth_1998, 213.]. It is assumed not all of them existed at the same time, but that there were always several isolated farmsteads in a scattered distribution to each other [@huth_1998, 214]. 
 
-The largest excavation site of the late bronze age in middle Germany is to be found in Zwenkau(-Eythra) in Saxony, which was excavated in advance of coal mining. At Zwenkau several single farmsteads delimited by houses and fences spread over the whole excavation area, which measures at its greatest dimensions 1100 x 825 m [@huth_1998, 194.213]. The farmsteads in Zwenkau don't overlap [@huth_1998, 214] and the distances to each other are quite diverse. Nonetheless a number of them seem to scatter at at an intervall of ca. 65-75 m. [cf.  @huth_1998, 211, fig. 6]. The farmsteads themselves are not all the same size, but the longest sides show to be about 50 - 85m long (cumulating to sizes of 2000 - 2500 m²) [@huth_1998, 213.]. It is assumed not all of them existed at the same time, but that there were always several isolated farmsteads in a scattered distribution to each other [@huth_1998, 214]. 
+At the analysed transect excavation we also deal with a depth in time, as there are overlapping features and several ditches, which most probably did not exist at the same time, but can be interpreted as evidence of small-scale settlement shifts. We can therefore assume that at least partly the high density of settlement features belonging to the late bronze age might be interpreted as evidence of several phases or local re-settlement. Nonetheless we can notice that the turning points of the radius vector by `r sBZ_turn_rmean[2]`m falls well into the range of the farmstead sizes of Zwenkau-Eythra and might be a possible farmstead site delimiter by the percolation algorithm.
 
-At the analysed transect excavation we also deal with a depth in time, as there are overlapping features and several ditches, which most probably did not exist at the same time, but can be interpreted as evidence of small-scale settlement shifts. We can therefore assume that at least partly the high density of settlement features belonging to the late bronze age might be interpreted as evidence of several phases or local re-settlement. Nonetheless we can notice that the two smaller radii detected as possible site delimiter by the percolation algorithm fall well into the range of the farmstead sizes of Zwenkau-Eythra.
+We note: As long as the next feature is `r sBZ_turn_rmean[2]`m away, features seem to belong to the same cluster. We can therefore assume, late bronze age finds at a distance of `r sBZ_turn_rmean[2]`m to each other to belong to the same site. 
 
-Mapping the clusters, though, reveals a different picture. As the percolation algorithm moves from node to node, the cluster groups are much larger than the radii. Here now it seems sensible to determine at what point the clusters detected by percolation show the best overlap to the site definitions by the Heritage Management.
+Mapping the clusters reveals a more complete picture: As the percolation algorithm moves from node to node, the cluster groups are much larger than the radii.
+Should "in-between" finds be missing, still two findspots belonging to the same site might not identified as to belong to the same site.
 
-IDee:
-Abgleich mit den vom LDA abgegrenzten sites bei welchem cluster-radius??
+Nonetheless the question posed by Malmer and Mischka [@malmer_1962; @mischka_2007] on how to define the distance between to findspots before delimiting a new site has been answered in an empirical fashion as demanded. 
 
 # Conclusion
+
+Percolation analysis offers...
+
+- great at different scales
+
+- different research questions might be answered:
+
+- cluster sizes, density of points inside a cluster 
+
+- ...
+
 
 # Acknowledgements
 
