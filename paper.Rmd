@@ -1,5 +1,5 @@
 ---
-title: "Percolation Analysis – Archaeological applications at widely different spatial scales"
+title: "Percolation Analysis – Building a Package"
 author:
   -Maddison, Simon
   
@@ -12,9 +12,9 @@ output:
 csl: RGK_archaeology_DGUF.csl
 bibliography: sitedefinition.bib
 abstract: |
-  This paper provides a summary of the Percolation Analysis method, and then provides two detailed case studies where the technique is applied at significantly different geographical scales. This will demonstrate not only the potential for the technique within archaeology, but also how it can be applied at different spatial scales with different objectives appropriate to the specific problem in question. The technique, originally developed in physics and more recently adopted in Geography, is a way of identifying groupings or clusters, purely based on spatial separation using Euclidian distance. In this paper, percolation Analysis is being applied for investigating the distribution of Hillforts in Britain and Ireland, and Domesday sites in England, identifying clusters and groupings at a national scale. The investigations for British Hillforts and Domesday sites have shown this to be a fruitful starting point for investigating possible socio-political entities, and patterns of deep history. The technique has now also been applied to features at a sub-regional level, in Saxony-Anhalt, middle Germany, with the different objective of identifying settlement sites along a 13km strip excavation. Aim here was to arrive at estimates of settlement sizes, which in turn can inform landscape archaeological surveys on the decision on attributing single finds to an already known site or registering a new site.
+  The aim here is to create functions for percolation in R.
 keywords: |
-  spatial analysis; percolation; settlement archaeology; clustering algorithm
+  spatial analysis; percolation; clustering algorithm
 ---
 
 ```{r, setup, echo = FALSE}
@@ -29,91 +29,12 @@ knitr::opts_chunk$set(
 )
 
 
-library(percolation) # Or use devtools::load_all('.', quiet = T) if your code is in script files, rather than as functions in the `/R` diretory
+library(percopackage) # Or use devtools::load_all('.', quiet = T) if your code is in script files, rather than as functions in the `/R` diretory
 ```
 
-### Background
-This proposal outline covers a paper for submission to the Journal of the CAA, and a presentation at the German Chapter of the CAA to be held in Wilhelmshaven in September 2019.
+# Data is in source_data
 
-##Introduction
-Percolation Analysis has been recently applied in Archaeology for identifying clusters and groupings at a national scale, for example investigating the distribution of Hillforts in Britain and Ireland, and Domesday sites in England (references to papers at CAA 2018/2019, book chapter, paper in Atlas Conference etc.). The technique, originally developed in physics and more recently adopted in Geography (references), is a way of identifying groupings or clusters, purely based on spatial separation using Euclidian distance. The above investigations for British Hillforts and Domesday sites have shown this to be a fruitful starting point for investigating possible socio-political entities, and patterns of deep history. 
-The technique has now also been applied to features at a sub-regional level, in Saxony-Anhalt, middle Germany, with the different objective of identifying settlement sites along a 13km strip excavation. Aim here was to arrive at estimates of settlement sizes, which in turn can inform landscape archaeological surveys on the decision on attributing single finds to an already known site or registering a new site.
-This paper provides a summary of the Percolation Analysis method, and then provides two detailed case studies where the technique is applied at significantly different geographical scales. This will demonstrate not only the potential for the technique within archaeology, but also how it can be applied at different spatial scales with different objectives appropriate to the specific problem in question.
-
-##Methodology
-Percolation Analysis is a technique for identifying clusters within a set of spatially arranged points. The computation is based on the Euclidian distance between those points. Percolation analysis is as a way of mathematically describing clusters of spatially arranged points and analysing their related behaviour.
-A ready example is the propagation of fire through a forest, where fire will spread from tree to tree within a cluster, when the trees are close enough together, but at a critical density when all the trees form a single cluster it can spread to the forest limits (reference). 
-A cluster is based on a defined distance threshold, so that for any given point all neighbouring points falling within this threshold are part of the cluster. The test is then re-applied for each of these neighbours in turn, and any further points meeting this criterion are also part of the cluster. This technique can be applied at any scale, from the molecular to the geographical and beyond.
-Originally developed for describing the physical properties of materials, Percolation Analysis has recently been used in geography to identify metropolitan areas, based on population density. The City Clustering Algorithm (CCA) has been developed out of percolation theory by Rozenfeld et al. (2008) based on distance within a cellular lattice and further developed by Rozenfeld,  et al. (2011) to use the Euclidean distance between points. The technique is illustrated in Figure tba, where an arbitrary point is selected as a start and any point falling within a defined threshold distance  ‘l’  becomes part of the cluster and the process is then re-applied to each of these points in turn, until the cluster can extend no further. This threshold distance is also known as the ‘percolation radius’ and this term is generally used below. Arcaute et al. (2016) have adopted this technique for defining urban areas, using the density of street interconnections rather than population. They have also developed analytical techniques for identifying transition points in cluster growth as the distance threshold is progressively increased, as discussed further below.
-Note that the method has evolved from statistical techniques in materials science, where it is applied to sets of spatially distributed points which are identical and where there is no interest in distinguishing between the points. However when used in archaeology there is potentially a very great interest in the individual points, reflecting as they do distinct archaeological entities, as will be shown later.
-
-###Comparison to other clustering algorithms 
-A number of spatial clustering algorithms are known in spatial data mining (Neethu - Surendran 2013, Varghese et al 2014), used in archaeology has been mostly the k-means non-hierarchical clustering algorithm, developed by Kintight and Ammermann in 1982 (Baxter 1994 [2015a], 148). This algorithm has been applied widely in the last 40 years in archaeology (to do: many examples see Baxter 2015b), probably because of its ease in use and understanding: At the beginning the whole data set is considered as one cluster and the centre of this cluster is determined. The point furthest from this centre is then used as a centroid for a new cluster and attracts those points to its cluster that are nearer to it than to the original cluster (Baxter 1994, [2015a], 149). Step by step the algorithm determines new cluster centers and allocates each point into one of k clusters in such a way, that the sum-squared error (SSE) is minimized. The SSE is the sum of the squared distances from each point to the center of the cluster to which it is assigned (Kintight 1990, 185). By minimizing global sum-squared errors the algorithm tends to create circular clusters (Kintight 1990, 190). Another point of critique has been the need to define the number of clusters (k) that are being created beforehand.
-To navigate some problems of k-means and associated algorithms, which have been highlighted in the years from Kintight (1990) to Ducke (2015) and in parts mitigated by Baxter (2015b), Caspari and Jendryke developed Achsphere as an archaeological cluster algorithm (Caspari – Jendryke 2017). They integrate structural parameters, which were recorded together with the spatial information of the studied features. Because they analysed mostly round structures, the features were weighted using the diameter, though other parameters might be used. (Caspari – Jendryke 2017, 182). This weighing of the influence of the features after archaeological pre-consideration was implemented to mitigate the effect of different densities in the same data set (Caspari – Jendryke 2017, 182). Around each feature  a sphere is constructed, which size is based on the weighing factor. Two features will belong to the same cluster, if their spheres touch or overlap. The clustering algorithm starts at an arbitrary node, checks all neighbours (touching spheres) and stops only, when no new neighbours are found. Inputs needed for the algorithm are a minimum number of points for a cluster and the the weight (Caspari – Jendryke 2017, 184). It is considered by the authors not to be a “generic cluster algorithm but a specific method to divide landscape archaeological datasets into sub-entities for further analysis assuming that spherical structuring dominates the data.” (Caspari – Jendryke 2017, 186).
-
-Maybe some words on DBSCAN here? I need to read up on it still…
-
-Other algorithms, such as Nearest Neighbour, Ripley’s K-function, the F- and G-functions are clustering detection algorithms, that tell about whether the point distribution is spatially clustered but don’t directly give an attribution of points to a certain cluster.
-We believe percolation analysis to be a worthy contribution to the toolkit of clustering algorithms for archaeologists, because it is easily understandable and applicable. Available in the free and open source scripting language R it is easily replicable for any researcher, who might want to implement it.  
-
-Ducke formulated the following parameters for an useful spatial cluster detector:
-Its mathematical core should be simple, so that archaeologists can understand why a certain input leads to a certain output,
-it should assume as little as possible about the clustering structure (i.e., the number, sizes and locations of clusters),
-it should be robust against noise, i.e., it should just ignore the odd scattering of sherds around the actual clusters, and it should not assume that every point is indeed part of a cluster, 
-it should either assign each point to a cluster or classify it as noise, 
-and finally, it should always produce the same result when given the same input data.
-(Ducke 2015, 357-358).
-
-We think percolation analysis fits well these desiderata, as its mathematical core is simple; size, number and location of clusters is explored not predetermined, it will include outliers only at very late stages of the clustering process (which is easily detected and may be excluded from analysis results if so chosen) and… well… do we always get the very same results?
-Hm, I think as the first seed is always chosen randomly, we may not get the very same results every time. What are your experiences here?
-
-##Case Studies
-
-###Hillforts in Britain 
-Working with data from the ‘Atlas of Hillforts’ (reference) it was decided to use Percolation Analysis to establish any ‘natural’ or intrinsic groupings of hillforts that might exist in Britain and Ireland. Once identified, these groupings could then be compared with topography and geographical regions, as well as other historical data sets, and further analysed with data from the Atlas. The Atlas dataset comprises 3xxx confirmed sites in Britain and xxx in all of Ireland.
-Percolation Analysis was applied in radius increments of 1km. The cluster transitions for Britain are shown in Figure xxx, which plots the normalized maximum cluster size (with a normalized size range of between 0 and 1.0) against percolation radius. For large radius values all sites will form a single cluster while for progressively smaller radii, the clusters start to break up, and this transition diagram is an indicator of where potentially interesting clusters become visible. For small radius values no clusters form at all with the most notably obvious transition occurring at 34 km, as discussed below. Geographical plots of clusters are shown in Figures xxx. Clusters are ranked by size and allocated a colour, with red being the largest cluster and blue the next, below rank 15 all sites are plotted as grey. Above 35km all sites form a single large cluster, except for the Hebrides, Shetland Islands, Isle of Man and Scillies. Apart from south-east Scotland, the most interesting transitions occur in the 6-13km range. 
-At 34km (Figure xxx) the predominantly Scottish cluster includes sites in England as far south as a line roughly between Morecambe and Flamborough Head. Within England as the radius values reduce, sites in the Pennines and the east progressively break out of the bigger cluster, and at 14km, the south-west peninsula forms its own cluster in Cornwall and part of Devon, and other clusters appear in the south-east. The plot for 12km (Figure xxx) shows for example Cornwall and Devon/part of Somerset as individual clusters, and a cluster along the Chilterns. The plot for 9km (Figure xxx) shows clusters in north-west Wales, the Clwydian Range, south-west Wales, the Gower, central Wales and the Marches and two clusters on the north-west and the south-east of the Severn Valley, the latter being the Cotswolds group.  Some of these clusters have been the subject of more detailed analysis and three of them are discussed below. 
-An important point is that there is nothing necessarily special about particular values of the percolation radius, so that transitions will not necessarily occur for the same values in different regions or countries. There are various possible explanations for this, such as the variability in regional and local topography. In areas of high density such as south-west Wales and south-east Scotland, then a finer grained analysis with radius increments of 0.1km reveals more localised cluster patterns in the range 3-7km radius values. Further study is required to establish what significance these might have. (add figure??)
-
-### Strip excavation in Germany
-The second case study is located in Saxony-Anhalt, middle Germany. During the early 2000s the street “Bundesstraße 6” was built near the town of Köthen. The area of the street, approach roads, exits and retention reservoirs were machine test trenched by the Heritage Management to find archaeological sites. Along the ca. 13 km long and mostly 40 m broad part of the street over 6000 features were uncovered (Fahr in prep.), but this paper will focus on features from the later Bronze Age (group “Saalemündungsgruppe”). For this periods the aim is to find the clusters which delineate a site with the help of percolation analysis. The radius will estimate the distance between features that belong together into one site.
-
-```{r}
-#Data cleaning and prep for Sophie
-
-# load data
-BefSchnitt <- read.csv2('source_data/Schnittbefunde4.csv', sep = "\t", dec = ",")
-
-# bringing the periods in the right order
-BefSchnitt$epoche <- ordered(BefSchnitt$epoche, levels = c("Neolithikum", "Bronzezeit", "Eisenzeit", "undat."))
-BefSchnitt$abschnitt <- ordered(BefSchnitt$abschnitt, levels =c('aelter', 'frueh','mittel', 'spaet'))
-BefSchnitt$kultur <- ordered(BefSchnitt$kultur, levels=c("Baalberge", "Bernburg", "Kugelamphorenkultur", "Trichterbecher", "Salzmuende", "Schnurkeramik", "Glockenbecher", "Aunjetitz", "Saalemuendungsgruppe", "sBZ/aeEZ", "Hausurnenkultur"))
-
-# subset settlement features
-siedlung_BefSchnitt <- subset(BefSchnitt, BefSchnitt$befundart=='Siedlung')
-
-#Subset the settlement features for relevant cultures
-# there are 389 features dated as late bronze age and early iron age, that are being analysed in sBZ as well
-siedlung_sBZ_Bef <-subset(siedlung_BefSchnitt, siedlung_BefSchnitt$epoche=='Bronzezeit' & siedlung_BefSchnitt$abschnitt=='spaet')
-siedlung_sBZ_Bef <-siedlung_sBZ_Bef[c('PlcIndex', 'Easting', 'Northing')]
-write.csv(siedlung_sBZ_Bef, "source_data/BefundesBZ-minimal.csv")
-
-```
-
-There are 1006 settlement features cataloged as belonging to this period.
-
-Because of the test trenching it is assumed, that all features and sites along the transect have been found, even though there are gaps between the actual excavation areas and many features remain undated. Machine trenching has been shown to be the most effective way to find sites [@hey_2006]. 
-
-The term “site” has been at the center of a lively debate in survey archaeology over the last 40 years. Until the 70’s it has mostly been defined as a place [@dunnell_1992, 23-24] - a find spot, which is similar to German archaeology, where the term used, “Fundplatz”, means exactly that. In the German archaeological inventories, though, a site may contain several culturally distinct loci, “Fundstellen” [@dauber_1950, 96], which are usually cataloged as a settlement, a burial ground, a hoard or as a single find spot of a period [@eggert_2005, 56]. 
-Two questions arise, when deciding how to classify a site as a settlement: Qualitatively, what kind of finds or features define a settlement [@linke_1976, 8], and quantitatively, of how far apart two “find spots” are supposed to be. If two sherds of the same time period are found 50 m apart - are these two sites or belong they to one site? In every larger settlement or landscape archaeological study this topic is being discussed and in the end a decision felled, which the authors agree, is kind of arbitrary and should actually rely on empiric studies [@malmer_1962, 258; @mischka_2007, 49-50]. 
-Since the middle of the 1970s there has been the discussion of a non- or off-site approach to anglophone archaeology. The terms were introduced by Thomas [-@thomas_1975] and Foley [-@foley_1981] and describe the analysis of finds "between sites". This approach understands the archaeological record  as a continual distribution in space, with spots of higher densities, the so-called “sites”, and areas of lower density [@wobst_1983, 39].
-
-At this point the continuously excavated data set of the street and the clustering analysis percolation can be fruitfully connected: As percolation works with radii around points it may assist in quantitatively assessing which distances between features are common and what distance features don't seem to belong to each other anymore. This question needs to be answered for each archaeological culture seperately as we cannot assume similar settlement distributions through time[@schirren_1997, 30].
-
-Assuming a connection between underground features and surface finds enables us to transfer the distances of the features to those of finds and may inform landscape archaeological surveys on the decision on attributing single finds to an already known site or registering a new site. Of course, settlement features only comprise the “build space” of a settlement. Though features in-between sites may exist, like traps or temporary storage facilities, places like working areas or fields which may be detected by off-site surface find distributions, won’t be included.
-
-### Percolation
-
+Bsp Datensatz hier sei sNL
 
 ```{r include=FALSE}
 
@@ -155,88 +76,6 @@ clusterFrequency()
 ```
 
 
-
-As this analysis is concerned with a very fine level of detail, the starting point and the step size of the percolation algorithm was chosen to be 1m. The size of a prehistoric village in middle Germany can’t be assumed to be larger than a kilometer in diameter, therefore the largest radius used was 500m.
-
-```{r mean cluster size, eval=FALSE, include=FALSE}
-library(ggplot2)
-library(ggrepel)
-# not included because the mean cluster size ist too different because of hugely different sample sizes
-
-mean_steps <- c(1,1+which(diff(analysis_by_radius$mean_clust_size)!=0))
-
-sBZ_meansteps <- as.data.frame(cbind(analysis_by_radius$radius[mean_steps], analysis_by_radius$mean_clust_size[mean_steps]))
-
-sBZ_meansteps <- subset(sBZ_meansteps, sBZ_meansteps$V1 == 46 | sBZ_meansteps$V1 == 68 | sBZ_meansteps$V1 == 88 |  sBZ_meansteps$V1 == 140 | sBZ_meansteps$V1 == 175 | sBZ_meansteps$V1 == 221 | sBZ_meansteps$V1 == 297 |sBZ_meansteps$V1 == 374)
-
-ggplot()+
-  geom_line(data = analysis_by_radius, aes(x = radius, y = mean_clust_size))+
-  geom_point(data = sBZ_meansteps, aes(x = sBZ_meansteps$V1, y = sBZ_meansteps$V2))+
-  geom_label_repel(aes(x = sBZ_meansteps$V1, y = sBZ_meansteps$V2, label = sBZ_meansteps$V1),
-                     box.padding   = 0.35, 
-                   point.padding = 0.5,
-                   nudge_y = 50,
-                  segment.color = "grey50",
-                  color = "grey50")+
-  theme_light()+
-  labs(title = "Sizes of clusters increasing with percolation radius",
-         x = "Percolation radius",
-       y = "Mean Cluster size")
-
-```
-
-
-```{r mean cluster size turning points, include=FALSE}
-
-
-# calculate turning points of distance measure vectors
-# google terms: knee of curve, "trade off point"
-#https://dataplatform.cloud.ibm.com/analytics/notebooks/54d79c2a-f155-40ec-93ec-ed05b58afa39/view?access_token=6d8ec910cf2a1b3901c721fcb94638563cd646fe14400fecbb76cea6aaae2fb1
-
-#https://www.rdocumentation.org/packages/SamSPECTRAL/versions/1.26.0/topics/kneepointDetection
-
-
-#install.packages("ecp")
-library("ecp")
-
-# same late bronze age
-turn_sBZ_mean <- e.divisive(as.matrix(diff(analysis_by_radius$mean_clust_size)), k = 1, min.size = nrow(analysis_by_radius)/10) 
-
-sBZ_turn_rmean <-analysis_by_radius$radius[turn_sBZ_mean$estimates]
-
-```
-
-There are several levels of clustering. Features of the late Bronze Age create a steep curve in the beginning, which shows a close clustering at low percolation radii. Longer stretches of flattening might be interpreted as the algorithm running out of features to add to the clusters. We thereby find the edges of settlements and can define their size. The step-wise rises at higher percolation radii needs explanation as well. To provide these, the results will be compared to a large scale excavation of a late bronze age site in middle Germany.
-
-I highlighted those points that mark the most distinctive steps in the distribution. We can see the radii after which the algorithm doesn't change the cluster size for some time, showing that here stretches of space between features exist.
-The turning point of the mean cluster sizes is at the radius of `r sBZ_turn_rmean[2]`m.
-
-### Interpretation
-
-The late bronze age features are mostly concentrated in the western half and on the eastern-most part of the transsect. As can be seen by the rapidly rising graph describing the mean cluster size in relation to the percolation radius, the features cluster closely to each other. First steps in the distribution can be seen at 46 m, 68 m and 88 m. These are the distances, at which the clusters "stabilise" and don't grow with growing percolation radii. As mentioned above, the mean width of the excavated strip was 40m. Therefore it is assumed, that the first "stabilisation" is due to the lack of features beyond the edges of the excavation area. 
-
-The largest excavation site of the late bronze age in middle Germany is to be found in Zwenkau(-Eythra) in Saxony, which was excavated in advance of coal mining. At Zwenkau several single farmsteads delimited by houses and fences spread over the whole excavation area, which measures at its greatest dimensions 1100 x 825 m [@huth_1998, 194.213]. The farmsteads in Zwenkau don't overlap [@huth_1998, 214] and the distances to each other are quite diverse. Nonetheless a number of them seem to scatter at at intervalls of ca. 65-75 m. [cf.  @huth_1998, 211, fig. 6]. The farmsteads themselves are not all the same size, but the longest sides show to be about 50 - 85m long (cumulating to sizes of 2000 - 2500 m²) [@huth_1998, 213.]. It is assumed not all of them existed at the same time, but that there were always several isolated farmsteads in a scattered distribution to each other [@huth_1998, 214]. 
-
-At the analysed transect excavation we also deal with a depth in time, as there are overlapping features and several ditches, which most probably did not exist at the same time, but can be interpreted as evidence of small-scale settlement shifts. We can therefore assume that at least partly the high density of settlement features belonging to the late bronze age might be interpreted as evidence of several phases or local re-settlement. Nonetheless we can notice that the turning points of the radius vector by `r sBZ_turn_rmean[2]`m falls well into the range of the farmstead sizes of Zwenkau-Eythra and might be a possible farmstead site delimiter by the percolation algorithm.
-
-We note: As long as the next feature is `r sBZ_turn_rmean[2]`m away, features seem to belong to the same cluster. We can therefore assume, late bronze age finds at a distance of `r sBZ_turn_rmean[2]`m to each other to belong to the same site. 
-
-Mapping the clusters reveals a more complete picture: As the percolation algorithm moves from node to node, the cluster groups are much larger than the radii.
-Should "in-between" finds be missing, still two findspots belonging to the same site might not identified as to belong to the same site.
-
-Nonetheless the question posed by Malmer and Mischka [@malmer_1962; @mischka_2007] on how to define the distance between to findspots before delimiting a new site has been answered in an empirical fashion as demanded. 
-
-# Conclusion
-
-Percolation analysis offers...
-
-- great at different scales
-
-- different research questions might be answered:
-
-- cluster sizes, density of points inside a cluster 
-
-- ...
 
 
 # Acknowledgements

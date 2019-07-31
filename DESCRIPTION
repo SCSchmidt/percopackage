@@ -1,5 +1,5 @@
-Package: percolation
-Title: Percolation Analysis with transect data
+Package: percopackage
+Title: Percolation Analysis functions
 Version: 0.0.0.9000
 Authors@R: c(person("Sophie C.", "Schmidt", email = "s.c.schmidt@uni-koeln.de", role = c("aut", "cre")), person("Simon", "Maddison", email ="smaddison@iee.org",  role = "aut"))
 Description: What the package does (one paragraph).

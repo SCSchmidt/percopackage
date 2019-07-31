@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 # percolatransect
 
-The goal of percolatransect is to try the percolation analysis as given by Simon Maddison with my own data.
+The goal of percopackage is to create functions for the percolation analysis from Simon Maddison's scripts.
 
 ### Citation
 
@@ -28,7 +28,7 @@ You can install percolatransect from github with:
 
 ```{r gh-installation, eval = FALSE}
 # install.packages("devtools")
-devtools::install_github("SCSchmidt/percolatransect")
+devtools::install_github("SCSchmidt/percopackage")
 ```
 
 ### Licenses
