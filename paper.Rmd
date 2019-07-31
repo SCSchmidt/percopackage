@@ -59,10 +59,10 @@ percolateNodes(data = data, radius_values = 10, limit = 500, radius_unit = 1)
 source("R/clustering_script.v3.6.R")
 percolate()
 
-percolate2(data = data, radius_values = 10, limit = 500, radius_unit = 1)
+percolate2(data = data, radius_values = 10, limit = 500, radius_unit = 1, upper_radius = 200, lower_radius = 20, step_value = 20)
 
 source("R/mapping_clusters.v4.12.R")
-mapClusters(data = data, radius_values = 10, limit = 500, radius_unit = 1, upper_radius = 200, lower_radius = 20, step_value = 20, shape = sNL_shape)
+mapClusters(data = data, radius_values = 10, limit = 500, radius_unit = 1, upper_radius = 200, lower_radius = 20, step_value = 20, shape = sNL_shape, map_name = "sNL-Karte")
 
 
 library(calibrate)

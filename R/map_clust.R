@@ -1,5 +1,5 @@
 
-mapClusters <- function(data, radius_values, limit, radius_unit, shape, upper_radius, lower_radius, step_value) {
+mapClusters <- function(data, radius_values, limit, radius_unit, upper_radius, lower_radius, step_value, shape, map_name) {
 
 percolate2(data, radius_values, limit, radius_unit, upper_radius, lower_radius, step_value)
   
@@ -7,9 +7,10 @@ path_results <- paste(getwd(),"/working_data",sep="")
 path_maps <- paste(getwd(),"/maps",sep="")
 data_file <- paste(path_results,"/","nodes_list_d.txt",sep="")
 
+map_outline <- shape
 # Truncate shape file name to remove extension
-layer_name <- substr(shape,1,(nchar(shape)-4))
-print(map_name)
+#layer_name <- substr(shape,1,(nchar(shape)-4))
+#print(map_name)
 
 # Read in nodes and grid coordinates
 xy_data <- data
@@ -73,8 +74,9 @@ points(xy_data$Easting, xy_data$Northing, col='red', pch=20, cex=point_dia)
 number_of_sites <- paste("Number of sites: ",nrow(xy_data))
 mtext(number_of_sites)
 plot_title <- str_to_title(map_name,locale="")
-title(paste("Clusters of ", plot_title), sub=paste("Sources: ",source_file_name,"; ",shape_file_name))
+title(paste("Clusters of ", plot_title), sub=paste("Sources: ",data,"; ",map_name))
 dev.off()
+
 
 # Generates maps for each of percolation radii in range of radius values
 for(i in loop_count)
@@ -139,8 +141,8 @@ for(i in loop_count)
 		legend_size <- 0.8}
 	legend(legend_loc, inset= .01, title="Rank Cluster#",legend=ranked_clusters$cluster[1:number_colours], cex=legend_size,
 		fill=ranked_clusters$col[1:number_colours])
-
-	title(main=plot_title, sub=paste("Source File: ",source_file_name, "; percolation distance:",radius_name," ",unit_text))
+	
+	title(main=plot_title, sub=paste("; percolation distance:",radius_name," ",unit_text))
 
 	# Create data for output in csv file
 	# create ranking index for cluster numbers
@@ -166,6 +168,7 @@ file_name <- paste(path_results,"/","site_cluster_rank_by_radius.csv",sep="")
 # need to write this WITHOUT the row number
 write.csv(ranked_mem_clust_by_r[order(ranked_mem_clust_by_r$PlcIndex),], file_name, row.names=FALSE)
 
+
 # Write shape file with all data points
 # First convert data to SpatialPointsDataFrame, using project4string from selected map file
 # get projection string for current map
@@ -174,7 +177,11 @@ crs_projection <- CRS(projection_string)
 
 # name of output shapefile
 # Truncate source file name to remove extension
-source_file_name <- substr(source_file_name,1,(nchar(source_file_name)-4))
-output_shape_file <- paste(path_maps,"/",source_file_name,".shp",sep="")
-writeOGR(xy_data,output_shape_file,layer=source_file_name,driver="ESRI Shapefile",overwrite_layer=TRUE)
+output_shape_file <- paste(path_maps,"/analysis_results.shp",sep="")
+layer_name <- "percolation"
+
+xy_data <- sp::merge(xy_data, ranked_mem_clust_by_r, by = "PlcIndex")
+
+writeOGR(xy_data,output_shape_file,layer=layer_name, driver="ESRI Shapefile",overwrite_layer=TRUE)
+
 }

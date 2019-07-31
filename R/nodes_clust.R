@@ -113,9 +113,15 @@ t2 <- proc.time() - ptm
 print('matrix copied')
 print(t2)
 
+
+
 ## ab hier clustering_script
 
-mem_clust_by_r <- paste(path_results,"/","PlcIndex.csv",sep="")
+
+
+mem_clust_by_r <- as.data.frame(data_unique$PlcIndex)
+names(mem_clust_by_r)[1] <- "PlcIndex"
+
 
 
 if (radius_unit == 1)
