@@ -46,18 +46,7 @@ data <- read.csv("source_data/BefundesNL-minimal.csv", sep = ",") #' crazy mista
 #'  grid square converted to a numeric prefix for each
 #' List any entries with null values and write to file
 
-## run analysis and save results of every run.
-
-### input in source _file.txt
-
-#source_file,map_name,shape_file_name,DTM_file_name
-#BefundesBZ-minimal.csv, late bronze age features,alle_Schnitt-Fundstellen.shp,
-
-
-### input in radius_values.txt (stays)
-
-#upper_radius,lower_radius,step_value,limit,upper_threshold,lower_threshold,radius_unit
-#500,2,1, 1000,0,0,1
+sNL_shape <- readOGR(dsn="shape_files/alle_Schnitt-Fundstellen.shp"
 
 library(maptools)
 library(rgdal)
@@ -70,8 +59,10 @@ percolateNodes(data = data, radius_values = 10, limit = 500, radius_unit = 1)
 source("R/clustering_script.v3.6.R")
 percolate()
 
-#source("R/mapping_clusters.v4.12.R")
-#mapClusters()
+percolate2(data = data, radius_values = 10, limit = 500, radius_unit = 1)
+
+source("R/mapping_clusters.v4.12.R")
+mapClusters(data = data, shape = sNL_shape)
 
 
 library(calibrate)
