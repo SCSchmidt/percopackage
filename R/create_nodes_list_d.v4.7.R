@@ -26,39 +26,15 @@
 #'	NOTE: values are assumed to be in metres, unit will factor this in calculations and charts by the unit value
 #'	so that a unit value of 1 shows through as metres, and a value of 1000 as km. Other values accomodated
 
+## Sophie's trial to make functions here.
 
-#'setwd("/home/sophie/Dokumente/Konferenzen/percolatransect/") #'path on laptop
-percolateNodes <- function(x) {
+percolateNodes <- function(data, radius_values, limit, radius_unit) {
 path_source <- paste(getwd(),"/source_data",sep="")
 path_results <- paste(getwd(),"/working_data",sep="")
-
-#' Read in source file name defined in file source_file.txt
-file_name <- paste(path_results,"/","source_file.txt",sep="")
-source_files <- read.csv(file_name,header=TRUE,stringsAsFactors=FALSE)
-source_file_name <- source_files$source_file
-#' Edit this file for different input file name
-
-#' Original file has been generated from Hogg Index spreadsheet
-#' Irish file was derived from material from the Atlas, ca. 14 May 2015
-#' Later analyses run in the same way on Atlas data March 2016 and on published data November 2017
-
-source_file <- paste(path_source,"/",source_file_name,sep="")
-
-#' Read in limit value from source file
-#' Edit the source file radius_values.txt to change this.
-file_name <- paste(path_results,"/","radius_values.txt",sep="")
-radius_values <- read.csv(file_name,header=TRUE)
-limit <- radius_values$limit
-radius_unit <- radius_values$radius_unit
 
 ptm <- proc.time()
 #' For computation time
 
-data <- read.csv(source_file, sep = ",") #' crazy mistakes happen if this is wrong...
-#' This file needs three columns: PlcIndex, Easting, Northing in this order.
-#' Additional fields Lat Long not used for this program.
-#' Note that the Easting and Northing need to be UK grid references with the Alphabetic
-#'  grid square converted to a numeric prefix for each
 #' List any entries with null values and write to file
 data_NA <- data[rowSums(is.na(data)) > 0,]
 print(paste("Entries in source file with one or more null values: "))

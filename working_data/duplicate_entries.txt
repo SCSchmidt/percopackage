@@ -1,1 +1,1 @@
-"X" "PlcIndex" "Easting" "Northing"
+"PlcIndex" "Easting" "Northing"

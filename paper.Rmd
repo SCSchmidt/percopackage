@@ -38,6 +38,14 @@ Bsp Datensatz hier sei sNL
 
 ```{r include=FALSE}
 
+# create df from input data set
+data <- read.csv("source_data/BefundesNL-minimal.csv", sep = ",") #' crazy mistakes happen if this is wrong...
+#' This file needs three columns: PlcIndex, Easting, Northing in this order.
+#' Additional fields Lat Long not used for this program.
+#' Note that the Easting and Northing need to be UK grid references with the Alphabetic
+#'  grid square converted to a numeric prefix for each
+#' List any entries with null values and write to file
+
 ## run analysis and save results of every run.
 
 ### input in source _file.txt
@@ -57,7 +65,7 @@ library(stringr)
 library(igraph)
 
 source("R/create_nodes_list_d.v4.7.R")
-percolateNodes()
+percolateNodes(data = data, radius_values = 10, limit = 500, radius_unit = 1)
 
 source("R/clustering_script.v3.6.R")
 percolate()
