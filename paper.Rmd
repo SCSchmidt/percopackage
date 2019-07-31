@@ -46,7 +46,7 @@ data <- read.csv("source_data/BefundesNL-minimal.csv", sep = ",") #' crazy mista
 #'  grid square converted to a numeric prefix for each
 #' List any entries with null values and write to file
 
-sNL_shape <- readOGR(dsn="shape_files/alle_Schnitt-Fundstellen.shp"
+sNL_shape <- readOGR(dsn="shape_files/alle_Schnitt-Fundstellen.shp")
 
 library(maptools)
 library(rgdal)
@@ -62,7 +62,7 @@ percolate()
 percolate2(data = data, radius_values = 10, limit = 500, radius_unit = 1)
 
 source("R/mapping_clusters.v4.12.R")
-mapClusters(data = data, shape = sNL_shape)
+mapClusters(data = data, radius_values = 10, limit = 500, radius_unit = 1, upper_radius = 200, lower_radius = 20, step_value = 20, shape = sNL_shape)
 
 
 library(calibrate)

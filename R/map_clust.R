@@ -1,8 +1,11 @@
 
-mapClusters <- function(data, shape) {
+mapClusters <- function(data, radius_values, limit, radius_unit, shape, upper_radius, lower_radius, step_value) {
 
+percolate2(data, radius_values, limit, radius_unit, upper_radius, lower_radius, step_value)
+  
 path_results <- paste(getwd(),"/working_data",sep="")
 path_maps <- paste(getwd(),"/maps",sep="")
+data_file <- paste(path_results,"/","nodes_list_d.txt",sep="")
 
 # Truncate shape file name to remove extension
 layer_name <- substr(shape,1,(nchar(shape)-4))
@@ -23,12 +26,6 @@ proj4string(xy_data) <- crs_projection
 file_name <- paste(path_results,"/","member_cluster_by_radius.csv",sep="")
 ranked_mem_clust_by_r <- read.csv(file_name, header=TRUE)
 
-# Read in distance thresholds - this ensures same values used as in clustering script
-file_name <- paste(path_results,"/","radius_values.txt",sep="")
-radius_values <- read.csv(file_name,header=TRUE)
-upper_radius <- radius_values$upper_radius
-lower_radius <- radius_values$lower_radius
-step_value <- radius_values$step_value
 
 #check on decimal places if step_value non integer
 dec_places <- if ((step_value %% 1) != 0)
@@ -36,7 +33,6 @@ dec_places <- if ((step_value %% 1) != 0)
 	} else {
 	0}
 
-radius_unit <- radius_values$radius_unit
 
 if (radius_unit == 1)
 {unit_text <- "m"

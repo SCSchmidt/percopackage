@@ -28,7 +28,7 @@
 
 ## Sophie's trial to make functions here.
 
-percolate2 <- function(data, radius_values, limit, radius_unit) {
+percolate2 <- function(data, radius_values, limit, radius_unit, upper_radius, lower_radius, step_value) {
 path_source <- paste(getwd(),"/source_data",sep="")
 path_results <- paste(getwd(),"/working_data",sep="")
 
@@ -113,6 +113,11 @@ t2 <- proc.time() - ptm
 print('matrix copied')
 print(t2)
 
+## ab hier clustering_script
+
+mem_clust_by_r <- paste(path_results,"/","PlcIndex.csv",sep="")
+
+
 if (radius_unit == 1)
 {unit_text <- "m"
 } else if (radius_unit == 1000)
@@ -125,6 +130,8 @@ print(paste("Radii used for cluster analysis, ",unit_text,": upper ",upper_radiu
 
 # To compute and display computational time
 ptm <- proc.time()
+
+data_file <- paste(path_results,"/","nodes_list_d.txt",sep="")
 
 # The data table of nodes and internode distances is a Text file, with headers
 matrix_IDs_distance <- read.table(data_file,header=TRUE)
