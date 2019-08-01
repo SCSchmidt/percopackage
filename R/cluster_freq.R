@@ -73,39 +73,15 @@ if (radius_unit == 1)
 unit_text <- paste(radius_unit, "m", sep="")}
 
 
-# no idea where upper_cluster_min und _lower_cluster_minimum are comin from.
-
-#upper_cluster_minimum <- radius_values$upper_cluster_minimum
-#lower_cluster_minimum <- radius_values$lower_cluster_minimum
-
-# If one or both of these are Null, then set minimum to 1
-# assume percolation and not dbscan
-#percolation <- FALSE
-#if(is.null(upper_cluster_minimum)|is.null(lower_cluster_minimum))
-#{
-#	percolation <- TRUE
-#	upper_cluster_minimum <- 1
-#	lower_cluster_minimum <- 1
-#	print("Minimum cluster size set to 1, as one or both values read are Null; assume percolation and not dbscan")
-#}
-
 radius_values <- seq(upper_radius,lower_radius,by=-step_value)
 # Changes to accomodate non-integer radius values
 radii_count <- length(radius_values)
 loop_count <- seq(radii_count,1,by=-1)
 
-cluster_min_values <- seq(upper_cluster_minimum,lower_cluster_minimum,by=-1)
 
-for(cluster_min in cluster_min_values)
-	{
-	# Reads in file of data giving cluster ids indexed by radius, for each node
-	if(percolation== TRUE)
-	{
-		file_name <- paste(path_working,"/","member_cluster_by_radius.csv",sep="")
-	} else {
-		file_name <- paste(path_working,"/","member_cluster_by_radius_k",cluster_min,".csv",sep="")
-	}
-	mem_clust_by_r <- read.csv(file_name, header = TRUE)
+file_name <- paste(path_working,"/","member_cluster_by_radius.csv",sep="")
+
+mem_clust_by_r <- read.csv(file_name, header = TRUE)
 
 	# Create matrix of number of clusters and number of nodes (max, mean, median), for each radius
 	# Columns:  Radius, number of clusters, max cluster size, mean cluster size, median cluster size
@@ -138,21 +114,6 @@ for(cluster_min in cluster_min_values)
 		ranked_clusters$cluster <- as.numeric(as.character(ranked_clusters$cluster))
 		number_of_clusters <- nrow(ranked_clusters)
 
-		# add in clusters of size 1; compute number of these clusters
-		# TAKE THIS OUT
-		#add_row_total <- total_nodes - total_clustered_nodes
-		#if(add_row_total>0)
-		#{
-		#	supp_array <- data.frame(seq((number_of_clusters+1),(number_of_clusters + add_row_total)))
-		#	one_col <- data.frame(rep(1,times=add_row_total))
-		#	supp_array <- cbind(supp_array,one_col)
-		#	names(supp_array) <- c('cluster','number_of_nodes')
-		#	# ranked_clusters now includes clusters of size 1
-		#	# makes consistent measure of means medians for different percolation radii
-		#	ranked_clusters <- rbind(ranked_clusters,supp_array)
-		#}
-		# revised number of clusters
-		#number_of_clusters <- nrow(ranked_clusters)
 		# The number of nodes in the first ranked cluster is maximum
 		max_nodes <- ranked_clusters$number_of_nodes[1]
 		max_normalized <- max_nodes/total_nodes
@@ -168,13 +129,8 @@ for(cluster_min in cluster_min_values)
 	analysis_by_radius <<- as.data.frame(analysis_by_radius)
 	analysis_by_radius
 	# Save the analysis data as a csv file
-	if(percolation == TRUE)
-	{
-		file_name <- paste(path_results,"/","analysis_by_radius.csv",sep="")
-	} else {
-		file_name <- paste(path_results,"/","analysis_by_radius_k",cluster_min,".csv",sep="")
-	}
+
+	file_name <- paste(path_results,"/","analysis_by_radius.csv",sep="")
 	write.table(analysis_by_radius,file=file_name,col.names=TRUE,sep=",",row.names=FALSE,quote=FALSE)
 
-}
 }

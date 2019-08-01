@@ -39,7 +39,7 @@ Bsp Datensatz hier sei sNL
 ```{r include=FALSE}
 
 # create df from input data set
-data <- read.csv("source_data/BefundesNL-minimal.csv", sep = ",") #' crazy mistakes happen if this is wrong...
+data <- read.csv("raw_data/BefundesNL-minimal.csv", sep = ",") #' crazy mistakes happen if this is wrong...
 #' This file needs three columns: PlcIndex, Easting, Northing in this order.
 #' Additional fields Lat Long not used for this program.
 #' Note that the Easting and Northing need to be UK grid references with the Alphabetic
@@ -65,7 +65,7 @@ library(calibrate)
 library(Hmisc)
 
 source("R/cluster_frequency_script.v2.17.R")
-clusterFrequency()
+clusterFrequency(radius_unit = 1, upper_radius = 200, lower_radius = 20, step_value = 20)
 
 
 ```
