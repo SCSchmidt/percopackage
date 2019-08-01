@@ -1,11 +1,19 @@
 
-mapClusters <- function(data, radius_values, limit, radius_unit, upper_radius, lower_radius, step_value, shape, map_name) {
+mapClusters <- function(data, shape, map_name) {
 
-percolate2(data, radius_values, limit, radius_unit, upper_radius, lower_radius, step_value)
-  
-path_results <- paste(getwd(),"/working_data",sep="")
+  # changed path results and path_working to better seperate working data and analysis results data  
+path_results <- paste(getwd(),"/analysis_results",sep="")
+path_working <- paste(getwd(),"/working_data",sep="")
 path_maps <- paste(getwd(),"/maps",sep="")
-data_file <- paste(path_results,"/","nodes_list_d.txt",sep="")
+data_file <- paste(path_working,"/","nodes_list_d.txt",sep="")
+
+# Read in distance thresholds - this ensures same values used as in clustering script, where it was saved
+file_name <- paste(path_working,"/","working_data.csv",sep="")
+radius_values <- read.csv(file_name,header=TRUE, sep = ",")
+upper_radius <- radius_values$upper_radius
+lower_radius <- radius_values$lower_radius
+step_value <- radius_values$step_value
+radius_unit <- radius_values$radius_unit
 
 map_outline <- shape
 # Truncate shape file name to remove extension
@@ -24,7 +32,7 @@ coordinates(xy_data) <- c("Easting", "Northing")
 proj4string(xy_data) <- crs_projection
 
 # Read in data file with cluster id for each site and radius
-file_name <- paste(path_results,"/","member_cluster_by_radius.csv",sep="")
+file_name <- paste(path_working,"/","member_cluster_by_radius.csv",sep="")
 ranked_mem_clust_by_r <- read.csv(file_name, header=TRUE)
 
 
@@ -175,7 +183,7 @@ write.csv(ranked_mem_clust_by_r[order(ranked_mem_clust_by_r$PlcIndex),], file_na
 projection_string <- proj4string(map_outline)
 crs_projection <- CRS(projection_string)
 
-# name of output shapefile
+# name of output shapefile (renamed by Sophie)
 # Truncate source file name to remove extension
 output_shape_file <- paste(path_maps,"/analysis_results.shp",sep="")
 layer_name <- "percolation"

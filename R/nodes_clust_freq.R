@@ -5,6 +5,13 @@ path_source <- paste(getwd(),"/raw_data",sep="")
 path_working <- paste(getwd(),"/working_data",sep="")
 path_results <- paste(getwd(),"/analysis_results",sep="")
 
+# this will save the input values in a txt and as w_data in the environment to look up
+w_data_colnames <- c("radius_values", "limit", "radius_unit", "upper_radius", "lower_radius", "step_value")
+w_data_values <- c(radius_values, limit, radius_unit, upper_radius, lower_radius, step_value)
+w_data <<- rbind(w_data_colnames,w_data_values)
+
+file_name <- paste(path_working,"/","working_data.csv",sep="")
+write.table(w_data, file_name, row.names=FALSE, col.names = FALSE, sep = ",")
 
 ptm <- proc.time()
 #' For computation time
@@ -111,7 +118,7 @@ print(paste("Radii used for cluster analysis, ",unit_text,": upper ",upper_radiu
 # To compute and display computational time
 ptm <- proc.time()
 
-data_file <- paste(path_results,"/","nodes_list_d.txt",sep="")
+data_file <- paste(path_working,"/","nodes_list_d.txt",sep="")
 
 # The data table of nodes and internode distances is a Text file, with headers
 matrix_IDs_distance <- read.table(data_file,header=TRUE)

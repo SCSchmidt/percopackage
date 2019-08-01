@@ -54,6 +54,8 @@ library(igraph)
 sNL_shape <- readOGR(dsn="shape_files/alle_Schnitt-Fundstellen.shp")
 
 
+percolate_alles(data = data, radius_values = 10, limit = 500, radius_unit = 1, upper_radius = 200, lower_radius = 20, step_value = 20)
+
 source("R/nodes_clust.R")
 percolate2(data = data, radius_values = 10, limit = 500, radius_unit = 1, upper_radius = 200, lower_radius = 20, step_value = 20)
 
