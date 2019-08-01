@@ -5,6 +5,10 @@ mapClusters <- function(data, shape, map_name) {
 path_results <- paste(getwd(),"/analysis_results",sep="")
 path_working <- paste(getwd(),"/working_data",sep="")
 path_maps <- paste(getwd(),"/maps",sep="")
+
+dir.create(path_maps, showWarnings = FALSE)
+
+# read in nodes list
 data_file <- paste(path_working,"/","nodes_list_d.txt",sep="")
 
 # Read in distance thresholds - this ensures same values used as in clustering script, where it was saved
@@ -32,7 +36,7 @@ coordinates(xy_data) <- c("Easting", "Northing")
 proj4string(xy_data) <- crs_projection
 
 # Read in data file with cluster id for each site and radius
-file_name <- paste(path_working,"/","member_cluster_by_radius.csv",sep="")
+file_name <- paste(path_results,"/","member_cluster_by_radius.csv",sep="")
 ranked_mem_clust_by_r <- read.csv(file_name, header=TRUE)
 
 
@@ -166,7 +170,7 @@ for(i in loop_count)
 	ranked_mem_clust_by_r[,ClstRad_col] <- NULL
 	dev.off()
 }
-dev.off()
+#dev.off()
 
 # convert NA's in ranked_mem_clust_by_r to zero
 ranked_mem_clust_by_r[is.na(ranked_mem_clust_by_r)] <- 0

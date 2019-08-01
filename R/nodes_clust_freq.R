@@ -1,11 +1,22 @@
-## Sophie's trial to make functions here.
+##' created 2019-08-01 by Sophie Schmidt
+##' 
+##' This is a function built based on the scripts create_nodes_list_d.v4.7, clustering_script.v.3.6 and cluster_frequency_script.v2.17 
+##' by Simon Maddison
+##' it creates a file structure in which working data and analysis results are saved
+##' input data needed, which consists of a dataframe with the PLCINDEX, EASTING, NORTHING - header
+##' input of radius values needed
+##' output: in working_data: csv with the radius-input data, PlcIndex, null_entries and duplicate_entries
+##' output in analysis_results: analysis_by_radius.csv and member_cluster_by_radius.csv
+##' both output-folders will be used by following functions
 
-percolate_alles <- function(data, radius_values, limit, radius_unit, upper_radius, lower_radius, step_value) {
-path_source <- paste(getwd(),"/raw_data",sep="")
+percolate_all <- function(data, radius_values, limit, radius_unit, upper_radius, lower_radius, step_value) {
 path_working <- paste(getwd(),"/working_data",sep="")
 path_results <- paste(getwd(),"/analysis_results",sep="")
 
-# this will save the input values in a txt and as w_data in the environment to look up
+dir.create(path_working, showWarnings = FALSE)
+dir.create(path_results, showWarnings = FALSE)
+
+# this will save the input values in a csv and as w_data in the environment to look up
 w_data_colnames <- c("radius_values", "limit", "radius_unit", "upper_radius", "lower_radius", "step_value")
 w_data_values <- c(radius_values, limit, radius_unit, upper_radius, lower_radius, step_value)
 w_data <<- rbind(w_data_colnames,w_data_values)
@@ -207,7 +218,7 @@ radii_count <- length(radius_values)
 loop_count <- seq(radii_count,1,by=-1)
 
 
-file_name <- paste(path_working,"/","member_cluster_by_radius.csv",sep="")
+file_name <- paste(path_results,"/","member_cluster_by_radius.csv",sep="")
 
 mem_clust_by_r <- read.csv(file_name, header = TRUE)
 

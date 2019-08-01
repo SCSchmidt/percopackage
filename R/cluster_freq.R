@@ -54,83 +54,70 @@
 #setwd("D:/Iron_Age_Hillforts/Percolation")
 
 # paths
-clusterFrequency <- function(upper_radius, lower_radius, step_value, radius_unit) {
-path_working <- paste(getwd(),"/working_data",sep="")
-path_results <- paste(getwd(),"/analysis_results",sep="")
+plot_clust_freq <- function(source_file_name) {
+ 
+  path_working <- paste(getwd(),"/working_data",sep="")
+  path_results <- paste(getwd(),"/analysis_results",sep="")
 
 
+file_name <- paste(path_results,"/","analysis_by_radius.csv",sep="")
+analysis_by_radius <- read.csv2(file_name,sep=",")
 
-# Read source file to establish number of nodes (entries in the file)
-# subtract 1 for header line
-total_nodes <- nrow(data) -1
-
-
+# Read in distance thresholds - this ensures same values used as in clustering script, where it was saved
+file_name <- paste(path_working,"/","working_data.csv",sep="")
+radius_values <- read.csv2(file_name,header=TRUE, sep = ",")
+upper_radius <- radius_values$upper_radius
+lower_radius <- radius_values$lower_radius
+step_value <- radius_values$step_value
+radius_unit <- radius_values$radius_unit
+	
 if (radius_unit == 1)
 {unit_text <- "m"
 } else if (radius_unit == 1000)
 {unit_text <- "km"
 } else {
-unit_text <- paste(radius_unit, "m", sep="")}
+  unit_text <- paste(radius_unit, "m", sep="")}	
+	
+	# output as png files
 
-
-radius_values <- seq(upper_radius,lower_radius,by=-step_value)
-# Changes to accomodate non-integer radius values
-radii_count <- length(radius_values)
-loop_count <- seq(radii_count,1,by=-1)
-
-
-file_name <- paste(path_working,"/","member_cluster_by_radius.csv",sep="")
-
-mem_clust_by_r <- read.csv(file_name, header = TRUE)
-
-	# Create matrix of number of clusters and number of nodes (max, mean, median), for each radius
-	# Columns:  Radius, number of clusters, max cluster size, mean cluster size, median cluster size
-	col_list <- cbind('radius','num_clust','max_clust_size','max_normalized','mean_clust_size','median_clust_size')
-	n_cols <- length(col_list)
-
-	n_rows <- length(radius_values)
-	analysis_by_radius <- matrix(, nrow = n_rows, ncol = n_cols)
-	colnames(analysis_by_radius) <- col_list
-	row <- 1
-
-	for(i in loop_count)
-	{
-		radius <- radius_values[i]
-		print(paste("i ",i, ", radius value ",radius))
-		# Reads in data for each percolation radius that has been computed, and if appropriate by minimum cluster size
-		# This lists each node and the id of the cluster to which it is a member, for this radius
-		ClstRad_col <- paste("ClstRad",radius,sep="")
-		member_cluster <- mem_clust_by_r[c("PlcIndex", ClstRad_col)]
-		names(member_cluster) <- c('node','cluster')
-		member_cluster <- na.omit(member_cluster)
-
-		# number of nodes in clusters, i.e. excluding single nodes
-		total_clustered_nodes <- nrow(member_cluster)
-		# Ranks clusters by size, i.e. number of nodes for each cluster
-		frequency_clusters <- data.frame(table(member_cluster$cluster))
-		names(frequency_clusters) <- c('cluster','number_of_nodes')
-		ranked_clusters <- frequency_clusters[order(frequency_clusters$number_of_nodes, decreasing=TRUE),]
-		# Convert cluster column from factor to numeric, else problems later
-		ranked_clusters$cluster <- as.numeric(as.character(ranked_clusters$cluster))
-		number_of_clusters <- nrow(ranked_clusters)
-
-		# The number of nodes in the first ranked cluster is maximum
-		max_nodes <- ranked_clusters$number_of_nodes[1]
-		max_normalized <- max_nodes/total_nodes
-		mean_nodes <- mean(ranked_clusters$number_of_nodes)
-		median_nodes <- median(ranked_clusters$number_of_nodes)
-
-		analysis_by_radius[row,] <- cbind(radius,number_of_clusters,max_nodes,max_normalized,mean_nodes,median_nodes)
-		row <- row + 1
-
-		}
-
-	#dev.off()
-	analysis_by_radius <<- as.data.frame(analysis_by_radius)
-	analysis_by_radius
-	# Save the analysis data as a csv file
-
-	file_name <- paste(path_results,"/","analysis_by_radius.csv",sep="")
-	write.table(analysis_by_radius,file=file_name,col.names=TRUE,sep=",",row.names=FALSE,quote=FALSE)
-
+#removed if-condition  about percolation
+	  output_file <- paste(path_results,"/cluster_plots_%02d.png",sep="")
+	  plot_suffix <- ""
+	
+	png(file=output_file, units="cm", width=21, height=21, res=300)
+	
+	# Plot radius vs max_clust_size
+	plot(analysis_by_radius$radius,analysis_by_radius$max_clust_size,
+	     main=paste("Max cluster size vs radius ",plot_suffix),
+	     sub=paste("Source File: ",source_file_name),
+	     xlab=paste("radius ", unit_text),
+	     ylab="max cluster size")
+	lines(analysis_by_radius$radius,analysis_by_radius$max_clust_size, type="b")
+#	textxy(analysis_by_radius$radius,analysis_by_radius$max_clust_size,analysis_by_radius$radius, col="red", cex=.8)
+	# at the moment some weird mistake here: Error in if (sum(posXposY) > 0) text(X[posXposY], Y[posXposY], labs[posXposY],  : 
+#	missing value where TRUE/FALSE needed
+	# there shouldn't be any values missing.
+	
+	
+	# Plot radius vs mean_clust_size
+	plot(analysis_by_radius$radius,analysis_by_radius$mean_clust_size,
+	     main=paste("Mean cluster size vs radius ",plot_suffix),
+	     sub=paste("Source File: ",source_file_name),
+	     xlab=paste("radius ", unit_text),
+	     ylab="mean cluster size")
+	lines(analysis_by_radius$radius,analysis_by_radius$mean_clust_size, type="b")
+#	textxy(analysis_by_radius$radius,analysis_by_radius$mean_clust_size,analysis_by_radius$radius, col="red", cex=.8)
+	
+	# Plot radius vs normalized max_clust_size
+	plot(analysis_by_radius$radius,analysis_by_radius$max_normalized,
+	     main=paste("Max cluster size (normalized) vs radius ",plot_suffix),
+	     sub=paste("Source File: ",source_file_name),
+	     xlab=paste("radius ", unit_text),
+	     ylab="max cluster size (normalized)")
+	lines(analysis_by_radius$radius,analysis_by_radius$max_normalized, type="b")
+#	textxy(analysis_by_radius$radius,analysis_by_radius$max_normalized,analysis_by_radius$radius, col="red", cex=.8)
+	
+	dev.off()
+	
+	
 }

@@ -54,20 +54,17 @@ library(igraph)
 sNL_shape <- readOGR(dsn="shape_files/alle_Schnitt-Fundstellen.shp")
 
 
-percolate_alles(data = data, radius_values = 10, limit = 500, radius_unit = 1, upper_radius = 200, lower_radius = 20, step_value = 20)
-
-source("R/nodes_clust.R")
-percolate2(data = data, radius_values = 10, limit = 500, radius_unit = 1, upper_radius = 200, lower_radius = 20, step_value = 20)
+percolate_all(data = data, radius_values = 10, limit = 500, radius_unit = 1, upper_radius = 200, lower_radius = 20, step_value = 20)
 
 source("R/map_clust.R")
-mapClusters(data = data, radius_values = 10, limit = 500, radius_unit = 1, upper_radius = 200, lower_radius = 20, step_value = 20, shape = sNL_shape, map_name = "sNL-Karte")
+mapClusters(data = data, shape = sNL_shape, map_name = "sNL-Karte")
 
 
 library(calibrate)
 library(Hmisc)
 
 source("R/cluster_frequency_script.v2.17.R")
-clusterFrequency(radius_unit = 1, upper_radius = 200, lower_radius = 20, step_value = 20)
+plot_clust_freq(source_file_name = "late neolithic features")
 
 
 ```
