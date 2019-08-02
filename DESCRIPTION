@@ -2,10 +2,10 @@ Package: percopackage
 Title: Percolation Analysis functions
 Version: 0.0.0.9000
 Authors@R: c(person("Sophie C.", "Schmidt", email = "s.c.schmidt@uni-koeln.de", role = c("aut", "cre")), person("Simon", "Maddison", email ="smaddison@iee.org",  role = "aut"))
-Description: What the package does (one paragraph).
+Description: Three functions to create percolation analysis.
 Depends: R (>= 3.4.3)
-License: Code belongs to Simon Maddison
+License: MIT
 Encoding: UTF-8
 LazyData: true
-Imports: bookdown, igraph, maptools, rgdal, stringr, calibrate, Hmisc, ggplot2, knitr, roxygen2, sp
+Imports: bookdown, igraph, maptools, rgdal, stringr, calibrate, Hmisc, ggplot2, knitr, roxygen2, sp, base
 RoxygenNote: 6.1.1
