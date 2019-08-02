@@ -8,8 +8,16 @@
 ##' output: in working_data: csv with the radius-input data, PlcIndex, null_entries and duplicate_entries
 ##' output in analysis_results: analysis_by_radius.csv and member_cluster_by_radius.csv
 ##' both output-folders will be used by following functions
+#' @param data needs input of dataframe
+#' @param limit needs input of integer: is the value above which distances will not be calculated between sites
+#' @param radius_unit is either 1 for meter or 1000 for km for all input numbers
+#' @param upper_radius needs input of integer, is the upper value of the radius range to be used
+#' @param lower_radius  needs input of integer, is the lower value of the radius range to be used
+#' @param step_value integer or numeric, is the step value to be used between these two values
+#' @return 3 plots of radius to maximum cluster size, radius to mean cluster size and radius to normalized max. cluster size
+#' @export
 
-percolate_all <- function(data, radius_values, limit, radius_unit, upper_radius, lower_radius, step_value) {
+percolate_all <- function(data, limit, radius_unit, upper_radius, lower_radius, step_value) {
 path_working <- paste(getwd(),"/working_data",sep="")
 path_results <- paste(getwd(),"/analysis_results",sep="")
 
@@ -17,8 +25,8 @@ dir.create(path_working, showWarnings = FALSE)
 dir.create(path_results, showWarnings = FALSE)
 
 # this will save the input values in a csv and as w_data in the environment to look up
-w_data_colnames <- c("radius_values", "limit", "radius_unit", "upper_radius", "lower_radius", "step_value")
-w_data_values <- c(radius_values, limit, radius_unit, upper_radius, lower_radius, step_value)
+w_data_colnames <- c("limit", "radius_unit", "upper_radius", "lower_radius", "step_value")
+w_data_values <- c(limit, radius_unit, upper_radius, lower_radius, step_value)
 w_data <<- rbind(w_data_colnames,w_data_values)
 
 file_name <- paste(path_working,"/","working_data.csv",sep="")

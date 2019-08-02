@@ -4,8 +4,24 @@
 \alias{percolate_all}
 \title{created 2019-08-01 by Sophie Schmidt}
 \usage{
-percolate_all(data, radius_values, limit, radius_unit, upper_radius,
-  lower_radius, step_value)
+percolate_all(data, limit, radius_unit, upper_radius, lower_radius,
+  step_value)
+}
+\arguments{
+\item{data}{needs input of dataframe}
+
+\item{limit}{needs input of integer: is the value above which distances will not be calculated between sites}
+
+\item{radius_unit}{is either 1 for meter or 1000 for km for all input numbers}
+
+\item{upper_radius}{needs input of integer, is the upper value of the radius range to be used}
+
+\item{lower_radius}{needs input of integer, is the lower value of the radius range to be used}
+
+\item{step_value}{integer or numeric, is the step value to be used between these two values}
+}
+\value{
+3 plots of radius to maximum cluster size, radius to mean cluster size and radius to normalized max. cluster size
 }
 \description{
 This is a function built based on the scripts create_nodes_list_d.v4.7, clustering_script.v.3.6 and cluster_frequency_script.v2.17 
@@ -16,22 +32,4 @@ input of radius values needed
 output: in working_data: csv with the radius-input data, PlcIndex, null_entries and duplicate_entries
 output in analysis_results: analysis_by_radius.csv and member_cluster_by_radius.csv
 both output-folders will be used by following functions
-For computation time
-List any entries with null values and write to file
-Remove rows with null values from data
-Remove points that are superimposed and keep only the first ID
-- This removes one of two sites that are very close to each other
-Determined on basis of x y coordinates
-Write list to file
-Write file with list of PlcIndex used
-Number of points/nodes in file with no duplicates
-Create matrix of internodal distances
-Columns: NodeId1, NodeId2, distance 1-2
-Compute distance between nodes - pythagoras
- for full grid references this is in units of 1m
-to give distance in m*unit, rounded to 2 decimal places; this also reduces file size
-Include only if less than limit of distances to be included
-Output file name and location writes to a text file
-Remove the unused rows in the matrix
-need to write this WITHOUT the row number
 }

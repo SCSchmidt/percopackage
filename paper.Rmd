@@ -54,7 +54,7 @@ library(igraph)
 sNL_shape <- readOGR(dsn="shape_files/alle_Schnitt-Fundstellen.shp")
 
 
-percolate_all(data = data, radius_values = 10, limit = 500, radius_unit = 1, upper_radius = 200, lower_radius = 20, step_value = 20)
+percolate_all(data = data, limit = 500, radius_unit = 1, upper_radius = 200, lower_radius = 20, step_value = 20)
 
 source("R/map_clust.R")
 mapClusters(data = data, shape = sNL_shape, map_name = "sNL-Karte")

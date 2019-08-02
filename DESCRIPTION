@@ -7,5 +7,5 @@ Depends: R (>= 3.4.3)
 License: Code belongs to Simon Maddison
 Encoding: UTF-8
 LazyData: true
-Imports: bookdown, igraph, maptools, rgdal, stringr, calibrate, Hmisc, ggplot2, knitr, roxygen2
+Imports: bookdown, igraph, maptools, rgdal, stringr, calibrate, Hmisc, ggplot2, knitr, roxygen2, sp
 RoxygenNote: 6.1.1

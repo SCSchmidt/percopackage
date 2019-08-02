@@ -1,4 +1,15 @@
-
+##' created 2019-08-01 by Sophie Schmidt
+##' 
+##' This is a function built based on the script mapping_clusters.v4.12
+##' by Simon Maddison
+##' it creates a folder maps, where output is saved as png
+#
+#' @param data needs input of dataframe
+#' @param shape needs input of SpatialPolygonDataFrame from 'sp'
+#' @param map_name needs string for how the maps shall be named
+#' @return as many maps as png as step_values have been calculated
+#' @export
+#'
 mapClusters <- function(data, shape, map_name) {
 
   # changed path results and path_working to better seperate working data and analysis results data  
