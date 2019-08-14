@@ -217,4 +217,8 @@ xy_data <- sp::merge(xy_data, ranked_mem_clust_by_r, by = "PlcIndex")
 
 writeOGR(xy_data,output_shape_file,layer=layer_name, driver="ESRI Shapefile",overwrite_layer=TRUE)
 
+# output source file name for plotClustFreq
+source_file_name_out <- paste(file.path(path_working,"source_file_name_out"))
+write.table(source_file_name, source_file_name_out)
+
 }
