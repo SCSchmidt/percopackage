@@ -44,7 +44,7 @@ file_name <- paste(file.path(path_working,"working_data.csv"))
 write.table(w_data, file_name, row.names=FALSE, col.names = FALSE, sep = ",")
 
 file_name <-paste(file.path(path_working,"data.csv"))
-write.table(data, file_name, row.names=FALSE, col.names = FALSE, sep = ",")
+write.table(data, file_name, row.names=FALSE, col.names = TRUE, sep = ",")
 
 ptm <- proc.time()
 #' For computation time

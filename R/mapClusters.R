@@ -52,7 +52,10 @@ map_outline <- shape
 
 # Read in nodes and grid coordinates
 data_filename <- paste(file.path(path_working,"data.csv"))
-xy_data <- read.csv2(data_filename)
+xy_data <- read.csv2(data_filename, sep = ",")
+
+xy_data$Easting <- as.numeric(as.character(xy_data$Easting))
+xy_data$Northing <- as.numeric(as.character(xy_data$Northing))
 
 # Convert data to SpatialPointsDataFrame, using project4string from selected map file
 # get projection string for current map
@@ -220,7 +223,7 @@ xy_data <- sp::merge(xy_data, ranked_mem_clust_by_r, by = "PlcIndex")
 writeOGR(xy_data,output_shape_file,layer=layer_name, driver="ESRI Shapefile",overwrite_layer=TRUE)
 
 # output source file name for plotClustFreq
-source_file_name_out <- paste(file.path(path_working,"source_file_name_out"))
+source_file_name_out <- paste(file.path(path_working,"source_file_name_out.csv"))
 write.table(source_file_name, source_file_name_out)
 
 }
