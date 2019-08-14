@@ -33,10 +33,18 @@ plotClustFreq <- function(source_file_name = source_file_name) {
 file_name <- paste(file.path(path_results,"analysis_by_radius.csv"))
 analysis_by_radius <- read.csv2(file_name,sep=",")
 
-# load source_file_name if put out by mapClusters
+# load source_file_name if put out by mapClusters, if it was saved there. otherwise use input
 
+
+if ( file.exists(file.path(path_working, "source_file_name_out.csv"))) {
 source_file_name <- read.csv(file.path(path_working, "source_file_name_out.csv"), sep = " ")
-source_file_name <- source_file_name[1,1]
+source_file_name <- source_file_name[1,1] 
+} else if ( exists("source_file_name")) {
+  source_file_name <- source_file_name
+} else {
+  print("source_file_name input needed")
+}
+
 
 # Read in distance thresholds - this ensures same values used as in clustering script, where it was saved
 file_name <- paste(file.path(path_working, "working_data.csv"))
@@ -56,14 +64,14 @@ if (radius_unit == 1)
 	# output as png files
 
 #removed if-condition  about percolation
-	  output_file <- paste(file.path(path_results,"radius_to_max_cluster_size.png"))
-	  plot_suffix <- ""
-	
+
+# Plot radius vs max_clust_size
+
+  output_file <- paste(file.path(path_results,"radius_to_max_cluster_size.png"))
 	png(file=output_file, units="cm", width=21, height=21, res=300)
 	
-	# Plot radius vs max_clust_size
 	plot(analysis_by_radius$radius,analysis_by_radius$max_clust_size,
-	     main=paste("Max cluster size vs radius ",plot_suffix),
+	     main=paste("Max cluster size vs radius "),
 	     sub=paste("Source File: ",source_file_name),
 	     xlab=paste("radius ", unit_text),
 	     ylab="max cluster size")
@@ -73,30 +81,28 @@ if (radius_unit == 1)
 #	missing value where TRUE/FALSE needed
 	# there shouldn't be any values missing.
 	
-	output_file <- paste(file.path(path_results,"radius_to_mean_cluster_size.png"))
-	plot_suffix <- ""
+	# Plot radius vs mean_clust_size
 	
+	output_file <- paste(file.path(path_results,"radius_to_mean_cluster_size.png"))
 	png(file=output_file, units="cm", width=21, height=21, res=300)
 	
-	
-	# Plot radius vs mean_clust_size
 	plot(analysis_by_radius$radius,analysis_by_radius$mean_clust_size,
-	     main=paste("Mean cluster size vs radius ",plot_suffix),
+	     main=paste("Mean cluster size vs radius "),
 	     sub=paste("Source File: ",source_file_name),
 	     xlab=paste("radius ", unit_text),
 	     ylab="mean cluster size")
 	lines(analysis_by_radius$radius,analysis_by_radius$mean_clust_size, type="b")
 #	textxy(analysis_by_radius$radius,analysis_by_radius$mean_clust_size,analysis_by_radius$radius, col="red", cex=.8)
 	
-	output_file <- paste(file.path(path_results,"radius_to_norm_max_cluster_size.png"))
-	plot_suffix <- ""
+
+	# Plot radius vs normalized max_clust_size
 	
+	output_file <- paste(file.path(path_results,"radius_to_norm_max_cluster_size.png"))
 	png(file=output_file, units="cm", width=21, height=21, res=300)
 	
 	
-	# Plot radius vs normalized max_clust_size
 	plot(analysis_by_radius$radius,analysis_by_radius$max_normalized,
-	     main=paste("Max cluster size (normalized) vs radius ",plot_suffix),
+	     main=paste("Max cluster size (normalized) vs radius "),
 	     sub=paste("Source File: ",source_file_name),
 	     xlab=paste("radius ", unit_text),
 	     ylab="max cluster size (normalized)")
