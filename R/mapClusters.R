@@ -22,20 +22,21 @@
 #' 
 #' @export mapClusters
 #'
-mapClusters <- function(data, shape, map_name, source_file_name) {
+mapClusters <- function(shape, map_name, source_file_name) {
 
   # changed path results and path_working to better seperate working data and analysis results data  
-path_results <- paste(getwd(),"/analysis_results",sep="")
-path_working <- paste(getwd(),"/working_data",sep="")
-path_maps <- paste(getwd(),"/maps",sep="")
+
+path_working <- file.path(getwd(), "working_data")
+path_results <- file.path(getwd(), "analysis_results")
+path_maps <- file.path(getwd(), "maps")
 
 dir.create(path_maps, showWarnings = FALSE)
 
 # read in nodes list
-data_file <- paste(path_working,"/","nodes_list_d.txt",sep="")
+data_file <- paste(file.path(path_working,"nodes_list_d.txt"))
 
 # Read in distance thresholds - this ensures same values used as in clustering script, where it was saved
-file_name <- paste(path_working,"/","working_data.csv",sep="")
+file_name <- paste(file.path(path_working,"working_data.csv"))
 radius_values <- read.csv(file_name,header=TRUE, sep = ",")
 upper_radius <- radius_values$upper_radius
 lower_radius <- radius_values$lower_radius
@@ -48,7 +49,8 @@ map_outline <- shape
 #print(map_name)
 
 # Read in nodes and grid coordinates
-xy_data <- data
+data_filename <- paste(file.path(path_working,"data.csv"))
+xy_data <- read.csv2(data_filename)
 
 # Convert data to SpatialPointsDataFrame, using project4string from selected map file
 # get projection string for current map
@@ -59,7 +61,7 @@ coordinates(xy_data) <- c("Easting", "Northing")
 proj4string(xy_data) <- crs_projection
 
 # Read in data file with cluster id for each site and radius
-file_name <- paste(path_results,"/","member_cluster_by_radius.csv",sep="")
+file_name <- paste(file.path(path_results,"member_cluster_by_radius.csv"))
 ranked_mem_clust_by_r <- read.csv(file_name, header=TRUE)
 
 
@@ -93,7 +95,7 @@ the_rest_colour <- "#AEAEAE"
 
 # Plot as png, earlier issues with png now resolved
 
-file_map_png <- paste(path_maps,"/","percolation_plots_",map_name, "_all.png",sep="")
+file_map_png <- paste(file.path(path_maps, "percolation_plots_"),map_name, "_all.png",sep="")
 png(file=file_map_png, units="cm", width=21, height=29.7, res=300)
 
 plot(map_outline, col="white",border=TRUE)
@@ -118,7 +120,7 @@ for(i in loop_count)
 {
 	radius <- radius_values[i]
 	radius_name <- format(radius,nsmall=dec_places)
-	file_map_png <- paste(path_maps,"/","percolation_plots_",map_name, "_rad_", radius_name, ".png",sep="")
+	file_map_png <- paste(file.path(path_maps, "percolation_plots_"),map_name, "_rad_", radius_name, ".png",sep="")
 	png(file=file_map_png, units="cm", width=21, height=29.7, res=300)
 	# Uses data for percolation radius computed, steps through each column for radius value defined by i
 	ClstRad_col <- paste("ClstRad",radius,sep="")
@@ -195,7 +197,7 @@ for(i in loop_count)
 ranked_mem_clust_by_r[is.na(ranked_mem_clust_by_r)] <- 0
 # Write file with PlcIndex and cluster rank for each radius
 # Output file name and location writes to a text file
-file_name <- paste(path_results,"/","site_cluster_rank_by_radius.csv",sep="")
+file_name <- paste(file.path(path_results,"site_cluster_rank_by_radius.csv"))
 # need to write this WITHOUT the row number
 write.csv(ranked_mem_clust_by_r[order(ranked_mem_clust_by_r$PlcIndex),], file_name, row.names=FALSE)
 
@@ -208,7 +210,7 @@ crs_projection <- CRS(projection_string)
 
 # name of output shapefile (renamed by Sophie)
 # Truncate source file name to remove extension
-output_shape_file <- paste(path_maps,"/analysis_results.shp",sep="")
+output_shape_file <- paste(file.path(path_maps,"analysis_results.shp"))
 layer_name <- "percolation"
 
 xy_data <- sp::merge(xy_data, ranked_mem_clust_by_r, by = "PlcIndex")

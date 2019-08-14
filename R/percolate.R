@@ -27,8 +27,8 @@
 #'
 percolate <- function(data, limit, radius_unit, upper_radius, lower_radius, step_value) {
   
-path_working <- paste(getwd(),"/working_data",sep="")
-path_results <- paste(getwd(),"/analysis_results",sep="")
+path_working <- file.path(getwd(), "working_data")
+path_results <- file.path(getwd(), "analysis_results")
 
 dir.create(path_working, showWarnings = FALSE)
 dir.create(path_results, showWarnings = FALSE)
@@ -38,8 +38,11 @@ w_data_colnames <- c("limit", "radius_unit", "upper_radius", "lower_radius", "st
 w_data_values <- c(limit, radius_unit, upper_radius, lower_radius, step_value)
 w_data <<- rbind(w_data_colnames,w_data_values)
 
-file_name <- paste(path_working,"/","working_data.csv",sep="")
+file_name <- paste(file.path(path_working,"working_data.csv"))
 write.table(w_data, file_name, row.names=FALSE, col.names = FALSE, sep = ",")
+
+file_name <-paste(file.path(path_working,"data.csv"))
+write.table(data, file_name, row.names=FALSE, col.names = FALSE, sep = ",")
 
 ptm <- proc.time()
 #' For computation time
@@ -48,7 +51,7 @@ ptm <- proc.time()
 data_NA <- data[rowSums(is.na(data)) > 0,]
 print(paste("Entries in source file with one or more null values: "))
 data_NA
-file_name <- paste(path_working,"/","null_entries.txt",sep="")
+file_name <- paste(file.path(path_working,"null_entries.txt"))
 write.table(data_NA, file_name, row.names=FALSE)
 #' Remove rows with null values from data
 data <- na.omit(data)
@@ -61,7 +64,7 @@ duplicate_xy <- data[duplicated(data[,2:3]),]
 data_unique <- data[!duplicated(data[,2:3]),]
 print(paste("Number of removed superimposed points: ",(nrow(data)-nrow(data_unique))))
 duplicate_xy
-file_name <- paste(path_working,"/","duplicate_entries.txt",sep="")
+file_name <- paste(file.path(path_working,"duplicate_entries.txt"))
 write.table(duplicate_xy, file_name, row.names=FALSE)
 
 x_vec <- data_unique$Easting
@@ -70,7 +73,7 @@ ID <- data_unique$PlcIndex
 
 #' Write file with list of PlcIndex used
 PlcIndex_list <- matrix(ID,ncol=1)
-file_name <- paste(path_working,"/","PlcIndex.csv",sep="")
+file_name <- paste(file.path(path_working,"PlcIndex.csv"))
 write.table(data_unique$PlcIndex, file_name, row.names=FALSE, col.names="PlcIndex")
 
 #' Number of points/nodes in file with no duplicates
@@ -111,7 +114,7 @@ print('loop computed')
 print(t1/60)
 
 #' Output file name and location writes to a text file
-file_name <- paste(path_working,"/","nodes_list_d.txt",sep="")
+file_name <- paste(file.path(path_working,"nodes_list_d.txt"))
 #' Remove the unused rows in the matrix
 nodes_list <- nodes_list[-(row+1:n_rows),]
 m_nodes <- as.matrix(nodes_list)
@@ -146,7 +149,7 @@ print(paste("Radii used for cluster analysis, ",unit_text,": upper ",upper_radiu
 # To compute and display computational time
 ptm <- proc.time()
 
-data_file <- paste(path_working,"/","nodes_list_d.txt",sep="")
+data_file <- paste(file.path(path_working,"nodes_list_d.txt"))
 
 # The data table of nodes and internode distances is a Text file, with headers
 matrix_IDs_distance <- read.table(data_file,header=TRUE)
@@ -207,7 +210,7 @@ for (i in loop_count)
   
 }
 
-file_name <- paste(path_results,"/","member_cluster_by_radius.csv",sep="")
+file_name <- paste(file.path(path_results,"member_cluster_by_radius.csv"))
 # Write file without row names
 write.csv(mem_clust_by_r,file_name,quote=FALSE,row.names=FALSE)
 
@@ -235,7 +238,7 @@ radii_count <- length(radius_values)
 loop_count <- seq(radii_count,1,by=-1)
 
 
-file_name <- paste(path_results,"/","member_cluster_by_radius.csv",sep="")
+file_name <- paste(file.path(path_results, "member_cluster_by_radius.csv"))
 
 mem_clust_by_r <- read.csv(file_name, header = TRUE)
 
@@ -286,7 +289,7 @@ analysis_by_radius <<- as.data.frame(analysis_by_radius)
 analysis_by_radius
 # Save the analysis data as a csv file
 
-file_name <- paste(path_results,"/","analysis_by_radius.csv",sep="")
+file_name <- paste(file.path(path_results,"analysis_by_radius.csv"))
 write.table(analysis_by_radius,file=file_name,col.names=TRUE,sep=",",row.names=FALSE,quote=FALSE)
 
 
