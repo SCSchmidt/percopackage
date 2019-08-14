@@ -56,7 +56,7 @@ if (radius_unit == 1)
 	# output as png files
 
 #removed if-condition  about percolation
-	  output_file <- paste(file.path(path_results,"cluster_plots_%02d.png"))
+	  output_file <- paste(file.path(path_results,"radius_to_max_cluster_size.png"))
 	  plot_suffix <- ""
 	
 	png(file=output_file, units="cm", width=21, height=21, res=300)
@@ -73,6 +73,11 @@ if (radius_unit == 1)
 #	missing value where TRUE/FALSE needed
 	# there shouldn't be any values missing.
 	
+	output_file <- paste(file.path(path_results,"radius_to_mean_cluster_size.png"))
+	plot_suffix <- ""
+	
+	png(file=output_file, units="cm", width=21, height=21, res=300)
+	
 	
 	# Plot radius vs mean_clust_size
 	plot(analysis_by_radius$radius,analysis_by_radius$mean_clust_size,
@@ -82,6 +87,12 @@ if (radius_unit == 1)
 	     ylab="mean cluster size")
 	lines(analysis_by_radius$radius,analysis_by_radius$mean_clust_size, type="b")
 #	textxy(analysis_by_radius$radius,analysis_by_radius$mean_clust_size,analysis_by_radius$radius, col="red", cex=.8)
+	
+	output_file <- paste(file.path(path_results,"radius_to_norm_max_cluster_size.png"))
+	plot_suffix <- ""
+	
+	png(file=output_file, units="cm", width=21, height=21, res=300)
+	
 	
 	# Plot radius vs normalized max_clust_size
 	plot(analysis_by_radius$radius,analysis_by_radius$max_normalized,
