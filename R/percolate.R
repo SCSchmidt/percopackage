@@ -26,7 +26,10 @@
 #' @export percolate
 #'
 percolate <- function(data, limit, radius_unit, upper_radius, lower_radius, step_value) {
-  
+
+# create directories
+  # file.path creates paths according to platform used on user's computer
+    
 path_working <- file.path(getwd(), "working_data")
 path_results <- file.path(getwd(), "analysis_results")
 

@@ -26,10 +26,12 @@ mapClusters <- function(shape, map_name, source_file_name) {
 
   # changed path results and path_working to better seperate working data and analysis results data  
 
+  # file.path creates paths according to platform used on user's computer
 path_working <- file.path(getwd(), "working_data")
 path_results <- file.path(getwd(), "analysis_results")
-path_maps <- file.path(getwd(), "maps")
 
+# create maps directory
+path_maps <- file.path(getwd(), "maps")
 dir.create(path_maps, showWarnings = FALSE)
 
 # read in nodes list
