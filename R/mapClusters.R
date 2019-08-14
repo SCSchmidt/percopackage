@@ -215,7 +215,7 @@ crs_projection <- CRS(projection_string)
 
 # name of output shapefile (renamed by Sophie)
 # Truncate source file name to remove extension
-output_shape_file <- paste(file.path(path_maps,source_file_name,".shp"))
+output_shape_file <- paste(file.path(path_maps,source_file_name),".shp", sep = "")
 layer_name <- "percolation"
 
 xy_data <- sp::merge(xy_data, ranked_mem_clust_by_r, by = "PlcIndex")
