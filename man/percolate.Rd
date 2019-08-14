@@ -19,9 +19,6 @@ percolate(data, limit, radius_unit, upper_radius, lower_radius, step_value)
 
 \item{step_value}{integer or numeric, is the step value to be used between these two values}
 }
-\value{
-percolate 3 plots of radius to maximum cluster size, radius to mean cluster size and radius to normalized max. cluster size
-}
 \description{
 This is a function built based on the scripts create_nodes_list_d.v4.7, clustering_script.v.3.6 and cluster_frequency_script.v2.17 
 by Simon Maddison

@@ -10,7 +10,7 @@ The data is in the analysis_results-directory in text files created by the nodes
 	radius-values have been stored in the working_data-directory.
 	output will be put into /analysis_results}
 \usage{
-plotClustFreq(source_file_name)
+plotClustFreq(source_file_name = source_file_name)
 }
 \arguments{
 \item{source_file_name}{needs input of source file name for plotting}

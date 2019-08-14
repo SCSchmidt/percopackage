@@ -4,16 +4,15 @@
 \alias{mapClusters}
 \title{created 2019-08-01 by Sophie Schmidt}
 \usage{
-mapClusters(data, shape, map_name, source_file_name)
+mapClusters(shape, map_name, source_file_name)
 }
 \arguments{
-\item{data}{needs input of dataframe}
-
 \item{shape}{needs input of SpatialPolygonDataFrame from 'sp' for background map (same ESPG!)}
 
 \item{map_name}{needs string for how the maps shall be named}
 
 \item{source_file_name}{string for the name of data set}
+
 }
 \value{
 as many maps as png as step_values have been calculated

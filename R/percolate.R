@@ -21,9 +21,8 @@
 #' @param upper_radius needs input of integer, is the upper value of the radius range to be used
 #' @param lower_radius  needs input of integer, is the lower value of the radius range to be used
 #' @param step_value integer or numeric, is the step value to be used between these two values
-#' @return percolate 3 plots of radius to maximum cluster size, radius to mean cluster size and radius to normalized max. cluster size
-#' 
-#' @export percolate
+#' @return 
+#' @export 
 #'
 percolate <- function(data, limit, radius_unit, upper_radius, lower_radius, step_value) {
 
@@ -39,7 +38,7 @@ dir.create(path_results, showWarnings = FALSE)
 # this will save the input values in a csv and as w_data in the environment to look up
 w_data_colnames <- c("limit", "radius_unit", "upper_radius", "lower_radius", "step_value")
 w_data_values <- c(limit, radius_unit, upper_radius, lower_radius, step_value)
-w_data <<- rbind(w_data_colnames,w_data_values)
+w_data <- rbind(w_data_colnames,w_data_values)
 
 file_name <- paste(file.path(path_working,"working_data.csv"))
 write.table(w_data, file_name, row.names=FALSE, col.names = FALSE, sep = ",")
