@@ -35,7 +35,8 @@ analysis_by_radius <- read.csv2(file_name,sep=",")
 
 # load source_file_name if put out by mapClusters
 
-source_file_name <- read.csv(file.path(path_working, "source_file_name_out.csv"))
+source_file_name <- read.csv(file.path(path_working, "source_file_name_out.csv"), sep = " ")
+source_file_name <- source_file_name[1,1]
 
 # Read in distance thresholds - this ensures same values used as in clustering script, where it was saved
 file_name <- paste(file.path(path_working, "working_data.csv"))
