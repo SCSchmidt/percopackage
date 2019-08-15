@@ -107,7 +107,7 @@ plot(map_outline, col="white",border=TRUE)
 
 # get from original file xy_data coords and create table
 # Easting | Northing | ID | cluster | colour
-if((nrow(xy_data) < 1000)| (map_name == 'Domesday'))
+if((nrow(xy_data) < 1000))
 {point_dia <- 0.8
 } else {
 point_dia <- 0.4}

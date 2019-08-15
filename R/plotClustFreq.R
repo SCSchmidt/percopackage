@@ -41,6 +41,7 @@ source_file_name <- read.csv(file.path(path_working, "source_file_name_out.csv")
 source_file_name <- source_file_name[1,1] 
 } else if ( exists("source_file_name")) {
   source_file_name <- source_file_name
+  print(paste("source_file_name is", source_file_name))
 } else {
   print("source_file_name input needed")
 }
@@ -80,21 +81,21 @@ if (radius_unit == 1)
 	# at the moment some weird mistake here: Error in if (sum(posXposY) > 0) text(X[posXposY], Y[posXposY], labs[posXposY],  : 
 #	missing value where TRUE/FALSE needed
 	# there shouldn't be any values missing.
-	
+	dev.off()	
 	# Plot radius vs mean_clust_size
 	
 	output_file <- paste(file.path(path_results,"radius_to_mean_cluster_size.png"))
 	png(file=output_file, units="cm", width=21, height=21, res=300)
 	
-	plot(analysis_by_radius$radius,analysis_by_radius$mean_clust_size,
+	plot(analysis_by_radius$radius,analysis_by_radius$mean_clust_size ,
 	     main=paste("Mean cluster size vs radius "),
 	     sub=paste("Source File: ",source_file_name),
 	     xlab=paste("radius ", unit_text),
 	     ylab="mean cluster size")
-	lines(analysis_by_radius$radius,analysis_by_radius$mean_clust_size, type="b")
+	lines(analysis_by_radius$radius,analysis_by_radius$mean_clust_size , type="b")
 #	textxy(analysis_by_radius$radius,analysis_by_radius$mean_clust_size,analysis_by_radius$radius, col="red", cex=.8)
 	
-
+	dev.off()
 	# Plot radius vs normalized max_clust_size
 	
 	output_file <- paste(file.path(path_results,"radius_to_norm_max_cluster_size.png"))
