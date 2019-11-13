@@ -1,15 +1,19 @@
 ##' created 2019-08-01 by Sophie Schmidt
 ##' 
 ##' This is a function built based on the scripts create_nodes_list_d.v4.7, clustering_script.v.3.6 and cluster_frequency_script.v2.17 
-##' by Simon Maddison
-##' it creates a file structure in which working data and analysis results are saved
+##' by Simon Maddison, who based it on code developed by Elsa Arcaute, which is published under :  
+##' E. Arcaute, C. Molinero, E. Hatna, R. Murcio, C. Vargas-Ruiz, A.P. Masucci and M. Batty. Cities and Regions in Britain through hierarchical percolation. J. R. Soc. Open Science, 3 (4),150691. doi:10.1098/rsos.150691, 2016. 
+##' 
+##' It creates a file structure in which working data and analysis results are saved
 ##' input data needed, which consists of a dataframe with the PLCINDEX, EASTING, NORTHING - header
 ##' input of radius values needed
 ##' output: in working_data: csv with the radius-input data, PlcIndex, null_entries and duplicate_entries
 ##' output in analysis_results: analysis_by_radius.csv and member_cluster_by_radius.csv
 ##' both output-folders will be used by following functions
+
 #' @author Simon Maddison
 #' @author Sophie C. Schmidt
+#' @author Elsa Arcaute
 #' 
 #' @import stats
 #' @import Hmisc
