@@ -1,0 +1,16 @@
+---
+title: "Percolation Program Description"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Percolation Program Description}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+## Percolation Analysis via the R package “percopackage” – Workflow and Descriptions
+
+Percopackage is an R-package, which takes scripts developed by Simon Maddison and Elsa Arcaute to create three functions, which perform a) the actual percolation analysis (function called “percolate”), b) maps the clusters created by percolation (function “mapClusters”) and c) creates three different plots of the analysis results (function “plotClustFreq”)
+The percolate function does the actual computing of the percolation analysis and exports different tables on which the following functions recur. 
+Two different data inputs are possible: A set of points in Euclidian space, for which a distance matrix will be calculated OR a distance matrix, which may for example have been calculated using least cost paths.  
+
+...

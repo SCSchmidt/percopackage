@@ -5,3 +5,5 @@ analysis
 ^README-.*\.png$
 ^CONDUCT\.md$
 ^CONTRIBUTING\.md$
+^doc$
+^Meta$

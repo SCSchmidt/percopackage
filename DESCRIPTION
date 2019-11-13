@@ -9,3 +9,5 @@ Encoding: UTF-8
 LazyData: true
 Imports: bookdown, igraph, maptools, rgdal, stringr, calibrate, Hmisc, ggplot2, knitr, roxygen2, sp, base
 RoxygenNote: 6.1.1
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
