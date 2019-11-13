@@ -13,6 +13,7 @@ mapClusters(shape, map_name, source_file_name)
 
 \item{source_file_name}{string for the name of data set}
 
+\item{data}{needs input of dataframe}
 }
 \value{
 as many maps as png as step_values have been calculated

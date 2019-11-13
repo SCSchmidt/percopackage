@@ -4,10 +4,13 @@
 \alias{percolate}
 \title{created 2019-08-01 by Sophie Schmidt}
 \usage{
-percolate(data, limit, radius_unit, upper_radius, lower_radius, step_value)
+percolate(data, type = "points", limit, radius_unit, upper_radius,
+  lower_radius, step_value)
 }
 \arguments{
-\item{data}{needs input of dataframe}
+\item{data}{needs input of dataframe as specified above}
+
+\item{type}{specifies whether dataframe is points or a distance matrix. Default is "points". All other input will be treated as distance matrix}
 
 \item{limit}{needs input of integer: is the value above which distances will not be calculated between sites}
 
@@ -19,11 +22,17 @@ percolate(data, limit, radius_unit, upper_radius, lower_radius, step_value)
 
 \item{step_value}{integer or numeric, is the step value to be used between these two values}
 }
+\value{
+the function returns analysis_by_radius.csv and member_cluster_by_radius.csv
+}
 \description{
 This is a function built based on the scripts create_nodes_list_d.v4.7, clustering_script.v.3.6 and cluster_frequency_script.v2.17 
-by Simon Maddison
-it creates a file structure in which working data and analysis results are saved
-input data needed, which consists of a dataframe with the PLCINDEX, EASTING, NORTHING - header
+by Simon Maddison, who based it on code developed by Elsa Arcaute, which is published under :  
+E. Arcaute, C. Molinero, E. Hatna, R. Murcio, C. Vargas-Ruiz, A.P. Masucci and M. Batty. Cities and Regions in Britain through hierarchical percolation. J. R. Soc. Open Science, 3 (4),150691. doi:10.1098/rsos.150691, 2016.
+}
+\details{
+It creates a file structure in which working data and analysis results are saved
+input data needed, which consists of a dataframe with the PLCINDEX, EASTING, NORTHING - header OR a distance table with the headers 'ID1','ID2','d12'!
 input of radius values needed
 output: in working_data: csv with the radius-input data, PlcIndex, null_entries and duplicate_entries
 output in analysis_results: analysis_by_radius.csv and member_cluster_by_radius.csv
@@ -33,4 +42,6 @@ both output-folders will be used by following functions
 Simon Maddison
 
 Sophie C. Schmidt
+
+Elsa Arcaute
 }

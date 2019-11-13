@@ -5,7 +5,7 @@
 ##' E. Arcaute, C. Molinero, E. Hatna, R. Murcio, C. Vargas-Ruiz, A.P. Masucci and M. Batty. Cities and Regions in Britain through hierarchical percolation. J. R. Soc. Open Science, 3 (4),150691. doi:10.1098/rsos.150691, 2016. 
 ##' 
 ##' It creates a file structure in which working data and analysis results are saved
-##' input data needed, which consists of a dataframe with the PLCINDEX, EASTING, NORTHING - header
+##' input data needed, which consists of a dataframe with the PLCINDEX, EASTING, NORTHING - header OR a distance table with the headers 'ID1','ID2','d12'!
 ##' input of radius values needed
 ##' output: in working_data: csv with the radius-input data, PlcIndex, null_entries and duplicate_entries
 ##' output in analysis_results: analysis_by_radius.csv and member_cluster_by_radius.csv
@@ -19,16 +19,16 @@
 #' @import Hmisc
 #' @import utils
 
-#' @param data needs input of dataframe
+#' @param data needs input of dataframe as specified above
+#' @param type specifies whether dataframe is points or a distance matrix. Default is "points". All other input will be treated as distance matrix
 #' @param limit needs input of integer: is the value above which distances will not be calculated between sites
 #' @param radius_unit is either 1 for meter or 1000 for km for all input numbers
 #' @param upper_radius needs input of integer, is the upper value of the radius range to be used
 #' @param lower_radius  needs input of integer, is the lower value of the radius range to be used
 #' @param step_value integer or numeric, is the step value to be used between these two values
-#' @return 
-#' @export 
-#'
-percolate <- function(data, limit, radius_unit, upper_radius, lower_radius, step_value) {
+#' @return the function returns analysis_by_radius.csv and member_cluster_by_radius.csv
+#' @export
+percolate <- function(data, type = "points", limit, radius_unit, upper_radius, lower_radius, step_value) {
 
 # create directories
   # file.path creates paths according to platform used on user's computer
@@ -51,21 +51,25 @@ file_name <-paste(file.path(path_working,"data.csv"))
 write.table(data, file_name, row.names=FALSE, col.names = TRUE, sep = ",")
 
 ptm <- proc.time()
-#' For computation time
+# For computation time
 
-#' List any entries with null values and write to file
+
+
+# List any entries with null values and write to file
 data_NA <- data[rowSums(is.na(data)) > 0,]
 print(paste("Entries in source file with one or more null values: "))
 data_NA
 file_name <- paste(file.path(path_working,"null_entries.txt"))
 write.table(data_NA, file_name, row.names=FALSE)
-#' Remove rows with null values from data
+# Remove rows with null values from data
 data <- na.omit(data)
 
-#' Remove points that are superimposed and keep only the first ID
-#' - This removes one of two sites that are very close to each other
-#' Determined on basis of x y coordinates
-#' Write list to file
+# conditional depending on what kind of data type you're entering
+if (type == "points") {
+# Remove points that are superimposed and keep only the first ID
+# - This removes one of two sites that are very close to each other
+# Determined on basis of x y coordinates
+# Write list to file
 duplicate_xy <- data[duplicated(data[,2:3]),]
 data_unique <- data[!duplicated(data[,2:3]),]
 print(paste("Number of removed superimposed points: ",(nrow(data)-nrow(data_unique))))
@@ -77,17 +81,17 @@ x_vec <- data_unique$Easting
 y_vec <- data_unique$Northing
 ID <- data_unique$PlcIndex
 
-#' Write file with list of PlcIndex used
+# Write file with list of PlcIndex used
 PlcIndex_list <- matrix(ID,ncol=1)
 file_name <- paste(file.path(path_working,"PlcIndex.csv"))
 write.table(data_unique$PlcIndex, file_name, row.names=FALSE, col.names="PlcIndex")
 
-#' Number of points/nodes in file with no duplicates
+# Number of points/nodes in file with no duplicates
 n <- length(ID)
 print(paste('number of points: ',n))
 
-#' Create matrix of internodal distances
-#' Columns: NodeId1, NodeId2, distance 1-2
+# Create matrix of internodal distances
+# Columns: NodeId1, NodeId2, distance 1-2
 col_list <- cbind('ID1','ID2','d12')
 ni <- n-1
 nj <- n
@@ -102,13 +106,13 @@ for (i in 1:ni)
 	j1 <- i+1
 	for (j in j1:nj)
 	{
-		#' Compute distance between nodes - pythagoras
-		#'  for full grid references this is in units of 1m
+		# Compute distance between nodes - pythagoras
+		#  for full grid references this is in units of 1m
 		d <- sqrt((abs(x_vec[i]-x_vec[j]))^2+(abs(y_vec[i]-y_vec[j]))^2)
-		#' to give distance in m*unit, rounded to 2 decimal places; this also reduces file size
-		d <- d/radius_unit #' this factors the values by the unit. 1 gives metres, 1000 gives km
+		# to give distance in m*unit, rounded to 2 decimal places; this also reduces file size
+		d <- d/radius_unit # this factors the values by the unit. 1 gives metres, 1000 gives km
 		d <- round(d,2)
-		#' Include only if less than limit of distances to be included
+		# Include only if less than limit of distances to be included
 		if(d < limit)
 			{row <- row+1
 			nodes_list[row,] <- cbind(ID[i],ID[j],as.numeric(d))
@@ -119,28 +123,39 @@ t1 <- proc.time() - ptm
 print('loop computed')
 print(t1/60)
 
-#' Output file name and location writes to a text file
+# Output file name and location writes to a text file
 file_name <- paste(file.path(path_working,"nodes_list_d.txt"))
-#' Remove the unused rows in the matrix
+# Remove the unused rows in the matrix
 nodes_list <- nodes_list[-(row+1:n_rows),]
 m_nodes <- as.matrix(nodes_list)
-#' need to write this WITHOUT the row number
+# need to write this WITHOUT the row number
 write.table(m_nodes, file_name, row.names=FALSE)
 
 t2 <- proc.time() - ptm
 print('matrix copied')
 print(t2)
 
+}
+else {
+  # we still need the unique IDs
+  
+  data_unique <- data.frame(stack(data[,1:2]))
+  data_unique <- unique(data_unique$values)
+  data_unique <- as.data.frame(data_unique)
+  colnames(data_unique) <- "PlcIndex"
+  
+  # rename data so that it corresponds to work flow
+  file_name <- paste(file.path(path_working,"nodes_list_d.txt"))
+  write.table(data, file_name, row.names=FALSE)
+  
+}
 
-
-## ab hier clustering_script
-
-
+## clustering script
 
 mem_clust_by_r <- as.data.frame(data_unique$PlcIndex)
 names(mem_clust_by_r)[1] <- "PlcIndex"
 
-
+# conditional asking fo input unit
 
 if (radius_unit == 1)
 {unit_text <- "m"
@@ -159,8 +174,8 @@ data_file <- paste(file.path(path_working,"nodes_list_d.txt"))
 
 # The data table of nodes and internode distances is a Text file, with headers
 matrix_IDs_distance <- read.table(data_file,header=TRUE)
-# Columns are: node Id 1, node Id 2, distance between them. Note that this is generated
-#  with a limit to the maximum distance to reduce overall matrix size, and hence
+# Columns are: node ID 1, node ID2, d12 is distance between them. Note that this is generated or has to be specified before
+#  If generated, it is with a limit to the maximum distance to reduce overall matrix size, and hence
 #  creates a partial matrix
 
 t <- as.vector(proc.time() - ptm)[3]
