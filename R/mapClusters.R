@@ -14,7 +14,6 @@
 #' @import graphics
 #' @import rgdal
 #' @import utils
-#' @param data needs input of dataframe
 #' @param shape needs input of SpatialPolygonDataFrame from 'sp' for background map (same ESPG!)
 #' @param map_name needs string for how the maps shall be named
 #' @param source_file_name string for the name of data set
