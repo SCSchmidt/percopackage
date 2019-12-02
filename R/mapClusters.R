@@ -17,11 +17,12 @@
 #' @param shape needs input of SpatialPolygonDataFrame from 'sp' for background map (same ESPG!)
 #' @param map_name needs string for how the maps shall be named
 #' @param source_file_name string for the name of data set
+#' @param dpi dots per inch for the images. set to 300 as standard
 #' @return as many maps as png as step_values have been calculated
 #' 
 #' @export mapClusters
 #'
-mapClusters <- function(shape, map_name, source_file_name) {
+mapClusters <- function(shape, map_name, source_file_name, dpi = 300) {
 
   # changed path results and path_working to better seperate working data and analysis results data  
 
@@ -100,7 +101,7 @@ the_rest_colour <- "#AEAEAE"
 # Plot as png, earlier issues with png now resolved
 
 file_map_png <- paste(file.path(path_maps, "percolation_plots_"),map_name, "_all.png",sep="")
-png(file=file_map_png, units="cm", width=21, height=29.7, res=300)
+png(file=file_map_png, units="cm", width=21, height=29.7, res=dpi)
 
 plot(map_outline, col="white",border=TRUE)
 
@@ -125,7 +126,7 @@ for(i in loop_count)
 	radius <- radius_values[i]
 	radius_name <- format(radius,nsmall=dec_places)
 	file_map_png <- paste(file.path(path_maps, "percolation_plots_"),map_name, "_rad_", radius_name, ".png",sep="")
-	png(file=file_map_png, units="cm", width=21, height=29.7, res=300)
+	png(file=file_map_png, units="cm", width=21, height=29.7, res=dpi)
 	# Uses data for percolation radius computed, steps through each column for radius value defined by i
 	ClstRad_col <- paste("ClstRad",radius,sep="")
 	# extract data for this radius from cluster member by radius
