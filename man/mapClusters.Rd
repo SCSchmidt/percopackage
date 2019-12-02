@@ -2,7 +2,7 @@
 % Please edit documentation in R/mapClusters.R
 \name{mapClusters}
 \alias{mapClusters}
-\title{created 2019-08-01 by Sophie Schmidt}
+\title{map Clusters how-to}
 \usage{
 mapClusters(shape, map_name, source_file_name, dpi = 300)
 }
