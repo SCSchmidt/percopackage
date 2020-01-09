@@ -2,9 +2,9 @@
 % Please edit documentation in R/mapClusters.R
 \name{mapClusters}
 \alias{mapClusters}
-\title{created 2019-08-01 by Sophie Schmidt}
+\title{map Clusters how-to}
 \usage{
-mapClusters(shape, map_name, source_file_name)
+mapClusters(shape, map_name, source_file_name, dpi = 300)
 }
 \arguments{
 \item{shape}{needs input of SpatialPolygonDataFrame from 'sp' for background map (same ESPG!)}
@@ -13,7 +13,7 @@ mapClusters(shape, map_name, source_file_name)
 
 \item{source_file_name}{string for the name of data set}
 
-\item{data}{needs input of dataframe}
+\item{dpi}{dots per inch for the images. set to 300 as standard}
 }
 \value{
 as many maps as png as step_values have been calculated
