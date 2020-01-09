@@ -1,2 +1,0 @@
-source_file,map_name,shape_file_name,DTM_file_name
-BefundesNL-minimal.csv,late Neolithic features,alle_Schnitt-Fundstellen.shp,
