@@ -1,13 +1,13 @@
 Package: percopackage
 Title: Percolation Analysis functions
 Version: 0.0.0.9000
-Authors@R: c(person("Sophie C.", "Schmidt", email = "s.c.schmidt@uni-koeln.de", role = c("aut", "cre")), person("Simon", "Maddison", email ="smaddison@iee.org",  role = "aut"))
+Authors@R: c(person("Sophie C.", "Schmidt", email = "s.c.schmidt@uni-koeln.de", role = c("aut", "cre")), person("Simon", "Maddison", email ="simon.maddison@btinternet.com",  role = "aut"))
 Description: Three functions to create percolation analysis.
 Depends: R (>= 3.4.0)
 License: MIT
 Encoding: UTF-8
 LazyData: true
-Imports: bookdown, igraph, maptools, rgdal, stringr, calibrate, Hmisc, ggplot2, knitr, roxygen2, sp, base
+Imports: bookdown, igraph, maptools, rgdal, stringr, calibrate, Hmisc, ggplot2, knitr, roxygen2, sp, base, raster
 RoxygenNote: 6.1.1
 Suggests: rmarkdown
 VignetteBuilder: knitr
