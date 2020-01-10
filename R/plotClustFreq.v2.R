@@ -77,12 +77,9 @@ if (radius_unit == 1)
 	     sub=paste("Source File: ",source_file_name),
 	     xlab=paste("radius ", unit_text),
 	     ylab="max cluster size", type="b")
-#	textxy(analysis_by_radius$radius,analysis_by_radius$max_clust_size,analysis_by_radius$radius, col="red", cex=.8)
-	# at the moment some weird mistake here: Error in if (sum(posXposY) > 0) text(X[posXposY], Y[posXposY], labs[posXposY],  : 
-#	missing value where TRUE/FALSE needed
-	# there shouldn't be any values missing.
 	dev.off()	
-	# Plot radius vs mean_clust_size
+
+# Plot radius vs mean_clust_size
 	
 	output_file <- paste(file.path(path_results,"radius_to_mean_cluster_size.png"))
 	png(file=output_file, units="cm", width=21, height=21, res=300)
@@ -93,8 +90,7 @@ if (radius_unit == 1)
 	     sub=paste("Source File: ",source_file_name),
 	     xlab=paste("radius ", unit_text),
 	     ylab="mean cluster size", type="b")
-#	textxy(analysis_by_radius$radius,analysis_by_radius$mean_clust_size,analysis_by_radius$radius, col="red", cex=.8)
-	
+
 	dev.off()
 	# Plot radius vs normalized max_clust_size
 	
@@ -107,8 +103,7 @@ if (radius_unit == 1)
 	     sub=paste("Source File: ",source_file_name),
 	     xlab=paste("radius ", unit_text),
 	     ylab="max cluster size (normalized)", type="b")
-#	textxy(analysis_by_radius$radius,analysis_by_radius$max_normalized,analysis_by_radius$radius, col="red", cex=.8)
-	
+
 	dev.off()
 	
 	

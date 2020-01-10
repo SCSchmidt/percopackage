@@ -20,10 +20,10 @@
 #' @import stats
 #' @import Hmisc
 #' @import utils
-## SM: import igraph too!
+#' @import igraph
 
 #' @param data needs input of dataframe as specified above
-#' @param type specifies whether dataframe is points or a distance matrix. Default is "points". All other input will be treated as distance matrix
+#' @param distance_table specifies whether dataframe is points or a distance matrix. Default is NULL, therfore points. All other input will be treated as distance matrix
 #' @param limit needs input of integer: is the value above which distances will not be calculated between sites
 #' @param radius_unit is either 1 for meter or 1000 for km for all input numbers
 #' @param upper_radius needs input of integer, is the upper value of the radius range to be used
@@ -71,6 +71,7 @@ data <- na.omit(data)
 if (is.null(distance_table)) {
 	print("Computing inter-node distance table")
 	#SM: no distance table provided, so compute the distance table
+  
 	# Remove points that are superimposed and keep only the first ID
 	# - This removes one of two sites that are very close to each other
 	# Determined on basis of x y coordinates
@@ -160,7 +161,7 @@ if (is.null(distance_table)) {
 	  
 }
 
-## clustering script
+## originally clustering script
 
 mem_clust_by_r <- as.data.frame(data_unique$PlcIndex)
 names(mem_clust_by_r)[1] <- "PlcIndex"
@@ -245,9 +246,8 @@ file_name <- paste(file.path(path_results,"member_cluster_by_radius.csv"))
 # Write file without row names
 write.csv(mem_clust_by_r,file_name,quote=FALSE,row.names=FALSE)
 
-### ab hier cluster frequency
 
-
+### originally cluster frequency script
 
 
 # Read source file to establish number of nodes (entries in the file)
