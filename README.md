@@ -1,9 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# percolatransect
+# percopackage
 
-The goal of percolatransect is to …
+The goal of percopackage is to make percolation analysis easily available to R users.
 
 ### Citation
 
@@ -14,11 +14,11 @@ Please cite this compendium as:
 
 ### Installation
 
-You can install percolatransect from github with:
+You can install percopackage from github with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("SCSchmidt/percolatransect")
+devtools::install_github("SCSchmidt/percopackage")
 ```
 
 ### Licenses
