@@ -188,7 +188,7 @@ for(i in loop_count)
 	
 	# legend
 	legend_size <- 0.8
-	legend(x = furthest_pt_east, y = furthest_pt_north, inset= .01, title="Rank Cluster#",legend=ranked_clusters$cluster[1:number_colours], cex=legend_size,
+	legend(x = furthest_pt_east+20, y = furthest_pt_north+20, title="Rank Cluster#",legend=ranked_clusters$cluster[1:number_colours], cex=legend_size,
 		fill=ranked_clusters$col[1:number_colours],  xpd = TRUE)
 	
 	title(main=plot_title, sub=paste("Source File: ",source_file_name, "; percolation distance:",radius_name," ",unit_text))
