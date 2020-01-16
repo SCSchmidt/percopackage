@@ -23,7 +23,7 @@
 #' @import igraph
 
 #' @param data needs input of dataframe as specified above
-#' @param distance_table specifies whether dataframe is points or a distance matrix. Default is NULL, therfore points. All other input will be treated as distance matrix
+#' @param distance_table to give a distance matrix instead of calculating one. Default is NULL, and Euklidean distance will be used and calculated from the given data.
 #' @param limit needs input of integer: is the value above which distances will not be calculated between sites
 #' @param radius_unit is either 1 for meter or 1000 for km for all input numbers
 #' @param upper_radius needs input of integer, is the upper value of the radius range to be used

@@ -64,9 +64,9 @@ PlcIndex,Easting,Northing
 *Easting* and *Northing* are self-explanatory, and are to the metre. (Note that additional columns, if any, will be ignored).
 
 
-OR 
 
-a distance table 
+**distance_table** is set to be NULL as a default, which means, from the data input (coordinates) a distance matrix is calculated using Euklidean distance. If not NULL, the data frame given here needs to adhere to this format:
+
 
 ID1, ID2, d12
 
@@ -81,8 +81,6 @@ ID1, ID2, d12
 *d12* denotes the distance between them, if a non-euclidian distance is whished to be used. 
 
 
-**distance_table** is set to be NULL as a default, which means the input is, as mentioned above, the table with coordinates. If not NULL, data needs to adhere to the distance table - format. 
-
 **limit** is an integer, the value above which distances will not be calculated between sites.
 
 **radius_unit**  is either 1 for meter or 1000 for km for all input radii.
@@ -94,7 +92,7 @@ ID1, ID2, d12
 **step_value** is numeric or integer and the step value to be used between lower and upper radius.
 
 
-**Exported** are in the folder *working_data*: tables (csv) with the input-data, the list of PlcIndex, null_entries and duplicate_entries to be used by following funtions
+**Exported** are in the folder *working_data*: tables (csv) with the input-data, the list of PlcIndex, null_entries and duplicate_entries to be used by following functions.
 
 In the folder *analysis_results* the tables (csv) analysis_by_radius and member_cluster_by_radius are exported. They will be used by following functions as well, but may be useful for other applications as well, therefore they are considered analysis results.
 
