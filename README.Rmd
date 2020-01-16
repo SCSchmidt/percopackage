@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# percolatransect
+# percopackage
 
 The goal of percopackage is to create functions for the percolation analysis from Simon Maddison's scripts.
 
@@ -24,7 +24,7 @@ Please cite this compendium as:
 
 ### Installation
 
-You can install percolatransect from github with:
+You can install percopackage from github with:
 
 ```{r gh-installation, eval = FALSE}
 # install.packages("devtools")
