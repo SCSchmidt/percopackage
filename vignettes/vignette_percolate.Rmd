@@ -6,7 +6,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
-# Percolation 
+## Percolation 
 
 Percolation Analysis as implemented here is a 2D point pattern analysis technique for identifying clusters of any size and form. It recognises noise and produces stable result. 
 
