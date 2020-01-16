@@ -2,13 +2,7 @@
 % Please edit documentation in R/plotClustFreq.R
 \name{plotClustFreq}
 \alias{plotClustFreq}
-\title{based on CLUSTER FREQENCY PLOTTING SCRIPTv2.17 by Simon Maddison, 10th May 2015
-This script extracts cluster frequency data and plots it for a range of percolation radii
-The data is in the analysis_results-directory in text files created by the nodes_clust_freq-function;
-	each file is a list of Place indices, with the identity of each cluster
-	which it is a member of.
-	radius-values have been stored in the working_data-directory.
-	output will be put into /analysis_results}
+\title{plot Cluster Frequency how-to}
 \usage{
 plotClustFreq(source_file_name = source_file_name)
 }

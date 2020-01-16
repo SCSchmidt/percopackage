@@ -2,7 +2,7 @@
 % Please edit documentation in R/percolate.R
 \name{percolate}
 \alias{percolate}
-\title{created 2019-08-01 by Sophie Schmidt}
+\title{percolate how-to}
 \usage{
 percolate(data, type = "points", limit, radius_unit, upper_radius,
   lower_radius, step_value)
