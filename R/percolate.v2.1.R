@@ -1,4 +1,4 @@
-##' created 2019-08-01 by Sophie Schmidt
+##' Percolation
 ##' 
 ##' This is a function built based on the scripts create_nodes_list_d.v4.7, clustering_script.v.3.6 and cluster_frequency_script.v2.17 
 ##' by Simon Maddison, who based it on code developed by Elsa Arcaute, which is published under :  

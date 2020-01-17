@@ -2,11 +2,7 @@
 % Please edit documentation in R/percolate.v2.1.R
 \name{percolate}
 \alias{percolate}
-<<<<<<< HEAD
-\title{percolate how-to}
-=======
-\title{percolate}
->>>>>>> 6e82e498ea2543d4afe1e78a89732242d66bd6f0
+\title{Percolation}
 \usage{
 percolate(data, distance_table = NULL, limit, radius_unit, upper_radius,
   lower_radius, step_value)
@@ -14,7 +10,7 @@ percolate(data, distance_table = NULL, limit, radius_unit, upper_radius,
 \arguments{
 \item{data}{needs input of dataframe as specified above}
 
-\item{distance_table}{specifies whether dataframe is points or a distance matrix. Default is NULL, therfore points. All other input will be treated as distance matrix}
+\item{distance_table}{to give a distance matrix instead of calculating one. Default is NULL, and Euklidean distance will be used and calculated from the given data.}
 
 \item{limit}{needs input of integer: is the value above which distances will not be calculated between sites}
 
