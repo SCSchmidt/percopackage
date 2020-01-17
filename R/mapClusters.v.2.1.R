@@ -1,4 +1,4 @@
-##' created 2019-08-01 by Sophie Schmidt
+##' Map clusters
 ##' 
 ##' This is a function built based on the script mapping_clusters.v4.12
 ##' by Simon Maddison

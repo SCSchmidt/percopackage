@@ -1,4 +1,5 @@
-
+#' Plot Cluster Frequency
+#'
 #' based on CLUSTER FREQENCY PLOTTING SCRIPTv2.17 by Simon Maddison, 10th May 2015
 #' This script extracts cluster frequency data and plots it for a range of percolation radii
 #' The data is in the analysis_results-directory in text files created by the nodes_clust_freq-function;
