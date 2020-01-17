@@ -1,6 +1,4 @@
 
-#' plotting cluster frequency
-#' 
 #' based on CLUSTER FREQENCY PLOTTING SCRIPTv2.17 by Simon Maddison, 10th May 2015
 #' This script extracts cluster frequency data and plots it for a range of percolation radii
 #' The data is in the analysis_results-directory in text files created by the nodes_clust_freq-function;
@@ -73,26 +71,30 @@ if (radius_unit == 1)
 
   output_file <- paste(file.path(path_results,"radius_to_max_cluster_size.png"))
 	png(file=output_file, units="cm", width=21, height=21, res=300)
-	
-	plot(analysis_by_radius$radius,analysis_by_radius$max_clust_size,
+	radius_vals <- as.numeric(as.character(analysis_by_radius$radius))
+	plot(radius_vals,analysis_by_radius$max_clust_size,
 	     main=paste("Max cluster size vs radius "),
 	     sub=paste("Source File: ",source_file_name),
 	     xlab=paste("radius ", unit_text),
 	     ylab="max cluster size", type="b")
+#	textxy(analysis_by_radius$radius,analysis_by_radius$max_clust_size,analysis_by_radius$radius, col="red", cex=.8)
+	# at the moment some weird mistake here: Error in if (sum(posXposY) > 0) text(X[posXposY], Y[posXposY], labs[posXposY],  : 
+#	missing value where TRUE/FALSE needed
+	# there shouldn't be any values missing.
 	dev.off()	
-
-# Plot radius vs mean_clust_size
+	# Plot radius vs mean_clust_size
 	
 	output_file <- paste(file.path(path_results,"radius_to_mean_cluster_size.png"))
 	png(file=output_file, units="cm", width=21, height=21, res=300)
 	#SM: convert factor to numeric
 	mean_clust_size_values <- as.numeric(as.character(analysis_by_radius$mean_clust_size))
-	plot(analysis_by_radius$radius,mean_clust_size_values ,
+	plot(radius_vals,mean_clust_size_values ,
 	     main=paste("Mean cluster size vs radius "),
 	     sub=paste("Source File: ",source_file_name),
 	     xlab=paste("radius ", unit_text),
 	     ylab="mean cluster size", type="b")
-
+#	textxy(analysis_by_radius$radius,analysis_by_radius$mean_clust_size,analysis_by_radius$radius, col="red", cex=.8)
+	
 	dev.off()
 	# Plot radius vs normalized max_clust_size
 	
@@ -100,12 +102,13 @@ if (radius_unit == 1)
 	png(file=output_file, units="cm", width=21, height=21, res=300)
 	#SM: convert factor to numeric
 	max_normalized_values <- as.numeric(as.character(analysis_by_radius$max_normalized))
-	plot(analysis_by_radius$radius,max_normalized_values,
+	plot(radius_vals,max_normalized_values,
 	     main=paste("Max cluster size (normalized) vs radius "),
 	     sub=paste("Source File: ",source_file_name),
 	     xlab=paste("radius ", unit_text),
 	     ylab="max cluster size (normalized)", type="b")
-
+#	textxy(analysis_by_radius$radius,analysis_by_radius$max_normalized,analysis_by_radius$radius, col="red", cex=.8)
+	
 	dev.off()
 	
 	
