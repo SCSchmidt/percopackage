@@ -5,7 +5,7 @@
 ##' E. Arcaute, C. Molinero, E. Hatna, R. Murcio, C. Vargas-Ruiz, A.P. Masucci and M. Batty. Cities and Regions in Britain through hierarchical percolation. J. R. Soc. Open Science, 3 (4),150691. doi:10.1098/rsos.150691, 2016. 
 ##' 
 ##' It creates a file structure in which working data and analysis results are saved
-##' input data required, which consists of a dataframe with the PLCINDEX, EASTING, NORTHING - header. A distance table with the headers 'ID1','ID2','d12' SM: may be used if a computation of the euclidean distance between points is not required. 
+##' input data required, which consists of a dataframe with the PLCINDEX, EASTING, NORTHING - header. A distance table with the headers 'ID1','ID2','d12' may be used if a computation of the euclidean distance between points is not required. 
 ##' input of radius values needed 
 ##' NOTE that if the distance table option is used the Spatial dataframe MUST ALSO BE PROVIDED for the mapping!
 ##' both file types need to be comma delimited!
