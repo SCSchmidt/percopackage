@@ -17,7 +17,7 @@
 #' @import utils
 #' @param shape needs input of SpatialPolygonDataFrame from 'sp' for background map (same ESPG!)
 #' @param map_name needs string for how the maps shall be named
-#' @param source_file_name string for the name of data set
+#' @param source_file_name string for the name of data set used, to include on maps
 #' @param dpi dots per inch for the images. set to 300 as standard
 #' @return as many maps as png as step_values have been calculated
 #' 
@@ -25,7 +25,7 @@
 #'
 mapClusters <- function(shape, map_name, source_file_name, dpi = 300) {
 
-  # changed path results and path_working to better seperate working data and analysis results data  
+  # set up path results and path_working to better seperate working data and analysis results data  
 
   # file.path creates paths according to platform used on user's computer
 path_working <- file.path(getwd(), "working_data")
@@ -47,9 +47,6 @@ step_value <- radius_values$step_value
 radius_unit <- radius_values$radius_unit
 
 map_outline <- shape
-# Truncate shape file name to remove extension
-#layer_name <- substr(shape,1,(nchar(shape)-4))
-#print(map_name)
 
 # Read in nodes and grid coordinates
 data_filename <- paste(file.path(path_working,"data.csv"))
@@ -90,24 +87,23 @@ radius_values <- seq(upper_radius,lower_radius,by=-step_value)
 radii_count <- length(radius_values)
 loop_count <- seq(radii_count,1,by=-1)
 
-# Define colours for clusters, top 15 and then gray for the rest
+# Define colours for clusters; top 15 and then gray for the rest
 top15_colours <- colors()[c(553,29,258,654,91,115,456,122,48,8,149,86,102,40,12)]
 the_rest_colour <- "#AEAEAE"
 
-# plot all sites as pdf
+# this code can be used to plot all sites as pdf as an alternative
 # Maps plotted on multipage pdf
 #file_map_pdf <- paste(path_maps,"/","percolation_plots_",map_name,".pdf",sep="")
 #pdf(file=file_map_pdf, paper="a4", width=21/2.54, height=29.7/2.54)
 
-# Plot as png, earlier issues with png now resolved
-
+# Plot as png, default. png is deemed a more practical solution
+# page format default is A4
 file_map_png <- paste(file.path(path_maps, "percolation_plots_"),map_name, "_all.png",sep="")
 png(file=file_map_png, units="cm", width=21, height=29.7, res=dpi)
-
+# plot the map outline
 plot(map_outline, col="white",border=TRUE)
 
-# get from original file xy_data coords and create table
-# Easting | Northing | ID | cluster | colour
+# point size adjusted for plots of more or less than 1000 points
 if((nrow(xy_data) < 1000))
 {point_dia <- 0.8
 } else {
@@ -119,7 +115,6 @@ mtext(number_of_sites)
 plot_title <- str_to_title(map_name,locale="")
 title(paste("Clusters of ", plot_title), sub=paste("Sources: ",source_file_name,"; ",map_name))
 dev.off()
-
 
 # Generates maps for each of percolation radii in range of radius values
 for(i in loop_count)
@@ -165,22 +160,20 @@ for(i in loop_count)
     	xy_at_d <- xy_data[xy_data$PlcIndex %in% member_cluster$node,]
 
     	#first add colour column to member_cluster then to xy_at_d
-   	member_cluster$col <- ranked_clusters$col[match(member_cluster$cluster, ranked_clusters$cluster)]
+   	  member_cluster$col <- ranked_clusters$col[match(member_cluster$cluster, ranked_clusters$cluster)]
     	xy_at_d$col <- member_cluster$col[match(xy_at_d$PlcIndex, member_cluster$node)]
     	
-    	# get extend of map for legend plotting
+    	# get extent of map for legend plotting
     	the_plot_extent <- extent(map_outline)
     	
     	# grab the upper right hand corner coordinates
     	furthest_pt_east <- the_plot_extent@xmax
     	furthest_pt_north <- the_plot_extent@ymax
 
-  # margins to make space for plot, heading and sub
+  # margins to make space for plot, heading and sub-heading
   par(mar = c(5, 4, 4, 7))  	
 	plot(map_outline, col="white",border=TRUE)
-	# get from original file xy_data coords and create table
-	# Easting | Northing | ID | cluster | colour
-	# this following to check all points included
+
 	# plot all points in grey, as background
 	points(xy_data$Easting, xy_data$Northing, col='grey85', pch=4, cex=.3)
 	# plot
@@ -207,7 +200,6 @@ for(i in loop_count)
 	ranked_mem_clust_by_r[,ClstRad_col] <- NULL
 	dev.off()
 }
-#dev.off()
 
 # convert NA's in ranked_mem_clust_by_r to zero
 ranked_mem_clust_by_r[is.na(ranked_mem_clust_by_r)] <- 0
@@ -224,8 +216,7 @@ write.csv(ranked_mem_clust_by_r[order(ranked_mem_clust_by_r$PlcIndex),], file_na
 projection_string <- proj4string(map_outline)
 crs_projection <- CRS(projection_string)
 
-# name of output shapefile (renamed by Sophie)
-# Truncate source file name to remove extension
+# name of output shapefile
 output_shape_file <- paste(file.path(path_maps,source_file_name),".shp", sep = "")
 layer_name <- "percolation"
 
