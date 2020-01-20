@@ -250,27 +250,6 @@ write.csv(mem_clust_by_r,file_name,quote=FALSE,row.names=FALSE)
 # subtract 1 for header line
 total_nodes <- nrow(data) -1
 
-#### SOPHIE I THINK THE CODE BELOW TO THE NEXT SUCH COMMENT IS REDUNDANT???
-if (radius_unit == 1)
-{unit_text <- "m"
-} else if (radius_unit == 1000)
-{unit_text <- "km"
-} else {
-  unit_text <- paste(radius_unit, "m", sep="")}
-
-
-radius_values <- seq(upper_radius,lower_radius,by=-step_value)
-# Changes to accomodate non-integer radius values
-radii_count <- length(radius_values)
-loop_count <- seq(radii_count,1,by=-1)
-
-
-file_name <- paste(file.path(path_results, "member_cluster_by_radius.csv"))
-
-mem_clust_by_r <- read.csv(file_name, header = TRUE)
-### IE DOWN TO THIS POINT. I THINK ALL THIS CODE FROM ABOVE IS DUPLICATE???
-
-
 # Create matrix of number of clusters and number of nodes (max, mean, median), for each radius
 # Columns:  Radius, number of clusters, max cluster size, mean cluster size, median cluster size
 col_list <- cbind('radius','num_clust','max_clust_size','max_normalized','mean_clust_size','median_clust_size')
