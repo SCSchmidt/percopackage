@@ -20,7 +20,7 @@ The goal of percopackage is to create functions for the percolation analysis fro
 
 Please cite this compendium as:
 
-> Authors, (`r format(Sys.Date(), "%Y")`). _Title of compendium_. Accessed `r format(Sys.Date(), "%d %b %Y")`. Online at <https://doi.org/xxx/xxx>
+> Authors, (`r format(Sys.Date(), "%Y")`). _Title of compendium_. Accessed `r format(Sys.Date(), "%d %b %Y")`. Online at DOI 10.17605/OSF.IO/7EXTC 
 
 ### Installation
 
