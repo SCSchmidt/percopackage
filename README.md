@@ -9,8 +9,8 @@ The goal of percopackage is to make percolation analysis easily available to R u
 
 Please cite this compendium as:
 
-> Authors, (2018). *Title of compendium*. Accessed 26 Mrz 2018. Online
-> at <https://doi.org/xxx/xxx>
+> Authors, (2020). *Title of compendium*. Accessed 26 Mrz 2018. Online
+> at DOI 10.17605/OSF.IO/7EXTC
 
 ### Installation
 
