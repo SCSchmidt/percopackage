@@ -14,7 +14,16 @@ knitr::opts_chunk$set(
 
 # percopackage
 
-The goal of percopackage is to create functions for the percolation analysis from Simon Maddison's scripts.
+Percolation Analysis as implemented here is a 2D point pattern analysis technique for identifying clusters of any size and form. It recognises noise and produces repeatable result. 
+
+Recently the algorithm has been used in geography to identify metropolitan areas, based on population density. The City Clustering Algorithm (CCA) has been developed out of percolation theory by Rozenfeld et al. (2008) based on distance within a cellular lattice; it has been further developed by Rozenfeld et al. (2011) to use the Euclidean distance between points. The algorithm implemented here is based on Arcaute et al. (2016), who adopted the technique for defining urban areas, using the density of street interconnections rather than population. 
+
+A cluster consists of at least two points. Around each point in the given set a defined distance threshold is drawn as a radius and all points falling within this threshold are connected to the cluster. The test is then re-applied for each of these neighbours in turn, and any further points meeting this criterion are also part of the cluster. This technique can be applied at any scale, from the molecular to the geographical and beyond. The implementation here can therefore use radius values of decimal meters and kilometers. 
+
+The algorithm has been implemented as an exploratory  tool, meaning that in the percolate-function a set of radii is defined (values from, values to, and step values), for which the percolation is run. The results can be compared via maps (mapClusters-function) and graphs (plotClustFreq-function).
+
+Two archaeological case studies using this algorithm and software package are to be published by Maddison & Schmidt 2020.
+
 
 ### Citation
 
