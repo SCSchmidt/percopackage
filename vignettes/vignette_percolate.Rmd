@@ -1,9 +1,9 @@
 ---
 title: "Percopackage: detailed description of R code"
 author:
-  Simon Maddison
-  Sophie Schmidt
-date
+  - Simon Maddison
+  - Sophie Schmidt
+date:
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Percolation Program Description}
@@ -167,7 +167,7 @@ data(data)
 It is recommended you set a working directory and a string naming your source file, which will be used to label maps and plots
 
 ```{r working directory}
-setwd(getwd())
+#setwd()
 
 # the source file name is a text string for inclusion in maps and plots
 source_file_name <- "example_coords.csv"
@@ -259,11 +259,3 @@ simon.maddison@btinternet.com
 Sophie C. Schmidt
 s.c.schmidt@uni-koeln.de 
 
-
-# Bibliography
-
-Arcaute, E., Molinero, C., Hatna, E., Murcio, R., Vargas-Ruiz, C., Masucci, A P & Batty, M 2016 Cities and regions in Britain through hierarchical percolation. Royal Society Open Science, 3 (4): 150691.DOI: 10.1098/rsos.150691
-
-Rozenfeld, H. D., Rybski, D., Andrade, J. S., Batty, M., Stanley, H. E. & Makse, H. A. 2008, Laws of population growth. Proceedings of the National Academy of Sciences of the United States of America, 105 (48): 18702.DOI: 10.1073/pnas.0807435105
-
-Rozenfeld, H. D., Rybski, D., Gabaix, X. & Makse, H. A. 2011, The Area and Population of Cities: New Insights from a Different Perspective on Cities. American Economic Review 101 (5): 2205-25.
