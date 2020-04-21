@@ -12,7 +12,7 @@
 ##' 
 ##' Exported maps are in the folder "/maps": As many png map files as there are different radii values used in the percolation analysis. Also a shp-file with the point data.
 ##' 
-##' For more information and a code and data example please check the vignette.
+##' For more information and a code and data example please check the vignette "percolation".
 ##'
 #' @author Simon Maddison
 #' @author Sophie C. Schmidt

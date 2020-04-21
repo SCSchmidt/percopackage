@@ -49,7 +49,7 @@ The functions create subdirectories of the working directory the user is working
 ### Percolate - function
 The input needed for the percolate-function is as follows: 
 
-_percolate(data, distance_table = NULL, limit, radius_unit, upper_radius, lower_radius, step_value)_
+_percolate(data, distance_table = NULL, upper_radius, lower_radius, step_value, limit, radius_unit)_
 
 
 **data** = A data.frame, with the format below:
@@ -81,20 +81,19 @@ ID1, ID2, d12
 
 2,3,2.9
 
-*ID1* and *ID2* are point IDs (i.e. the PlcIndex values) and 
-
-*d12* denotes the weighted distance between them, if a non-euclidian distance is whished to be used. 
+*ID1* and *ID2* are point IDs (i.e. the PlcIndex values) and *d12* denotes the weighted distance between them, if a non-euclidian distance is whished to be used. 
 
 
-**limit** is an integer, the value above which distances will not be calculated between sites.
-
-**radius_unit**  is either 1 for meter or 1000 for km for all input radii.
 
 **upper_radius** is an integer, the upper value of the radius range to be used.
 
 **lower_radius** is an integer, the lower value of the radius range to be used.
 
 **step_value** is numeric or integer and the step value to be used between lower and upper radius.
+
+**limit** is an integer, the value above which distances will not be calculated between sites.
+
+**radius_unit**  is either 1 for meter or 1000 for km for all input radii.
 
 
 **Exported** are in the folder *working_data*: tables (csv) with the input-data, the list of PlcIndex, null_entries and duplicate_entries to be used by following functions.
@@ -117,7 +116,7 @@ Duplicate and null entries are also listed in files with these names, but should
 
 #### Example:
 
-*percolate(data = database,, limit = 50, radius_unit = 1000, upper_radius = 40, lower_radius = 2, step_value = 1)*
+*percolate(data = database,, upper_radius = 40, lower_radius = 2, step_value = 1, limit = 50, radius_unit = 1000)*
 
 A coordinates dataset is the database input. In the example above, percolation analysis will run for radius values between 40 and 2 km, with a step value of 1km (determined by the radius_unit parameter, set to 1000). When computing the inter-site distances, values greater than 50km will not be stored. This restricts the intermediate file size and improves performance. (There is no point in computing the distance between sites in Scotland and Cornwall for example, when all sites are within a single cluster above a radius of say 40km).
 

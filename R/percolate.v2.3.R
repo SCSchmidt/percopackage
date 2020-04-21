@@ -49,7 +49,7 @@
 ##' In the folder "analysis_results" the tables (csv) analysis_by_radius and member_cluster_by_radius are exported. 
 ##' They will be used by the following functions as well, but may also be useful for other applications, therefore they are considered analysis results.
 
-##' For more information and a code and data example please check the vignette.
+##' For more information and a code and data example please check the vignette "percolation".
 
 #' @author Simon Maddison
 #' @author Sophie C. Schmidt
