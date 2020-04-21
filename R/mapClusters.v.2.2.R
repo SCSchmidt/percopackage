@@ -1,8 +1,14 @@
 ##' Map clusters
 ##' 
-##' This is a function built based on the script mapping_clusters.v4.12
-##' by Simon Maddison
-##' it creates a folder maps, where output is saved as png
+##' This function will map the clusters created by percolation. It needs the following input:
+##' *mapClusters(shape, map_name, source_file_name, dpi=300)*
+##' **shape** is a SpatialPolygonDataFrame (sp), which will be used for plotting as a background map, and determining the coordinate system.
+##' **map_name** is a string, which will be used to title the maps.
+##' **source_file_name** is a string, which will be used in a subtitle within the maps and should describe the source data used.
+##' **dpi** is the output file resolution. The default is set to 300. Other resolutions may be needed for publication, for example.
+##' **Exported** maps are in the folder /maps: As many png map files as there are different radii values used in the percolation analysis. Also a shp-file with the point data.
+##' For more information and a code and data example please check the vignette.
+##'
 #' @author Simon Maddison
 #' @author Sophie C. Schmidt
 #' @import sp
@@ -35,7 +41,7 @@ path_results <- file.path(getwd(), "analysis_results")
 path_maps <- file.path(getwd(), "maps")
 dir.create(path_maps, showWarnings = FALSE)
 
-# read in nodes list
+# read in nodes list and coordinates
 data_file <- paste(file.path(path_working,"nodes_list_d.txt"))
 
 # Read in distance thresholds - this ensures same values used as in clustering script, where it was saved
@@ -83,7 +89,7 @@ if (radius_unit == 1)
 unit_text <- paste(radius_unit, "m", sep="")}
 
 radius_values <- seq(upper_radius,lower_radius,by=-step_value)
-# Changes to accomodate non-integer radius values
+# this accomodates non-integer radius values
 radii_count <- length(radius_values)
 loop_count <- seq(radii_count,1,by=-1)
 
@@ -91,7 +97,8 @@ loop_count <- seq(radii_count,1,by=-1)
 top15_colours <- colors()[c(553,29,258,654,91,115,456,122,48,8,149,86,102,40,12)]
 the_rest_colour <- "#AEAEAE"
 
-# this code can be used to plot all sites as pdf as an alternative
+# this code can be used to plot all outputs as pdf as an alternative
+# this code would need to be substiuted for the png plot code below, and in the for loop
 # Maps plotted on multipage pdf
 #file_map_pdf <- paste(path_maps,"/","percolation_plots_",map_name,".pdf",sep="")
 #pdf(file=file_map_pdf, paper="a4", width=21/2.54, height=29.7/2.54)
@@ -116,7 +123,7 @@ plot_title <- str_to_title(map_name,locale="")
 title(paste("Clusters of ", plot_title), sub=paste("Sources: ",source_file_name,"; ",map_name))
 dev.off()
 
-# Generates maps for each of percolation radii in range of radius values
+# Generates maps for each of the percolation radii in range of radius values
 for(i in loop_count)
 {
 	radius <- radius_values[i]
