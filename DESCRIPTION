@@ -11,4 +11,3 @@ Imports: bookdown, igraph, maptools, rgdal, stringr, calibrate, Hmisc, ggplot2, 
 RoxygenNote: 7.0.2
 Suggests: rmarkdown
 VignetteBuilder: knitr
-LazyData: true
