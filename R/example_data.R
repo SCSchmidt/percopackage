@@ -12,11 +12,11 @@
 #'
 #' @usage data(data)
 #'
-#' @format Object of class \code{"Dataframe"} called "data" 
+#' @format Object of class \code{"Dataframe"} called "hillforts" 
 #'
 #' @keywords datasets
 #'
 #' @references Atlas of Hillforts of Britain and Ireland, Lock, G. and Ralston, I. 2017.  Atlas of Hillforts of Britain and Ireland. [ONLINE] Available at: https://hillforts.arch.ox.ac.uk
 #'
 #'
-"data"
+"hillforts"

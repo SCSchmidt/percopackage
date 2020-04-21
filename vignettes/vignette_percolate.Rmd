@@ -140,7 +140,7 @@ The three functions are provided separately, to more quickly identify issues wit
 
 ## Example for the whole process with example data set:
 
-The example point coordinate data is taken from the:
+The example point coordinate data (named "hillforts") is taken from the:
 
 Atlas of Hillforts of Britain and Ireland 
 
@@ -151,14 +151,15 @@ This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 Intern
 The point coordinate data was extracted from the database for hillforts in Britain (England, Scotland, Wales and the Isle of Man) which have status of interpretation as "confirmed". This was extracted on: 25/07/2017
 
 
-The example shape file is an outline of Britain, taken from: 
+The example shape file (named "GB_shape") is an outline of Britain, taken from: 
 
 Ordnance Survey OS Open Data, uner a UK Open Government Licence: https://www.ordnancesurvey.co.uk/opendatadownload/products.html#OVERGB
 
 This file Contains OS data © Crown Copyright (2020)
 
+Included is as well a distance table, which has been derived by calculating the square root of the distances between the hillfort point data (called "hillfort_distances"). It will be used to show how to implement percolation analysis with a given distance table.
 
-Both datasets will be loaded by
+The three datasets will be loaded by
 
 ```{r load data, echo=TRUE}
 data(data)
@@ -194,23 +195,23 @@ step_value <- 1
 # This may be a decimal value or an integer
 ```
 
-With these parameters defined, call the percolate function. Note that the second parameter defaults to "points". Any other value will interpret the data as a distance table (see notes for details). This function call will use the point data set to compute a distance table, then generate a cluster table for the radius and step values given.
+With these parameters defined, call the percolate function. Note that the second parameter defaults to "points". Any other value will interpret the data as a distance table (see above for details). This function call will use the point data set to compute a distance table, then generate a cluster table for the radius and step values given.
 
 ```{r percolate function points}
-percolate(data,,limit,radius_unit,upper_radius,lower_radius,step_value)
+percolate(hillforts,,limit,radius_unit,upper_radius,lower_radius,step_value)
 
 ```
 
 Use this call INSTEAD if you pass a distance table:
 
 ```{r}
-percolate(data,distance_table,limit,radius_unit,upper_radius,lower_radius,step_value)
+percolate(hillforts,hillfort_distances,limit,radius_unit,upper_radius,lower_radius,step_value)
 ```
 
 
 Now for mapping the clusters. 
 
-At first the parameters need to be set. For plotting the maps with an outline or background, a shape file is needed. In the data set, it is included with the name "shape".
+At first the parameters need to be set. For plotting the maps with an outline or background, a shape file is needed. In the data set, it is included with the name "GB_shape".
 If you wish to use another one, follow the steps detailed here. Note: the shape file needs to have the same coordinate system as for the point data!
 The coordinate system is extracted from the given shape file.
 ```{r mapping: get a shape file}
@@ -228,7 +229,7 @@ shape <- readOGR(dsn=file_name,layer=layer_name)
 
 ```
 
-
+Now set the other parameters needed:
 ```{r mapping: set parameters }
 # map name for plot title
 map_name <- "Example archaeological data percolation plot"
@@ -240,7 +241,7 @@ dpi <- 300
 Now all parameters are set, call the mapping function. This will plot a map of all points, followed by a cluster plot for each stepped value of the percolation radius. These will be put into a subdirectory "maps" off the root directory.
 ```{r mapping function}
 # Here source_file_name is used as indicated above
-mapClusters(shape,map_name,source_file_name,dpi)
+mapClusters(GB_shape,map_name,source_file_name,dpi)
 ```
 
 Now you can plot the cluster frequency. This function creates the cluster frequency plots and places them in the cluster_analysis sub directory. The name parameter is used to title the plots.

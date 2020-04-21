@@ -1,12 +1,17 @@
 ##' Map clusters
 ##' 
-##' This function will map the clusters created by percolation. It needs the following input:
-##' *mapClusters(shape, map_name, source_file_name, dpi=300)*
-##' **shape** is a SpatialPolygonDataFrame (sp), which will be used for plotting as a background map, and determining the coordinate system.
-##' **map_name** is a string, which will be used to title the maps.
-##' **source_file_name** is a string, which will be used in a subtitle within the maps and should describe the source data used.
-##' **dpi** is the output file resolution. The default is set to 300. Other resolutions may be needed for publication, for example.
-##' **Exported** maps are in the folder /maps: As many png map files as there are different radii values used in the percolation analysis. Also a shp-file with the point data.
+##' This function will map the clusters created by percolation. 
+##' 
+##' shape is a SpatialPolygonDataFrame (sp), which will be used for plotting as a background map, and determining the coordinate system.
+##' 
+##' map_name is a string, which will be used to title the maps.
+##' 
+##' source_file_name is a string, which will be used in a subtitle within the maps and should describe the source data used.
+##' 
+##' dpi is the output file resolution. The default is set to 300. Other resolutions may be needed for publication, for example.
+##' 
+##' Exported maps are in the folder "/maps": As many png map files as there are different radii values used in the percolation analysis. Also a shp-file with the point data.
+##' 
 ##' For more information and a code and data example please check the vignette.
 ##'
 #' @author Simon Maddison

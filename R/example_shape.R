@@ -11,11 +11,11 @@
 #'
 #' @usage data(data)
 #'
-#' @format Object of class \code{"Large SpatialPolygonsDataFrame"} called "shape
+#' @format Object of class \code{"Large SpatialPolygonsDataFrame"} called "GB_shape"
 #'
 #' @keywords datasets
 #'
 #' @references Ordnance Survey OS Open Data, uner a UK Open Government Licence: https://www.ordnancesurvey.co.uk/opendatadownload/products.html#OVERGB
 #'
 #'
-"shape"
+"GB_shape"
