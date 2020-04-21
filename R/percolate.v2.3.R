@@ -21,11 +21,12 @@
 ##' 2,3,2.9
 ##' *ID1* and *ID2* are point IDs (i.e. the PlcIndex values) and 
 ##' *d12* denotes the weighted distance between them, if a non-euclidian distance is to be used. 
-##' **limit** is an integer, the value above which distances will not be calculated between sites.
-##' **radius_unit**  is either 1 for meter or 1000 for km for all input radii.
 ##' **upper_radius** is an integer, the upper value of the radius range to be used.
 ##' **lower_radius** is an integer, the lower value of the radius range to be used.
 ##' **step_value** is numeric or integer and the step value to be used between lower and upper radius.
+##' **limit** is an integer, the value above which distances will not be calculated between sites.
+##' **radius_unit**  is either 1 for meter or 1000 for km for all input radii.
+##' 
 ##' **Exported** are in the folder *working_data*: tables (csv) with the input-data, the list of PlcIndex, null_entries and duplicate_entries to be used by following functions.
 ##' In the folder *analysis_results* the tables (csv) analysis_by_radius and member_cluster_by_radius are exported. They will be used by the following functions as well, but may also be useful for other applications, therefore they are considered analysis results.
 
@@ -42,15 +43,15 @@
 
 #' @param data needs input of dataframe as specified above
 #' @param distance_table to give a distance matrix instead of calculating one. Default is NULL, and Euclidean distance will be calculated from the given point data.
-#' @param limit needs input of integer: is the value above which distances between sites will not be stored
-#' @param radius_unit is either 1 for meter or 1000 for km; applied to all input values
 #' @param upper_radius needs input of integer, is the upper value of the radius range to be used
 #' @param lower_radius  needs input of integer, is the lower value of the radius range to be used
 #' @param step_value integer or numeric, is the step value to be used between these two values
+#' @param limit needs input of integer: is the value above which distances between sites will not be stored
+#' @param radius_unit is either 1 for meter or 1000 for km; applied to all input values
 #' @return the function generates the data files analysis_by_radius.csv and member_cluster_by_radius.csv
 #' @export
 
-percolate <- function(data, distance_table = NULL, limit, radius_unit, upper_radius, lower_radius, step_value) {
+percolate <- function(data, distance_table = NULL, upper_radius, lower_radius, step_value, limit, radius_unit) {
 
 # create directories
 # file.path creates paths according to working directory used on user's computer
