@@ -197,7 +197,7 @@ Rozenfeld, H. D., Rybski, D., Gabaix, X. & Makse, H. A. 2011, The Area and Popul
 
 Please cite this compendium as:
 
-> Authors, (`r format(Sys.Date(), "%Y")`). _Title of compendium_. Accessed `r format(Sys.Date(), "%d %b %Y")`. Online at <https://doi.org/xxx/xxx>
+> Authors, (`r format(Sys.Date(), "%Y")`). _Title of compendium_. Accessed `r format(Sys.Date(), "%d %b %Y")`. Online at DOI 10.17605/OSF.IO/7EXTC 
 
 ### Installation
 
