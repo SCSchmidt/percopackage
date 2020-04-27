@@ -1,32 +1,64 @@
 ##' Percolation
 ##' 
-##' This is a function built based on the scripts create_nodes_list_d.v4.7, clustering_script.v.3.6 and 
-##'  cluster_frequency_script.v2.17 
-##' by Simon Maddison, who based it on code developed by Elsa Arcaute, which is published under:  
+##' This is a function built based on the scripts by Simon Maddison, who based it on code developed by Elsa Arcaute, which is published under:  
 ##' E.Arcaute, C.Molinero, E.Hatna, R.Murcio, C.Vargas-Ruiz, A.P.Masucci and M.Batty. 
 ##'  Cities and Regions in Britain through hierarchical percolation. J. R. Soc. Open Science, 3 (4),150691. 
 ##'  doi:10.1098/rsos.150691, 2016. 
 ##' 
-##' It creates a file structure in which working data and analysis results are saved
 ##' 
-##' The input data required consists of a dataframe with the: PlcIndex, Easting, Northing - header. 
-##' A distance table with the headers 'ID1','ID2','d12' may also be used if a computation of the euclidean distance 
-##'  between points is not needed and an alternative to this is desired. 
-##' Input: radius values need to be passed as parameters 
-##' NOTE: if the distance table option is used the coordinate file MUST ALSO BE PROVIDED for the mapping!
-##' NOTE: both file types need to be comma delimited!
-##' output: in working_data: csv with the radius-input data, PlcIndex, null_entries and duplicate_entries
-##' output: in analysis_results: analysis_by_radius.csv and member_cluster_by_radius.csv
-##' both output-folders will be used by following functions
+##' data = A data.frame, with the format and example data below:
+##' 
+##' PlcIndex,Easting,Northing
+##' 
+##' 1,350350,233050
+##' 
+##' 2,354700,260200
+##' 
+##' 3,358700,238900
+##' 
+##' PlcIndex is an assigned index number to distinguish the points. This does not need to be sequential and can for example be drawn from a source database.
+##' 
+##' Easting and Northing are self-explanatory, and are to the metre. (Note that additional columns, if any, will be ignored).
+##' 
+##' distance_table is set to be NULL as a default, which means, using the data input (coordinates) a distance matrix is calculated using Euclidean distance. If not NULL, the data frame given here needs to adhere to this format and example values:
+##' 
+##' ID1, ID2, d12
+##' 
+##' 1,2,12.1
+##' 
+##' 1,3,14.2
+##' 
+##' 2,3,2.9
+##' 
+##' ID1 and ID2 are point IDs (i.e. the PlcIndex values) and 
+##' 
+##' d12 denotes the weighted distance between them, if a non-euclidian distance is to be used. 
+##' 
+##' upper_radius is an integer, the upper value of the radius range to be used.
+##' 
+##' lower_radius is an integer, the lower value of the radius range to be used.
+##' 
+##' step_value is numeric or integer and the step value to be used between lower and upper radius.
+##' 
+##' limit is an integer, the value above which distances will not be calculated between sites.
+##' 
+##' radius_unit  is either 1 for meter or 1000 for km for all input radii.
+##' 
+##' Exported are in the folder "working_data": tables (csv) with the input-data, the list of PlcIndex, null_entries and duplicate_entries to be used by following functions.
+##' 
+##' In the folder "analysis_results" the tables (csv) analysis_by_radius and member_cluster_by_radius are exported. 
+##' They will be used by the following functions as well, but may also be useful for other applications, therefore they are considered analysis results.
+
+##' For more information and a code and data example please check the vignette.
 
 #' @author Simon Maddison
 #' @author Sophie C. Schmidt
 #' @author Elsa Arcaute
 #' 
-#' @importFrom stats na.omit
+#' @import stats
 #' @import Hmisc
-#' @importFrom utils read.table write.table data 
-#' @importFrom igraph graph.edgelist clusters V
+#' @import utils
+#' @import igraph
 
 #' @param data needs input of dataframe as specified above
 #' @param distance_table to give a distance matrix instead of calculating one. Default is NULL, and Euclidean distance will be calculated from the given point data.
