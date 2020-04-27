@@ -1,6 +1,6 @@
 Package: percopackage
 Title: Percolation Analysis functions
-Version: 1.0.0.
+Version: 0.0.0.9000
 Authors@R: c(person("Sophie C.", "Schmidt", email = "s.c.schmidt@uni-koeln.de", role = c("aut", "cre")), person("Simon", "Maddison", email ="simon.maddison@btinternet.com",  role = "aut"))
 Description: Three functions to run percolation analysis, which is a spatial
     clustering algorithm, on a set of spatial data points, map the results
