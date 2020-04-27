@@ -157,7 +157,7 @@ Ordnance Survey OS Open Data, uner a UK Open Government Licence: https://www.ord
 
 This file Contains OS data © Crown Copyright (2020)
 
-Included is as well a distance table, which has been derived by calculating the square root of the distances between the hillfort point data (called "hillfort_distances"). It will be used to show how to implement percolation analysis with a given distance table.
+Included is as well a distance table, which has been derived by calculating the square root of the distance between the hillfort point data and adding it to the original value (called “hillfort_distances”). It will be used to show how to implement percolation analysis with a given distance table.
 
 The three datasets will be loaded by
 
