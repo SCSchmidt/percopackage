@@ -84,7 +84,7 @@ The program now generates the clusters for each radius value required, starting 
 
 The following R functions from library `‘igraph’` are then applied to this sub-matrix as follows:
 
-**graph_edgelist()** – creates a graph from the sub-matrix, with directed=TRUE to count the edges only once.
+**graph.edgelist()** – creates a graph from the sub-matrix, with directed=TRUE to count the edges only once.
 
 **clusters()** – identifies the clusters in the graph and generates a unique identity for each. This identity is then bound to each point (i.e. graph vertex) using the **V()** function. 
 
