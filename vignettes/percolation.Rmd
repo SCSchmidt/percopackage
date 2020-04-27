@@ -255,7 +255,6 @@ plotClustFreq(source_file_name)
 ### CONTACT DETAILS:
 Simon Maddison
 simon.maddison@btinternet.com
-+44 797 089 2171
 
 Sophie C. Schmidt
 s.c.schmidt@uni-koeln.de 
