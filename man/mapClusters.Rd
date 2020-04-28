@@ -7,7 +7,7 @@
 mapClusters(shape, map_name, source_file_name, dpi = 300)
 }
 \arguments{
-\item{shape}{needs input of SpatialPolygonDataFrame from 'sp' for background map (same ESPG!)}
+\item{shape}{needs input of SpatialPolygonDataFrame from 'sp' for background map. This needs to have the same ESPG as the point data!}
 
 \item{map_name}{needs string for how the maps shall be named}
 

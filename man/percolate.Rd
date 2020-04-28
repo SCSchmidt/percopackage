@@ -15,7 +15,7 @@ percolate(
 )
 }
 \arguments{
-\item{data}{needs input of dataframe as specified above}
+\item{data}{needs input of data.frame as specified below}
 
 \item{distance_table}{to give a distance matrix instead of calculating one. Default is NULL, and Euclidean distance will be calculated from the given point data.}
 

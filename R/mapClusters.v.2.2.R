@@ -26,7 +26,7 @@
 #' @import rgdal
 #' @import raster
 #' @import utils
-#' @param shape needs input of SpatialPolygonDataFrame from 'sp' for background map (same ESPG!)
+#' @param shape needs input of SpatialPolygonDataFrame from 'sp' for background map. This needs to have the same ESPG as the point data!
 #' @param map_name needs string for how the maps shall be named
 #' @param source_file_name string for the name of data set used, to include on maps
 #' @param dpi dots per inch for the images. set to 300 as standard

@@ -4,7 +4,9 @@
 \name{GB_shape}
 \alias{GB_shape}
 \title{Shapefile: Outline of Great Britain}
-\format{Object of class \code{"Large SpatialPolygonsDataFrame"} called "GB_shape"}
+\format{
+Object of class \code{"Large SpatialPolygonsDataFrame"} called "GB_shape"
+}
 \usage{
 data(data)
 }

@@ -60,7 +60,7 @@
 #' @import utils
 #' @import igraph
 
-#' @param data needs input of dataframe as specified above
+#' @param data needs input of data.frame as specified below
 #' @param distance_table to give a distance matrix instead of calculating one. Default is NULL, and Euclidean distance will be calculated from the given point data.
 #' @param limit needs input of integer: is the value above which distances between sites will not be stored
 #' @param lower_radius  needs input of integer, is the lower value of the radius range to be used

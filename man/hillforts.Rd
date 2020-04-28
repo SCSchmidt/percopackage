@@ -4,7 +4,9 @@
 \name{hillforts}
 \alias{hillforts}
 \title{Atlas of Hillforts of Britain and Ireland data}
-\format{Object of class \code{"Dataframe"} called "hillforts"}
+\format{
+Object of class \code{"Dataframe"} called "hillforts"
+}
 \usage{
 data(data)
 }

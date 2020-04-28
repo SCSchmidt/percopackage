@@ -13,7 +13,7 @@
 #' b) radius to mean cluster size and 
 #' 
 #' c) radius to normalized max. cluster size
-
+#'
 #' and they will include the information of the source file as a subtitle.
 #' 
 #' They are stored as png files in the /analysis_results directory as “radius_to_max_cluster_size”, “radius_to_mean_cluster_size” and “radius_to_norm_max_cluster_size”.
