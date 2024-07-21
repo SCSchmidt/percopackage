@@ -37,8 +37,7 @@ Graphical outputs are generated as png files with an A4 format.
 
 ## Percolate
 
-**percolate(data, distance_table = NULL, limit, radius_unit, upper_radius, lower_radius, step_value)**
-
+**percolate(data, distance_table = NULL, upper_radius, lower_radius, step_value, limit, radius_unit)**
 
 The **data** needs to be provided as a .csv file in the format below:
 
@@ -198,14 +197,14 @@ step_value <- 1
 With these parameters defined, call the percolate function. Note that the second parameter defaults to "points". Any other value will interpret the data as a distance table (see above for details). This function call will use the point data set to compute a distance table, then generate a cluster table for the radius and step values given.
 
 ```{r percolate function points}
-percolate(hillforts,,limit,radius_unit,upper_radius,lower_radius,step_value)
+percolate(hillforts,,upper_radius, lower_radius, step_value, limit, radius_unit)
 
 ```
 
 Use this call INSTEAD if you pass a distance table:
 
 ```{r}
-percolate(hillforts,hillfort_distances,limit,radius_unit,upper_radius,lower_radius,step_value)
+percolate(hillforts,hillfort_distances,upper_radius, lower_radius, step_value, limit, radius_unit)
 ```
 
 
