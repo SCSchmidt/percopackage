@@ -75,8 +75,7 @@ structure, which is being set up:
 
 The input needed for the percolate-function is as follows:
 
-*percolate(data, distance\_table = NULL, limit, radius\_unit,
-upper\_radius, lower\_radius, step\_value)*
+*percolate(data, distance\_table = NULL,upper\_radius, lower\_radius, step\_value, limit, radius\_unit)*
 
 **data** = A data.frame, with the format below:
 
@@ -177,8 +176,8 @@ a lot of cleaning to do, which is why this runs as a separate program).
 
 #### Example:
 
-*percolate(data = database,, limit = 50, radius\_unit = 1000,
-upper\_radius = 40, lower\_radius = 2, step\_value = 1)*
+*percolate(data = database,,upper\_radius = 40, lower\_radius = 2, step\_value = 1, limit = 50, radius\_unit = 1000)*
+
 
 A coordinates dataset is the database input. In the example above,
 percolation analysis will run for radius values between 40 and 2 km,
