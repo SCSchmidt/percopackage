@@ -32,8 +32,7 @@ to, and step values), for which the percolation is run. The results can
 be compared via maps (mapClusters-function) and graphs
 (plotClustFreq-function).
 
-Two archaeological case studies using this algorithm and software
-package are to be published by Maddison & Schmidt 2020.
+Two archaeological case studies using this algorithm and software package have been published by the authors: Maddison, M. S., & Schmidt, S. C. (2020). Percolation Analysis – Archaeological Applications at Widely Different Spatial Scales. Journal of Computer Applications in Archaeology, 3(1), 269–287. https://doi.org/10.5334/jcaa.54.
 
 ## Percolation Analysis via the R package “percopackage” – Workflow and Descriptions
 
