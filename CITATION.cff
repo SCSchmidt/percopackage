@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Maddison
+    given-names: M. Simon
+    orcid: https://orcid.org/0000-0001-5006-6604
+  - family-names: Schmidt
+    given-names: Sophie C.
+    orcid: https://orcid.org/0000-0003-4696-2101
+title: "Percopackage"
+version: 0.0.0.9001
+identifiers:
+  - type: doi
+    value: 10.17605/OSF.IO/7EXTC
+date-released: 2024-08-24
